@@ -1,0 +1,14 @@
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.DataAccess.deps.json
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.DataAccess.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.DataAccess.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.csprojAssemblyReference.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.AssemblyInfoInputs.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.AssemblyInfo.cs
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.csproj.CoreCompileInputs.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.Data.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.Data.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/obj/Debug/netstandard2.0/EMP.DataAccess.csproj.CopyComplete
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.Core.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DataAccess/bin/Debug/netstandard2.0/EMP.Core.pdb

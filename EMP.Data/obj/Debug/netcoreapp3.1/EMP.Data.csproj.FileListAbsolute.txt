@@ -1,0 +1,9 @@
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/bin/Debug/netcoreapp3.1/EMP.Data.deps.json
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/bin/Debug/netcoreapp3.1/EMP.Data.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/bin/Debug/netcoreapp3.1/EMP.Data.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/obj/Debug/netcoreapp3.1/EMP.Data.AssemblyInfoInputs.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/obj/Debug/netcoreapp3.1/EMP.Data.AssemblyInfo.cs
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/obj/Debug/netcoreapp3.1/EMP.Data.csproj.CoreCompileInputs.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/obj/Debug/netcoreapp3.1/EMP.Data.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/obj/Debug/netcoreapp3.1/EMP.Data.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/obj/Debug/netcoreapp3.1/EMP.Data.csprojAssemblyReference.cache

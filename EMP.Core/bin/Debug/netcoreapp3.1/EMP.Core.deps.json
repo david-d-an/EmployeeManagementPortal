@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "EMP.Core/1.0.0": {
+        "dependencies": {
+          "EMP.Data": "1.0.0"
+        },
+        "runtime": {
+          "EMP.Core.dll": {}
+        }
+      },
+      "EMP.Data/1.0.0": {
+        "runtime": {
+          "EMP.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EMP.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "EMP.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

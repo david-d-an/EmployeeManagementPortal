@@ -1,0 +1,90 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "EMP.Data/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/EMP.Data.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/EMP.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "EMP.Data/1.0.0": {
+      "type": "project",
+      "path": "../EMP.Data/EMP.Data.csproj",
+      "msbuildProject": "../EMP.Data/EMP.Data.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "EMP.Data >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/Users/david.d.an/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Core/EMP.Core.csproj",
+      "projectName": "EMP.Core",
+      "projectPath": "/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Core/EMP.Core.csproj",
+      "packagesPath": "/Users/david.d.an/.nuget/packages/",
+      "outputPath": "/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Core/obj/",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "/Users/david.d.an/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {
+            "/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/EMP.Data.csproj": {
+              "projectPath": "/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Data/EMP.Data.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.402/RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

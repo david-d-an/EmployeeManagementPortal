@@ -1,0 +1,4 @@
+EMP.DataAccess.EmployeesContextShould.ConnectToDepartmentsTable
+EMP.DataAccess.EmployeesContextShould.ConnectToDeptManagerTable
+EMP.DataAccess.EmployeesContextShould.ConnectToEmployeesTable
+EMP.DataAccess.EmployeesContextShould.ConnectToSalariesTable
