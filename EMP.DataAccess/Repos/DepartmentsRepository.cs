@@ -1,8 +1,12 @@
 using System.Collections.Generic;
 using EMP.Data.Models;
-using EMP.Core.Repos;
+using EMP.Data.Repos;
 using EMP.DataDataAccess.Context;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System;
+using EMP.Core.Tasks;
 
 namespace EMP.DataAccess.Repos
 {
@@ -15,24 +19,72 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        Departments IDepartmentsRepository.Get(string deptNo)
+        // public Departments Get(string deptNo)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
+
+        public async Task<Departments> GetAsync(string deptNo)
         {
-            throw new System.NotImplementedException();
+            IQueryable<Departments> result = 
+                from d in this._context.Departments
+                where d.DeptNo == deptNo
+                select d;
+
+            return await result.FirstOrDefaultAsync();
         }
 
-        IEnumerable<Departments> IDepartmentsRepository.Get()
+        // public IEnumerable<Departments> Get()
+        // {
+        //     IQueryable<Departments> result = 
+        //         from d in this._context.Departments
+        //         // join de in this._context.DeptEmp
+        //         // on d.DeptNo equals de.DeptNo
+        //         // join e in this._context.Employees
+        //         // on de.EmpNo equals e.EmpNo
+        //         select d;
+
+        //     return result.ToList();
+        // }
+
+
+        public async Task<IEnumerable<Departments>> GetAsync()
         {
-            return this._context.Departments.ToList();
+            IQueryable<Departments> result = 
+                from d in this._context.Departments
+                select d;
+
+            return await result.ToListAsync();
         }
 
-        Departments IDepartmentsRepository.Put(Departments departmentUpdateRequest)
+        // public Departments Put(string deptNo, Departments departmentUpdateRequest)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
+        public async Task<Departments> PutAsync(string deptNo, Departments departmentUpdateRequest)
         {
-            throw new System.NotImplementedException();
+            IQueryable<Departments> result = 
+                from d in this._context.Departments
+                where d.DeptNo == deptNo
+                select d;
+
+            var dept = await result.FirstAsync();
+            dept.DeptName = departmentUpdateRequest.DeptName;
+
+            _context.Entry(dept).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return dept;
         }
 
-        Departments IDepartmentsRepository.Post(Departments departmentCreateRequest)
+        // public Departments Post(Departments departmentCreateRequest)
+        // {
+        //     throw new System.NotImplementedException();
+        // }
+        public async Task<Departments> PostAsync(Departments departmentCreateRequest)
         {
-            throw new System.NotImplementedException();
+            // throw new NotImplementedException();
+            return await TaskConstants<Departments>.NotImplemented;
         }
+
     }
 }

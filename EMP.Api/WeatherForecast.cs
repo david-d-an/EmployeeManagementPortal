@@ -1,5 +1,4 @@
 using System;
-using EMP.Core.Processors;
 
 namespace EMP.Api
 {

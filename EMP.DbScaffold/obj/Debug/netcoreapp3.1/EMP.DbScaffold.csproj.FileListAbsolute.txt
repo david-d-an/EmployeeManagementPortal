@@ -1,0 +1,12 @@
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/bin/Debug/netcoreapp3.1/EMP.DbScaffold.deps.json
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/bin/Debug/netcoreapp3.1/EMP.DbScaffold.runtimeconfig.json
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/bin/Debug/netcoreapp3.1/EMP.DbScaffold.runtimeconfig.dev.json
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/bin/Debug/netcoreapp3.1/EMP.DbScaffold.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/bin/Debug/netcoreapp3.1/EMP.DbScaffold.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.csprojAssemblyReference.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.AssemblyInfoInputs.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.AssemblyInfo.cs
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.csproj.CoreCompileInputs.cache
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.dll
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.pdb
+/Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.DbScaffold/obj/Debug/netcoreapp3.1/EMP.DbScaffold.genruntimeconfig.cache

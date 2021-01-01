@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EMP.Core.Repos;
+using EMP.Data.Repos;
 using EMP.Core.Security;
 using EMP.DataAccess.Repos;
 using EMP.DataDataAccess.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+// using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,6 +43,7 @@ namespace EMP.Api
             EnsureDatabaseExists<EmployeesContext>(connStrMySql);
 
             services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
+            services.AddScoped<IEmployeeDetailRepository, EmployeeDetailRepository>();
         }
 
         private static void EnsureDatabaseExists<T>(string connectionString) 
