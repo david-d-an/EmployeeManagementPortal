@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System;
-using EMP.Core.Tasks;
+using EMP.Common.Tasks;
 
 namespace EMP.DataAccess.Repos
 {

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EMP.Data.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace EMP.Data.Repos
 {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using EMP.Core.Tasks;
+using EMP.Common.Tasks;
 using EMP.Data.Models;
 using EMP.Data.Repos;
 using EMP.DataDataAccess.Context;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EMP.Data.Repos;
-using EMP.Core.Security;
+using EMP.Common.Security;
 using EMP.DataAccess.Repos;
 using EMP.DataDataAccess.Context;
 using Microsoft.AspNetCore.Builder;

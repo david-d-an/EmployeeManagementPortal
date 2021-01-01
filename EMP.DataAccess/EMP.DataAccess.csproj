@@ -15,12 +15,11 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EMP.Data\EMP.Data.csproj" />
-    <ProjectReference Include="..\EMP.Core\EMP.Core.csproj" />
+    <ProjectReference Include="..\EMP.Common\EMP.Common.csproj" />
   </ItemGroup>
 
 </Project>

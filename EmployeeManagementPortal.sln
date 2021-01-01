@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Api.Test", "EMP.Api.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Data", "EMP.Data\EMP.Data.csproj", "{DFB41164-6C6F-483B-8E21-FA05E150E5AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Core", "EMP.Core\EMP.Core.csproj", "{22EB9950-8833-4D98-8A65-5A009C4716A9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Common", "EMP.Common\EMP.Common.csproj", "{22EB9950-8833-4D98-8A65-5A009C4716A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

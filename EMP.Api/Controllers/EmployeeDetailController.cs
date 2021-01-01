@@ -6,7 +6,7 @@ using EMP.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
-using EMP.Core.Tasks;
+using EMP.Common.Tasks;
 
 namespace EMP.Api.Controllers
 {
