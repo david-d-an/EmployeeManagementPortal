@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace EMP.Api
+namespace EMP.Api.Controllers
 {
     public class EmployeeControllerTest
     {
@@ -43,6 +43,8 @@ namespace EMP.Api
             mockEmployeeRepository = new Mock<IEmployeeRepository>();
             mockEmployeeRepository.Setup(x => x.GetAsync(It.Is<int>(x => x == empNo)))
                                   .ReturnsAsync(employee);
+            mockEmployeeRepository.Setup(x => x.DeleteAsync(invalidEmpNo))
+                                  .ReturnsAsync((Employees)null);
 
             _controller = new EmployeeController(
                 mockLogger.Object,
@@ -50,7 +52,7 @@ namespace EMP.Api
         }
 
         [Fact]
-        public void ShouldReturnAllEmployees() {
+        public async void ShouldReturnAllEmployees() {
             // Arrange
             var employees = new List<Employees> {
                 employee
@@ -59,25 +61,27 @@ namespace EMP.Api
             mockEmployeeRepository.Setup(x => x.GetAsync()).ReturnsAsync(employees);
 
             // Act
-            Task<IEnumerable<Employees>> searchResult = _controller.Get();
+            ActionResult<IEnumerable<Employees>> searchResult = await _controller.Get();
+            OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert
-            Assert.NotNull(searchResult.Result);
-            Assert.Single(searchResult.Result);
-            Assert.NotNull(searchResult.Result.FirstOrDefault());
-            Assert.Equal(empNo, searchResult.Result.FirstOrDefault().EmpNo);
+            Assert.Equal(200, listResult.StatusCode);
+            IEnumerable<Employees> list = listResult.Value as IEnumerable<Employees>;
+            Assert.Single(list);
+            Assert.NotNull(list.FirstOrDefault());
+            Assert.Equal(empNo, list.FirstOrDefault().EmpNo);
         }
 
         [Fact]
-        public void ShouldReturnEmployeeWithEmployeeNumber()
+        public async void ShouldReturnEmployeeWithEmployeeNumber()
         {
             // Arrange
 
             // Act
-            Task<Employees> searchResult = _controller.Get(empNo);
+            ActionResult<Employees> searchResult = await _controller.Get(empNo);
 
             // Assert
-            Assert.Equal(empNo, searchResult.Result.EmpNo);
+            Assert.Equal(empNo, searchResult.Value.EmpNo);
         }
 
         [Fact]
@@ -85,14 +89,14 @@ namespace EMP.Api
             // Arrange
 
             // Act
-            Employees searchResult = await _controller.Get(invalidEmpNo);
+            ActionResult<Employees> searchResult = await _controller.Get(invalidEmpNo);
 
             // Assert
-            Assert.Null(searchResult);
+            Assert.Null(searchResult.Value);
         }
 
         [Fact]
-        public void ShouldUpdateEmployeeInfo()
+        public async void ShouldUpdateEmployeeInfo()
         {
             // Arrange
             Employees employeeUpdateRequest = 
@@ -108,21 +112,24 @@ namespace EMP.Api
             mockEmployeeRepository.Setup(x => x.PutAsync(empNo, employeeUpdateRequest))
                                   .ReturnsAsync(employeeUpdateRequest);
 
-            // Pre Assert
-            Employees existingEmployee = _controller.Get(empNo).Result;
-            Assert.NotNull(existingEmployee);
+            // // Pre Assert
+            // ActionResult<Employees> existingEmployee = await _controller.Get(empNo);
+            // // Assert.NotNull(existingEmployee.Result);
+            // Assert.NotNull(existingEmployee.Value);
 
             // Act
-            Employees updateResult = _controller.Put(empNo, employeeUpdateRequest).Result;
+            ActionResult<Employees> updateResult = await _controller.Put(empNo, employeeUpdateRequest);
+            NotFoundResult notFoundResult = updateResult.Result as NotFoundResult;
 
             // Assert
-            Assert.NotNull(updateResult);
-            Assert.Equal(employeeUpdateRequest.EmpNo, updateResult.EmpNo);
-            Assert.Equal(employeeUpdateRequest.BirthDate, updateResult.BirthDate);
-            Assert.Equal(employeeUpdateRequest.FirstName, updateResult.FirstName);
-            Assert.Equal(employeeUpdateRequest.LastName, updateResult.LastName);
-            Assert.Equal(employeeUpdateRequest.Gender, updateResult.Gender);
-            Assert.Equal(employeeUpdateRequest.HireDate, updateResult.HireDate);
+            Assert.Null(notFoundResult);
+            Assert.NotNull(updateResult.Value);
+            Assert.Equal(employeeUpdateRequest.EmpNo, updateResult.Value.EmpNo);
+            Assert.Equal(employeeUpdateRequest.BirthDate, updateResult.Value.BirthDate);
+            Assert.Equal(employeeUpdateRequest.FirstName, updateResult.Value.FirstName);
+            Assert.Equal(employeeUpdateRequest.LastName, updateResult.Value.LastName);
+            Assert.Equal(employeeUpdateRequest.Gender, updateResult.Value.Gender);
+            Assert.Equal(employeeUpdateRequest.HireDate, updateResult.Value.HireDate);
         }
  
          [Fact]
@@ -154,7 +161,7 @@ namespace EMP.Api
                 .ReturnsAsync(newEmployee);
 
             // Pre Assert
-            Employees existingEmployee = _controller.Get(newEmpNo).Result;
+            ActionResult<Employees> existingEmployee = _controller.Get(newEmpNo).Result;
             Assert.Null(existingEmployee);
 
             // Act
@@ -184,11 +191,13 @@ namespace EMP.Api
             ActionResult<Employees> deleteResult = await _controller.Delete(empNo);
 
             // Assert
+            NotFoundResult notFoundResult = deleteResult.Result as NotFoundResult;
+            Assert.Null(notFoundResult);
             Assert.Null(deleteResult.Value);
         } 
 
         [Fact]
-        public async void ShouldReturenNotFoundWhenWhenDeletingInvalidEmployee()
+        public async void ShouldReturnNotFoundWhenDeleteEmployeeWithInvalidEmpNo()
         {
             // Arrange
 
@@ -197,8 +206,7 @@ namespace EMP.Api
             NotFoundResult notFoundResult = deleteResult.Result as NotFoundResult;
 
             // Assert
-            Assert.NotNull(notFoundResult);
             Assert.Equal(404, notFoundResult.StatusCode);
-        } 
+        }
     }
 }

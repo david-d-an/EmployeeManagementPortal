@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using EMP.Common.Tasks;
 
 namespace EMP.DataAccess.Repos
 {
@@ -115,40 +116,47 @@ namespace EMP.DataAccess.Repos
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<EmployeeDetail> PutAsync(int empNo, EmployeeDetail employeeDetailUpdateRequest)
+        public async Task<VwEmpDetails> PostAsync(VwEmpDetails employeeDetailCreateRequest)
         {
-            Employees employee = await _context.Employees.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            VwSalariesCurrent salary = await _context.VwSalariesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            VwTitlesCurrent title = await _context.VwTitlesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            VwDeptEmpCurrent deptEmp = await _context.VwDeptEmpCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-
-            if (title.Title != employeeDetailUpdateRequest.Title) {
-                throw new NotImplementedException();
-            }
-
-            if (salary.Salary != employeeDetailUpdateRequest.Salary) {
-                throw new NotImplementedException();
-            }
-
-            if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
-                throw new NotImplementedException();
-            }
-
-            if (employeeInfoChanged(employee, employeeDetailUpdateRequest)) {
-                employee.BirthDate = employeeDetailUpdateRequest.BirthDate;
-                employee.FirstName = employeeDetailUpdateRequest.FirstName;
-                employee.LastName = employeeDetailUpdateRequest.LastName;
-                employee.Gender = employeeDetailUpdateRequest.Gender;
-                employee.HireDate = employeeDetailUpdateRequest.HireDate;
-
-                _context.Entry(employee).State = EntityState.Modified;
-            }
-
-            await _context.SaveChangesAsync();
-            return employeeDetailUpdateRequest;
+            return await TaskConstants<VwEmpDetails>.NotImplemented;
         }
 
-        private bool employeeInfoChanged(Employees employee, EmployeeDetail employeeDetailUpdateRequest)
+        public async Task<VwEmpDetails> PutAsync(int empNo, VwEmpDetails employeeDetailUpdateRequest)
+        {
+            // Employees employee = await _context.Employees.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            // VwSalariesCurrent salary = await _context.VwSalariesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            // VwTitlesCurrent title = await _context.VwTitlesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            // VwDeptEmpCurrent deptEmp = await _context.VwDeptEmpCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+
+            // if (title.Title != employeeDetailUpdateRequest.Title) {
+            //     throw new NotImplementedException();
+            // }
+
+            // if (salary.Salary != employeeDetailUpdateRequest.Salary) {
+            //     throw new NotImplementedException();
+            // }
+
+            // if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
+            //     throw new NotImplementedException();
+            // }
+
+            // if (employeeBasicInfoChanged(employee, employeeDetailUpdateRequest)) {
+            //     employee.BirthDate = employeeDetailUpdateRequest.BirthDate;
+            //     employee.FirstName = employeeDetailUpdateRequest.FirstName;
+            //     employee.LastName = employeeDetailUpdateRequest.LastName;
+            //     employee.Gender = employeeDetailUpdateRequest.Gender;
+            //     employee.HireDate = employeeDetailUpdateRequest.HireDate;
+
+            //     _context.Entry(employee).State = EntityState.Modified;
+            // }
+
+            // await _context.SaveChangesAsync();
+            // return employeeDetailUpdateRequest;
+
+            return await TaskConstants<VwEmpDetails>.NotImplemented;
+        }
+
+        private bool employeeBasicInfoChanged(Employees employee, VwEmpDetails employeeDetailUpdateRequest)
         {
             bool result =
                 employee.BirthDate != employeeDetailUpdateRequest.BirthDate ||

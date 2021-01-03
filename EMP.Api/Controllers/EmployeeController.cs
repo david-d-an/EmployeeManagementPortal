@@ -24,20 +24,27 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Employees>> Get()
+        public async Task<ActionResult<IEnumerable<Employees>>> Get()
         {
-            return await _employeeRepository.GetAsync();
+            IEnumerable<Employees> result = await _employeeRepository.GetAsync();
+            return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<Employees> Get(int id)
+        [HttpGet("{id}", Name = "Get")]
+        public async Task<ActionResult<Employees>> Get(int id)
         {
             return await _employeeRepository.GetAsync(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<Employees> Put(int id, Employees employeeUpdateRequest)
+        public async Task<ActionResult<Employees>> Put(int id, Employees employeeUpdateRequest)
         {
+            Employees employee = await _employeeRepository.GetAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
             Employees result = await _employeeRepository.PutAsync(id, employeeUpdateRequest);
             return result;
         }

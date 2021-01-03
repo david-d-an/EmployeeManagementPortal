@@ -321,6 +321,11 @@ namespace EMP.DataDataAccess.Context
                     .HasColumnName("dept_name")
                     .HasMaxLength(40);
 
+                entity.Property(e => e.DeptNo)
+                    .IsRequired()
+                    .HasColumnName("dept_no")
+                    .HasMaxLength(4);
+
                 entity.Property(e => e.EmpNo).HasColumnName("emp_no");
 
                 entity.Property(e => e.FirstName)

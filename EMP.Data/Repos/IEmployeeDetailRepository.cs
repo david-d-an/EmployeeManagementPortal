@@ -8,6 +8,7 @@ namespace EMP.Data.Repos
     {
         Task<VwEmpDetails> GetAsync(int empNo);
         Task<IEnumerable<VwEmpDetails>> GetAsync();
-        Task<EmployeeDetail> PutAsync(int id, EmployeeDetail employeeDetailUpdateRequest);
+        Task<VwEmpDetails> PutAsync(int id, VwEmpDetails employeeDetailUpdateRequest);
+        Task<VwEmpDetails> PostAsync(VwEmpDetails employeeDetailCreateRequest);
     }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using EMP.Api.Controllers;
 using EMP.Data.Repos;
 using EMP.Data.Models;
 using Moq;
@@ -9,24 +8,29 @@ using Xunit;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using EMP.Data.Models.Mapped;
 
 namespace EMP.Api.Controllers
 {
     public class DeptManagerControllerTest
     {
         private int empNo;
-        private int invalidEmpNo;
         private string deptNo;
+        private string invalidDeptNo;
         private DeptManager deptManager;
+        private Employees employee;
+        private Departments department;
         private Mock<ILogger<DeptManagerController>> mockLogger;
         private Mock<IDeptManagerRepository> mockDeptManagerRepository;
         private DeptManagerController _controller;
+        private Mock<IEmployeeRepository> mockEmployeeRepository;
+        private Mock<IDepartmentsRepository> mockDepartmentsRepository;
 
         public DeptManagerControllerTest()
         {
             empNo = 0;
-            invalidEmpNo = -1;
-            deptNo = "0";
+            deptNo = "d0000";
+            invalidDeptNo = "xxxxx";
 
             deptManager = 
                 new DeptManager {
@@ -36,56 +40,92 @@ namespace EMP.Api.Controllers
                     ToDate = DateTime.Now
                  };
 
-            mockLogger = new Mock<ILogger<DeptManagerController>>();
+            employee = 
+                new Employees {
+                    EmpNo = empNo,
+                    BirthDate = DateTime.Now,
+                    FirstName = string.Empty,
+                    LastName = string.Empty,
+                    Gender = string.Empty,
+                    HireDate = DateTime.Now
+                };
 
-            mockDeptManagerRepository = new Mock<IDeptManagerRepository>();
-            mockDeptManagerRepository.Setup(x => x.GetAsync(empNo)).ReturnsAsync(deptManager);
-            mockDeptManagerRepository.Setup(x => x.GetAsync(invalidEmpNo)).ReturnsAsync((DeptManager)null);
+            department = 
+                new Departments {
+                    DeptNo = deptNo,
+                    DeptName = "Existing Dept"
+                 };
 
-            _controller = new DeptManagerController(
-                mockLogger.Object,
-                mockDeptManagerRepository.Object);            
-        }
 
-        [Fact]
-        public void ShouldReturnAllDeptManagers() {
-            // Arrange
             var deptManagers = new List<DeptManager> {
                 deptManager
             };
+            var employees = new List<Employees> {
+                employee
+            };
+            var departments = new List<Departments> {
+                department
+            };
 
+            mockLogger = new Mock<ILogger<DeptManagerController>>();
+
+            mockDeptManagerRepository = new Mock<IDeptManagerRepository>();
+            mockEmployeeRepository = new Mock<IEmployeeRepository>();
+            mockDepartmentsRepository = new Mock<IDepartmentsRepository>();
+
+            // Set up for Get(id) method
+            mockDeptManagerRepository.Setup(x => x.GetAsync(deptNo)).ReturnsAsync(deptManager);
+            mockDeptManagerRepository.Setup(x => x.GetAsync(invalidDeptNo)).ReturnsAsync((DeptManager)null);
+
+            // Set up for Get() method
             mockDeptManagerRepository.Setup(x => x.GetAsync()).ReturnsAsync(deptManagers);
+            mockEmployeeRepository.Setup(x => x.GetAsync()).ReturnsAsync(employees);
+            mockDepartmentsRepository.Setup(x => x.GetAsync()).ReturnsAsync(departments);
 
-            // Act
-            Task<IEnumerable<DeptManager>> searchResult = _controller.Get();
-
-            // Assert
-            Assert.NotNull(searchResult.Result);
-            Assert.Single(searchResult.Result);
-            Assert.NotNull(searchResult.Result.FirstOrDefault());
-            Assert.Equal(searchResult.Result.FirstOrDefault().EmpNo, empNo);
+            _controller = new DeptManagerController(
+                mockLogger.Object,
+                mockDeptManagerRepository.Object,
+                mockEmployeeRepository.Object,
+                mockDepartmentsRepository.Object);            
         }
 
         [Fact]
-        public void ShouldReturnDeptManagerWithEmpNo() {
+        public async void ShouldReturnAllDeptManagers() {
             // Arrange
 
             // Act
-            Task<DeptManager> searchResult = _controller.Get(empNo);
+            ActionResult<IEnumerable<DepartmentManager>> searchResult = await _controller.Get();
+            OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert
-            Assert.Equal(searchResult.Result.EmpNo, empNo);
+            Assert.Equal(200, listResult.StatusCode);
+            IEnumerable<DepartmentManager> list = listResult.Value as IEnumerable<DepartmentManager>;
+            Assert.Single(list);
+            Assert.NotNull(list.FirstOrDefault());
+            Assert.Equal(empNo, list.FirstOrDefault().EmpNo);
         }
 
         [Fact]
-        public void ShouldReturnNoDeptManagerWithInvalidEmpNo() {
+        public async void ShouldReturnDeptManagerWithEmpNo() {
             // Arrange
 
             // Act
-            Task<DeptManager> searchResult = _controller.Get(invalidEmpNo);
+            ActionResult<DepartmentManager> searchResult = await _controller.Get(deptNo);
 
             // Assert
-            Assert.Null(searchResult.Result);
+            Assert.Equal(searchResult.Value.DeptNo, deptNo);
+            Assert.Equal(searchResult.Value.EmpNo, empNo);
+        }
+
+        [Fact]
+        public async void ShouldReturnNoDeptManagerWithInvalidEmpNo() {
+            // Arrange
+
+            // Act
+            ActionResult<DepartmentManager> searchResult = await _controller.Get(invalidDeptNo);
+
+            // Assert
+            Assert.Null(searchResult.Value);
         }
     }
 }

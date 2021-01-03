@@ -24,30 +24,40 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Departments>> Get()
+        public async Task<ActionResult<IEnumerable<Departments>>> Get()
         {
-            return await _departmentsRepository.GetAsync();
+            return Ok(await _departmentsRepository.GetAsync());
         }
 
-        [HttpGet("{id}")]
-        public async Task<Departments> Get(string id)
+        [HttpGet("{id}", Name = "Get")]
+        public async Task<ActionResult<Departments>> Get(string id)
         {
             return await _departmentsRepository.GetAsync(id);
         }
 
         [HttpPut("{id}")]
-        public async Task<Departments> Put(string id, Departments departmentUpdateRequest)
+        public async Task<ActionResult<Departments>> Put(string id, Departments departmentUpdateRequest)
         {
+            Departments department = await _departmentsRepository.GetAsync(id);
+            if (department == null)
+            {
+                return NotFound();
+            }
+
             Departments result = await _departmentsRepository.PutAsync(id, departmentUpdateRequest);
             return result;
         }
 
         [HttpPost]
-        public async Task<Departments> Post(Departments departmentCreateRequest) 
+        public async Task<ActionResult<Departments>> Post(Departments departmentCreateRequest) 
         {
             Departments result = await _departmentsRepository.PostAsync(departmentCreateRequest);
-            return result;
-        }
+             return CreatedAtAction(
+                nameof(Post), 
+                nameof(DepartmentsController), 
+                new { id = result.DeptNo }, 
+                result);
+       }
         
         // [HttpDelete("{id}")]
         // public async Task<ActionResult<Departments>> Delete(string id) 
