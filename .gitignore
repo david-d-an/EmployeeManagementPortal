@@ -281,9 +281,8 @@ obj/
 *.suo
 *.user
 _ReSharper.*
-bin
-obj
 packages
+DotNetTools/
 
 # Common node modules locations
 /node_modules

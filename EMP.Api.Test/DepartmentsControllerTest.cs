@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using EMP.Api.Controllers;
 using EMP.Data.Repos;
 using EMP.Data.Models;
 using Moq;
@@ -43,7 +42,7 @@ namespace EMP.Api.Controllers
         }
 
         [Fact]
-        public void ShouldReturnAllDeptManagers() {
+        public async void ShouldReturnAllDeptManagers() {
             // Arrange
             var departments = new List<Departments> {
                 department
@@ -52,39 +51,41 @@ namespace EMP.Api.Controllers
             mockDepartmentsRepository.Setup(x => x.GetAsync()).ReturnsAsync(departments);
 
             // Act
-            Task<IEnumerable<Departments>> searchResult = _controller.Get();
+            ActionResult<IEnumerable<Departments>> searchResult = await _controller.Get();
+            OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert
-            Assert.NotNull(searchResult.Result);
-            Assert.Single(searchResult.Result);
-            Assert.NotNull(searchResult.Result.FirstOrDefault());
-            Assert.Equal(searchResult.Result.FirstOrDefault().DeptNo, deptNo);
+            Assert.Equal(200, listResult.StatusCode);
+            IEnumerable<Departments> list = listResult.Value as IEnumerable<Departments>;
+            Assert.Single(list);
+            Assert.NotNull(list.FirstOrDefault());
+            Assert.Equal(deptNo, list.FirstOrDefault().DeptNo);
         }
 
         [Fact]
-        public void ShouldReturnDepartmentWithDeptNo() {
+        public async void ShouldReturnDepartmentWithDeptNo() {
             // Arrange
 
             // Act
-            Task<Departments> searchResult = _controller.Get(deptNo);
+            ActionResult<Departments> searchResult = await _controller.Get(deptNo);
 
             // Assert
-            Assert.Equal(searchResult.Result.DeptNo, deptNo);
+            Assert.Equal(searchResult.Value.DeptNo, deptNo);
         }
 
         [Fact]
-        public void ShouldReturnNoDepartmentsWithInvalidDeptNo() {
+        public async void ShouldReturnNoDepartmentsWithInvalidDeptNo() {
             // Arrange
 
             // Act
-            Task<Departments> searchResult = _controller.Get(invalidDeptNo);
+            ActionResult<Departments> searchResult = await _controller.Get(invalidDeptNo);
 
             // Assert
-            Assert.Null(searchResult.Result);
+            Assert.Null(searchResult.Value);
         }
 
         [Fact]
-        public void ShouldUpdateDepartmentInfo()
+        public async void ShouldUpdateDepartmentInfo()
         {
             // Arrange
             Departments departmentUpdateRequest = 
@@ -97,21 +98,22 @@ namespace EMP.Api.Controllers
                 .Setup(x => x.PutAsync(deptNo, departmentUpdateRequest))
                 .ReturnsAsync(departmentUpdateRequest);
 
-            // Pre Assert
-            Task<Departments> existingDepartments = _controller.Get(deptNo);
-            Assert.NotNull(existingDepartments.Result);
+            // // Pre Assert
+            // ActionResult<Departments> existingDepartments = await _controller.Get(deptNo);
+            // Assert.NotNull(existingDepartments.Value);
 
             // Act
-            Task<Departments> updateResult = _controller.Put(deptNo, departmentUpdateRequest);
+            ActionResult<Departments> updateResult = await _controller.Put(deptNo, departmentUpdateRequest);
+            NotFoundResult notFoundResult = updateResult.Result as NotFoundResult;
 
             // Assert
-            Assert.NotNull(updateResult.Result);
-            Assert.Equal(updateResult.Result.DeptNo, departmentUpdateRequest.DeptNo);
-            Assert.Equal(updateResult.Result.DeptName, departmentUpdateRequest.DeptName);
+            Assert.Null(notFoundResult);
+            Assert.Equal(updateResult.Value.DeptNo, departmentUpdateRequest.DeptNo);
+            Assert.Equal(updateResult.Value.DeptName, departmentUpdateRequest.DeptName);
         }
  
          [Fact]
-        public void ShouldCreateDepartment()
+        public async void ShouldCreateDepartment()
         {
             // Arrange
             Departments departmentCreateRequest = 
@@ -131,16 +133,18 @@ namespace EMP.Api.Controllers
                 .ReturnsAsync(newDepartment);
 
             // Pre Assert
-            Task<Departments> existingDepartment = _controller.Get(newDeptNo);
-            Assert.Null(existingDepartment.Result);
+            ActionResult<Departments> existingDepartment = await _controller.Get(newDeptNo);
+            Assert.Null(existingDepartment.Value);
 
             // Act
-            Task<Departments> createResult = _controller.Post(departmentCreateRequest);
-
+            ActionResult<Departments> postResult = await _controller.Post(departmentCreateRequest);
+            CreatedAtActionResult createdResult = postResult.Result as CreatedAtActionResult;
+            Departments createdDepartment = createdResult.Value as Departments;
+            
             // Assert
-            Assert.NotNull(createResult.Result);
-            // Assert.NotEqual(createResult.DeptNo, newDepartment.DeptNo);
-            Assert.Equal(createResult.Result.DeptName, departmentCreateRequest.DeptName);
+            Assert.NotNull(createdResult);
+            Assert.Equal(201, createdResult.StatusCode);
+            Assert.Equal(departmentCreateRequest.DeptName, createdDepartment.DeptName);
         }
     }
 }
