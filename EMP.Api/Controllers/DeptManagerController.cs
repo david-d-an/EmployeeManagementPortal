@@ -56,15 +56,15 @@ namespace EMP.Api.Controllers
         //     return Ok(deptManagerresult);
         // }
 
-        public async Task<ActionResult<IEnumerable<DepartmentManager>>> Get()
+        public async Task<ActionResult<IEnumerable<DepartmentManagerDetail>>> Get()
         {
-            IEnumerable<DepartmentManager> departmentManagers = 
+            IEnumerable<DepartmentManagerDetail> departmentManagers = 
                 from d in await _departmentsRepository.GetAsync()
                 join dm in await _deptManagerRepository.GetAsync()
                 on d.DeptNo equals dm.DeptNo
                 join e in await _employeeRepository.GetAsync()
                 on dm.EmpNo equals e.EmpNo
-                select new DepartmentManager {
+                select new DepartmentManagerDetail {
                     DeptNo = d.DeptNo,
                     DeptName = d.DeptName,
                     FromDate = dm.FromDate,
@@ -78,16 +78,16 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet("{id}", Name = "Get")]
-        public async Task<ActionResult<DepartmentManager>> Get(string id)
+        public async Task<ActionResult<DepartmentManagerDetail>> Get(string id)
         {
-            IEnumerable<DepartmentManager> departmentManagers = 
+            IEnumerable<DepartmentManagerDetail> departmentManagers = 
                 from d in await _departmentsRepository.GetAsync()
                 join dm in await _deptManagerRepository.GetAsync()
                 on d.DeptNo equals dm.DeptNo
                 join e in await _employeeRepository.GetAsync()
                 on dm.EmpNo equals e.EmpNo
                 where d.DeptNo == id
-                select new DepartmentManager {
+                select new DepartmentManagerDetail {
                     DeptNo = d.DeptNo,
                     DeptName = d.DeptName,
                     FromDate = dm.FromDate,

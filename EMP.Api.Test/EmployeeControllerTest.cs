@@ -162,7 +162,7 @@ namespace EMP.Api.Controllers
 
             // Pre Assert
             ActionResult<Employees> existingEmployee = _controller.Get(newEmpNo).Result;
-            Assert.Null(existingEmployee);
+            Assert.Null(existingEmployee.Value);
 
             // Act
             ActionResult<Employees> postResult = await _controller.Post(employeeCreateRequest);

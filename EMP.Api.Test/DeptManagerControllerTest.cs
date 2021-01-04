@@ -94,12 +94,12 @@ namespace EMP.Api.Controllers
             // Arrange
 
             // Act
-            ActionResult<IEnumerable<DepartmentManager>> searchResult = await _controller.Get();
+            ActionResult<IEnumerable<DepartmentManagerDetail>> searchResult = await _controller.Get();
             OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert
             Assert.Equal(200, listResult.StatusCode);
-            IEnumerable<DepartmentManager> list = listResult.Value as IEnumerable<DepartmentManager>;
+            IEnumerable<DepartmentManagerDetail> list = listResult.Value as IEnumerable<DepartmentManagerDetail>;
             Assert.Single(list);
             Assert.NotNull(list.FirstOrDefault());
             Assert.Equal(empNo, list.FirstOrDefault().EmpNo);
@@ -110,7 +110,7 @@ namespace EMP.Api.Controllers
             // Arrange
 
             // Act
-            ActionResult<DepartmentManager> searchResult = await _controller.Get(deptNo);
+            ActionResult<DepartmentManagerDetail> searchResult = await _controller.Get(deptNo);
 
             // Assert
             Assert.Equal(searchResult.Value.DeptNo, deptNo);
@@ -122,7 +122,7 @@ namespace EMP.Api.Controllers
             // Arrange
 
             // Act
-            ActionResult<DepartmentManager> searchResult = await _controller.Get(invalidDeptNo);
+            ActionResult<DepartmentManagerDetail> searchResult = await _controller.Get(invalidDeptNo);
 
             // Assert
             Assert.Null(searchResult.Value);
