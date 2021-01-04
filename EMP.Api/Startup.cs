@@ -42,8 +42,13 @@ namespace EMP.Api
             );
             EnsureDatabaseExists<EmployeesContext>(connStrMySql);
 
+            services.AddScoped<IDeptEmpRepository, DeptEmpRepository>();
             services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
+            services.AddScoped<IDeptManagerCurrentRepository, DeptManagerCurrentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IEmployeeDetailRepository, EmployeeDetailRepository>();
+            services.AddScoped<ITitleRepository, TitleRepository>();
+            services.AddScoped<ISalaryRepository, SalaryRepository>();
         }
 
         private static void EnsureDatabaseExists<T>(string connectionString) 

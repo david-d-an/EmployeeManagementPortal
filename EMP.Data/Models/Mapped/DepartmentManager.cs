@@ -2,7 +2,7 @@ using System;
 
 namespace EMP.Data.Models.Mapped
 {
-    public class DepartmentManager
+    public class DepartmentManagerDetail
     {
         public string DeptNo { get; set; }
         public string DeptName { get; set; }
