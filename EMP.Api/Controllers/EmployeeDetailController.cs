@@ -111,9 +111,9 @@ namespace EMP.Api.Controllers
         }
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult<EmployeeDetail>> Delete(long id) 
+        public async Task<ActionResult<VwEmpDetails>> Delete(long id) 
         {
-            return await TaskConstants<ActionResult<EmployeeDetail>>.NotImplemented;
+            return await TaskConstants<ActionResult<VwEmpDetails>>.NotImplemented;
         }
     }
 }

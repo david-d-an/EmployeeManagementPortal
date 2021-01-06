@@ -73,7 +73,6 @@ namespace EMP.Api.Controllers
             Employees deletedEmployee = await _employeeRepository.DeleteAsync(id);
             return deletedEmployee;
         }
-
     }
 }
 

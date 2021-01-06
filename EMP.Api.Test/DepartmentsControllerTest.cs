@@ -108,8 +108,8 @@ namespace EMP.Api.Controllers
 
             // Assert
             Assert.Null(notFoundResult);
-            Assert.Equal(updateResult.Value.DeptNo, departmentUpdateRequest.DeptNo);
-            Assert.Equal(updateResult.Value.DeptName, departmentUpdateRequest.DeptName);
+            Assert.Equal(departmentUpdateRequest.DeptNo, updateResult.Value.DeptNo);
+            Assert.Equal(departmentUpdateRequest.DeptName, updateResult.Value.DeptName);
         }
  
          [Fact]

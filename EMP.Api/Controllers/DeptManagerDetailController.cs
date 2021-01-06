@@ -86,6 +86,15 @@ namespace EMP.Api.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<DepartmentManagerDetail>> Put(string id, DepartmentManagerDetail deptManagerUpdateRequest)
         {
+            Departments departmentCheck = await _departmentsRepository.GetAsync(deptManagerUpdateRequest.DeptNo);
+            if (departmentCheck == null) {
+                return NotFound();
+            }
+            Employees employeeCheck = await _employeeRepository.GetAsync(deptManagerUpdateRequest.EmpNo.Value);
+            if (employeeCheck == null) {
+                return NotFound();
+            }
+
             VwDeptManagerCurrent vwDeptManagerCurrent = 
                 new VwDeptManagerCurrent {
                     EmpNo = deptManagerUpdateRequest.EmpNo.Value,
@@ -120,27 +129,26 @@ namespace EMP.Api.Controllers
                     FromDate = deptManagerCreateRequest.FromDate.Value,
                     ToDate = deptManagerCreateRequest.ToDate.Value,
                 };
-            ActionResult<VwDeptManagerCurrent> result = await _deptManagerCurrentRepository.PostAsync(vwDeptManagerCurrent);
-            string newDeptNo = result.Value.DeptNo;
-            
-            IEnumerable<DepartmentManagerDetail> departmentManagers = 
-                from d in await _departmentsRepository.GetAsync()
-                join dm in await _deptManagerCurrentRepository.GetAsync()
-                on d.DeptNo equals dm.DeptNo
-                join e in await _employeeRepository.GetAsync()
-                on dm.EmpNo equals e.EmpNo
-                where d.DeptNo == newDeptNo
-                select new DepartmentManagerDetail {
-                    DeptNo = d.DeptNo,
-                    DeptName = d.DeptName,
-                    FromDate = dm.FromDate,
-                    ToDate = dm.ToDate,
-                    EmpNo = e.EmpNo,
-                    FirstName = e.FirstName,
-                    LastName = e.LastName,
-                };
+            ActionResult<VwDeptManagerCurrent> postResult = await _deptManagerCurrentRepository.PostAsync(vwDeptManagerCurrent);
+            VwDeptManagerCurrent value = postResult.Value;
+            Employees employee = await _employeeRepository.GetAsync(value.EmpNo);
+            Departments department = await _departmentsRepository.GetAsync(value.DeptNo);
 
-            return departmentManagers.FirstOrDefault();
+            var result = new DepartmentManagerDetail {
+                DeptNo = value.DeptNo,
+                DeptName = department.DeptName,
+                FromDate = value.FromDate,
+                ToDate = value.ToDate,
+                EmpNo = value.EmpNo,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+            };
+
+            return CreatedAtAction(
+                nameof(Post), 
+                nameof(DeptManagerDetailController), 
+                new { EmpNo = result.EmpNo, DeptNo = result.DeptNo }, 
+                result);
         }
         
         // [HttpDelete("{id}")]

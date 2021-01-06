@@ -33,29 +33,6 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet]
-        // public async Task<ActionResult<IEnumerable<DeptManager>>> Get()
-        // {
-        //     IEnumerable<DeptManager> deptManagerresult = await _deptManagerRepository.GetAsync();
-
-        //     IEnumerable<DepartmentManager> departmentManagers = 
-        //         from d in await _departmentsRepository.GetAsync()
-        //         join dm in await _deptManagerRepository.GetAsync()
-        //         on d.DeptNo equals dm.DeptNo
-        //         join e in await _employeeRepository.GetAsync()
-        //         on dm.EmpNo equals e.EmpNo
-        //         select new DepartmentManager {
-        //             DeptNo = d.DeptNo,
-        //             DeptName = d.DeptName,
-        //             FromDate = dm.FromDate,
-        //             ToDate = dm.ToDate,
-        //             EmpNo = e.EmpNo,
-        //             FirstName = e.FirstName,
-        //             LastName = e.LastName,
-        //         };
-
-        //     return Ok(deptManagerresult);
-        // }
-
         public async Task<ActionResult<IEnumerable<DepartmentManagerDetail>>> Get()
         {
             IEnumerable<DepartmentManagerDetail> departmentManagers = 
@@ -124,7 +101,5 @@ namespace EMP.Api.Controllers
             // throw new NotImplementedException();
             return await TaskConstants<ActionResult<DeptManager>>.NotImplemented;
         }
-
-
     }
 }
