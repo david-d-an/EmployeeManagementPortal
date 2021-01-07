@@ -10,7 +10,7 @@ using EMP.Common.Tasks;
 
 namespace EMP.DataAccess.Repos
 {
-    public class DepartmentsRepository : IDepartmentsRepository
+    public class DepartmentsRepository : IRepository<Departments>
     {
         private EmployeesContext _context;
 

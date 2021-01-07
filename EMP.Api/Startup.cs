@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using EMP.Data.Models;
 
 namespace EMP.Api
 {
@@ -42,13 +43,14 @@ namespace EMP.Api
             );
             EnsureDatabaseExists<EmployeesContext>(connStrMySql);
 
-            services.AddScoped<IDeptEmpRepository, DeptEmpRepository>();
-            services.AddScoped<IDepartmentsRepository, DepartmentsRepository>();
-            services.AddScoped<IDeptManagerCurrentRepository, DeptManagerCurrentRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<IEmployeeDetailRepository, EmployeeDetailRepository>();
-            services.AddScoped<ITitleRepository, TitleRepository>();
-            services.AddScoped<ISalaryRepository, SalaryRepository>();
+            services.AddScoped<IRepository<Departments>, DepartmentsRepository>();
+            services.AddScoped<IRepository<VwDeptEmpCurrent>, DeptEmpRepository>();
+            services.AddScoped<IRepository<VwDeptManagerCurrent>, DeptManagerCurrentRepository>();
+            services.AddScoped<IRepository<VwEmpDetails>, EmployeeDetailRepository>();
+            services.AddScoped<IRepository<Employees>, EmployeeRepository>();
+            services.AddScoped<IRepository<VwTitlesCurrent>, TitleRepository>();
+            services.AddScoped<IRepository<VwSalariesCurrent>, SalaryRepository>();
+            services.AddScoped<IRepository<Departments>, DepartmentsRepository>();
         }
 
         private static void EnsureDatabaseExists<T>(string connectionString) 

@@ -22,11 +22,11 @@ namespace EMP.Api.Controllers
         private VwEmpDetails vwEmpDetails;
         private Mock<ILogger<EmployeeDetailController>> mockLogger;
         private int invalidEmpNo;
-        private Mock<IEmployeeDetailRepository> mockEmployeeDetailRepository;
-        private Mock<IEmployeeRepository> mockEmployeeRepository;
-        private Mock<IDeptEmpRepository> mockDeptEmpRepository;
-        private Mock<ISalaryRepository> mockSalaryRepository;
-        private Mock<ITitleRepository> mockTitleRepository;
+        private Mock<IRepository<VwEmpDetails>> mockEmployeeDetailRepository;
+        private Mock<IRepository<Employees>> mockEmployeeRepository;
+        private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpCurrentRepository;
+        private Mock<IRepository<VwSalariesCurrent>> mockSalaryRepository;
+        private Mock<IRepository<VwTitlesCurrent>> mockTitleRepository;
         private EmployeeDetailController _controller;
         private int newEmpNo;
 
@@ -59,11 +59,11 @@ namespace EMP.Api.Controllers
 
             mockLogger = new Mock<ILogger<EmployeeDetailController>>();
 
-            mockEmployeeDetailRepository = new Mock<IEmployeeDetailRepository>();
-            mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            mockDeptEmpRepository = new Mock<IDeptEmpRepository>();
-            mockSalaryRepository = new Mock<ISalaryRepository>();
-            mockTitleRepository = new Mock<ITitleRepository>();
+            mockEmployeeDetailRepository = new Mock<IRepository<VwEmpDetails>>();
+            mockEmployeeRepository = new Mock<IRepository<Employees>>();
+            mockDeptEmpCurrentRepository = new Mock<IRepository<VwDeptEmpCurrent>>();
+            mockSalaryRepository = new Mock<IRepository<VwSalariesCurrent>>();
+            mockTitleRepository = new Mock<IRepository<VwTitlesCurrent>>();
 
             mockEmployeeDetailRepository
                 .Setup(x => x.GetAsync(It.Is<string>(x => x == empNo.ToString())))
@@ -73,7 +73,7 @@ namespace EMP.Api.Controllers
                 mockLogger.Object,
                 mockEmployeeRepository.Object,
                 mockEmployeeDetailRepository.Object,
-                mockDeptEmpRepository.Object,
+                mockDeptEmpCurrentRepository.Object,
                 mockSalaryRepository.Object,
                 mockTitleRepository.Object);
         }
@@ -177,7 +177,7 @@ namespace EMP.Api.Controllers
                 .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwTitlesCurrent { EmpNo = empNoUpdate, Title = newTitle });
 
-            mockDeptEmpRepository
+            mockDeptEmpCurrentRepository
                 .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwDeptEmpCurrent { EmpNo = empNoUpdate, DeptNo = newDeptNo });
 

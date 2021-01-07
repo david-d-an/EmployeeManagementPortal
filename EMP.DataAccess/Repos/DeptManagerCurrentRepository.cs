@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
 {
-    public class DeptManagerCurrentRepository : IDeptManagerCurrentRepository
+    public class DeptManagerCurrentRepository : IRepository<VwDeptManagerCurrent>
     {
         private EmployeesContext _context;
 

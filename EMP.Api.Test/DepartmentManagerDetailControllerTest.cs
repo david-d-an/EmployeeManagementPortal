@@ -25,11 +25,11 @@ namespace EMP.Api.Controllers
         private string managerLastName;
         private string managerGender;
         private Mock<ILogger<DeptManagerDetailController>> mockLogger;
-        private Mock<IEmployeeRepository> mockEmployeeRepository;
-        private Mock<IDeptEmpRepository> mockDeptEmpRepository;
-        private Mock<ITitleRepository> mockTitleRepository;
-        private Mock<IDeptManagerCurrentRepository> mockDeptManagerCurrentRepository;
-        private Mock<IDepartmentsRepository> mockDepartmentsRepository;
+        private Mock<IRepository<Employees>> mockEmployeeRepository;
+        private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpRepository;
+        private Mock<IRepository<VwTitlesCurrent>> mockTitleRepository;
+        private Mock<IRepository<VwDeptManagerCurrent>> mockDeptManagerCurrentRepository;
+        private Mock<IRepository<Departments>> mockDepartmentsRepository;
         private DeptManagerDetailController _controller;
         private string deptName;
         private int newManagerEmpNo;
@@ -62,12 +62,12 @@ namespace EMP.Api.Controllers
             mockLogger = new Mock<ILogger<DeptManagerDetailController>>();
 
             // mockEmployeeDetailRepository = new Mock<IEmployeeDetailRepository>();
-            mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            mockDeptEmpRepository = new Mock<IDeptEmpRepository>();
+            mockEmployeeRepository = new Mock<IRepository<Employees>>();
+            mockDeptEmpRepository = new Mock<IRepository<VwDeptEmpCurrent>>();
             // mockSalaryRepository = new Mock<ISalaryRepository>();
-            mockTitleRepository = new Mock<ITitleRepository>();
-            mockDeptManagerCurrentRepository = new Mock<IDeptManagerCurrentRepository>();
-            mockDepartmentsRepository = new Mock<IDepartmentsRepository>();
+            mockTitleRepository = new Mock<IRepository<VwTitlesCurrent>>();
+            mockDeptManagerCurrentRepository = new Mock<IRepository<VwDeptManagerCurrent>>();
+            mockDepartmentsRepository = new Mock<IRepository<Departments>>();
 
             var listDepartments = new List<Departments>{ 
                 new Departments { 

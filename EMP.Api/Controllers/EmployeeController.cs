@@ -13,11 +13,11 @@ namespace EMP.Api.Controllers
     public class EmployeeController : ControllerBase
     {
         private ILogger<EmployeeController> _logger;
-        private IEmployeeRepository _employeeRepository;
+        private IRepository<Employees> _employeeRepository;
 
         public EmployeeController(
             ILogger<EmployeeController> logger,
-            IEmployeeRepository employeeRepository)
+            IRepository<Employees> employeeRepository)
         {
             this._logger = logger;
             this._employeeRepository = employeeRepository;

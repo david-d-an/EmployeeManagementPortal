@@ -15,19 +15,19 @@ namespace EMP.Api.Controllers
     public class EmployeeDetailController : ControllerBase
     {
         private ILogger<EmployeeDetailController> _logger;
-        private IEmployeeDetailRepository _employeeDetailRepository;
-        private IEmployeeRepository _employeeRepository;
-        private IDeptEmpRepository _deptEmpRepository;
-        private ISalaryRepository _salaryRepository;
-        private ITitleRepository _titleRepository;
+        private IRepository<VwEmpDetails> _employeeDetailRepository;
+        private IRepository<Employees> _employeeRepository;
+        private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
+        private IRepository<VwSalariesCurrent> _salaryRepository;
+        private IRepository<VwTitlesCurrent> _titleRepository;
 
         public EmployeeDetailController(
             ILogger<EmployeeDetailController> logger,
-            IEmployeeRepository employeeRepository,
-            IEmployeeDetailRepository employeeDetailRepository,
-            IDeptEmpRepository deptEmpRepository,
-            ISalaryRepository salaryRepository,
-            ITitleRepository titleRepository)
+            IRepository<Employees> employeeRepository,
+            IRepository<VwEmpDetails> employeeDetailRepository,
+            IRepository<VwDeptEmpCurrent> deptEmpRepository,
+            IRepository<VwSalariesCurrent> salaryRepository,
+            IRepository<VwTitlesCurrent> titleRepository)
         {
             this._logger = logger;
             this._employeeDetailRepository = employeeDetailRepository;

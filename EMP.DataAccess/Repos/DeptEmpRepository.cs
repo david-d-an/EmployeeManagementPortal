@@ -7,7 +7,7 @@ using EMP.DataDataAccess.Context;
 
 namespace EMP.DataAccess.Repos
 {
-    public class DeptEmpRepository : IDeptEmpRepository
+    public class DeptEmpRepository : IRepository<VwDeptEmpCurrent>
     {
         private EmployeesContext _context;
 

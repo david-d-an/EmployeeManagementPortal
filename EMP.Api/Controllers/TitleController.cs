@@ -13,11 +13,11 @@ namespace EMP.Api.Controllers
     public class TitleController : ControllerBase
     {
         private ILogger<TitleController> _logger;
-        private ITitleRepository _titleRepository;
+        private IRepository<VwTitlesCurrent> _titleRepository;
 
         public TitleController(
             ILogger<TitleController> logger,
-            ITitleRepository titleRepository)
+            IRepository<VwTitlesCurrent> titleRepository)
         {
             this._logger = logger;
             this._titleRepository = titleRepository;

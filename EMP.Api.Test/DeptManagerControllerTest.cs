@@ -21,10 +21,10 @@ namespace EMP.Api.Controllers
         private Employees employee;
         private Departments department;
         private Mock<ILogger<DeptManagerController>> mockLogger;
-        private Mock<IDeptManagerRepository> mockDeptManagerRepository;
+        private Mock<IRepository<DeptManager>> mockDeptManagerRepository;
         private DeptManagerController _controller;
-        private Mock<IEmployeeRepository> mockEmployeeRepository;
-        private Mock<IDepartmentsRepository> mockDepartmentsRepository;
+        private Mock<IRepository<Employees>> mockEmployeeRepository;
+        private Mock<IRepository<Departments>> mockDepartmentsRepository;
 
         public DeptManagerControllerTest()
         {
@@ -69,9 +69,9 @@ namespace EMP.Api.Controllers
 
             mockLogger = new Mock<ILogger<DeptManagerController>>();
 
-            mockDeptManagerRepository = new Mock<IDeptManagerRepository>();
-            mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            mockDepartmentsRepository = new Mock<IDepartmentsRepository>();
+            mockDeptManagerRepository = new Mock<IRepository<DeptManager>>();
+            mockEmployeeRepository = new Mock<IRepository<Employees>>();
+            mockDepartmentsRepository = new Mock<IRepository<Departments>>();
 
             // Set up for Get(id) method
             mockDeptManagerRepository.Setup(x => x.GetAsync(deptNo)).ReturnsAsync(deptManager);

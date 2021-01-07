@@ -20,7 +20,7 @@ namespace EMP.Api.Controllers
         private int invalidEmpNo;
         private Employees employee;
         private Mock<ILogger<EmployeeController>> mockLogger;
-        private Mock<IEmployeeRepository> mockEmployeeRepository;
+        private Mock<IRepository<Employees>> mockEmployeeRepository;
         private EmployeeController _controller;
 
         public EmployeeControllerTest()
@@ -40,7 +40,7 @@ namespace EMP.Api.Controllers
 
             mockLogger = new Mock<ILogger<EmployeeController>>();
 
-            mockEmployeeRepository = new Mock<IEmployeeRepository>();
+            mockEmployeeRepository = new Mock<IRepository<Employees>>();
             mockEmployeeRepository.Setup(x => x.GetAsync(It.Is<string>(x => x == empNo.ToString())))
                                   .ReturnsAsync(employee);
             mockEmployeeRepository.Setup(x => x.DeleteAsync(invalidEmpNo.ToString()))

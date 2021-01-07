@@ -13,11 +13,11 @@ namespace EMP.Api.Controllers
     public class DepartmentsController : ControllerBase
     {
         private readonly ILogger<DepartmentsController> _logger;
-        private readonly IDepartmentsRepository _departmentsRepository;
+        private readonly IRepository<Departments> _departmentsRepository;
 
         public DepartmentsController(
             ILogger<DepartmentsController> logger,
-            IDepartmentsRepository departmentsRepository)
+            IRepository<Departments> departmentsRepository)
         {
             this._logger = logger;
             this._departmentsRepository = departmentsRepository;
