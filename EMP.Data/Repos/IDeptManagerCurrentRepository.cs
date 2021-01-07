@@ -10,10 +10,9 @@ namespace EMP.Data.Repos
     {
         Task<IEnumerable<VwDeptManagerCurrent>> GetAsync();
         Task<VwDeptManagerCurrent> GetAsync(string deptNo);
-        Task<VwDeptManagerCurrent> PutAsync(string deptNo, VwDeptManagerCurrent deptManagerUpdateRequest);
-        Task<VwDeptManagerCurrent> PostAsync(VwDeptManagerCurrent deptManagerCreateRequest);
+        Task<VwDeptManagerCurrent> PutAsync(string deptNo, VwDeptManagerCurrent updateRequest);
+        Task<VwDeptManagerCurrent> PostAsync(VwDeptManagerCurrent createRequest);
+        Task<VwDeptManagerCurrent> DeleteAsync(string id);
 
-        // TO DO:
-        // DELETE
     }
 }

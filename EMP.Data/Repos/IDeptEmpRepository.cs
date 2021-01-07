@@ -7,9 +7,9 @@ namespace EMP.Data.Repos
     public interface IDeptEmpRepository
     {
         Task<IEnumerable<VwDeptEmpCurrent>> GetAsync();
-        Task<VwDeptEmpCurrent> GetAsync(int empNo);
-        Task<VwDeptEmpCurrent> PutAsync(int empNo, VwDeptEmpCurrent deptEmpUpdateRequest);
-        Task<VwDeptEmpCurrent> PostAsync(VwDeptEmpCurrent deptEmpCreateRequest);
-        Task<VwDeptEmpCurrent> DeleteAsync(int empNo);
+        Task<VwDeptEmpCurrent> GetAsync(string id);
+        Task<VwDeptEmpCurrent> PutAsync(string id, VwDeptEmpCurrent updateRequest);
+        Task<VwDeptEmpCurrent> PostAsync(VwDeptEmpCurrent createRequest);
+        Task<VwDeptEmpCurrent> DeleteAsync(string id);
     }
 }

@@ -6,16 +6,10 @@ namespace EMP.Data.Repos
 {
     public interface IEmployeeRepository
     {
-        // IEnumerable<Employees> Get(Employees searchRequest);
-        // IEnumerable<Employees> Get();
-        // Employees Get(int empNo);
-        // Employees Put(Employees employee);
-        // Employees Post(EmployeeRequest employeeUpdateRequest);
-        // Employees Delete(int empNo);
         Task<IEnumerable<Employees>> GetAsync();
-        Task<Employees> GetAsync(int id);
-        Task<Employees> PutAsync(int id, Employees employeeUpdateRequest);
-        Task<Employees> PostAsync(Employees employeeCreateRequest);
-        Task<Employees> DeleteAsync(int empNo);
+        Task<Employees> GetAsync(string id);
+        Task<Employees> PutAsync(string id, Employees updateRequest);
+        Task<Employees> PostAsync(Employees createRequest);
+        Task<Employees> DeleteAsync(string id);
     }
 }

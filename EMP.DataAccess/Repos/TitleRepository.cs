@@ -21,23 +21,35 @@ namespace EMP.DataAccess.Repos
             return await TaskConstants<IEnumerable<VwTitlesCurrent>>.NotImplemented;
         }
 
-        public async Task<VwTitlesCurrent> GetAsync(int empNo)
+        public async Task<VwTitlesCurrent> GetAsync(string id)
+        {
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwTitlesCurrent>(null);
+
+            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
+        }
+
+        public async Task<VwTitlesCurrent> PutAsync(string id, VwTitlesCurrent updateRequest)
+        {
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwTitlesCurrent>(null);
+
+            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
+        }
+
+        public async Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent createRequest)
         {
             return await TaskConstants<VwTitlesCurrent>.NotImplemented;
         }
 
-        public async Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent titleCreateRequest)
+        public async Task<VwTitlesCurrent> DeleteAsync(string id)
         {
-            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
-        }
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwTitlesCurrent>(null);
 
-        public async Task<VwTitlesCurrent> PutAsync(int empNo, VwTitlesCurrent titleUpdateRequest)
-        {
-            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
-        }
-
-        public async Task<VwTitlesCurrent> DeleteAsync(int empNo)
-        {
             return await TaskConstants<VwTitlesCurrent>.NotImplemented;
         }
 

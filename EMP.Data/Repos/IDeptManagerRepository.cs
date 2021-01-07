@@ -10,6 +10,7 @@ namespace EMP.Data.Repos
         Task<DeptManager> GetAsync(string deptNo);
         Task<DeptManager> PutAsync(string deptNo, DeptManager deptManagerUpdateRequest);
         Task<DeptManager> PostAsync(DeptManager deptManagerCreateRequest);
+        Task<DeptManager> DeleteAsync(string id);
 
         // TO DO:
         // DELETE

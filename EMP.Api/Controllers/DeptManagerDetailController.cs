@@ -90,7 +90,7 @@ namespace EMP.Api.Controllers
             if (departmentCheck == null) {
                 return NotFound();
             }
-            Employees employeeCheck = await _employeeRepository.GetAsync(deptManagerUpdateRequest.EmpNo.Value);
+            Employees employeeCheck = await _employeeRepository.GetAsync(deptManagerUpdateRequest.EmpNo.Value.ToString());
             if (employeeCheck == null) {
                 return NotFound();
             }
@@ -103,7 +103,7 @@ namespace EMP.Api.Controllers
                     ToDate = deptManagerUpdateRequest.ToDate.Value,
                 };
             VwDeptManagerCurrent result = await _deptManagerCurrentRepository.PutAsync(id, vwDeptManagerCurrent);
-            Employees employee = await _employeeRepository.GetAsync(result.EmpNo);
+            Employees employee = await _employeeRepository.GetAsync(result.EmpNo.ToString());
             Departments department = await _departmentsRepository.GetAsync(result.DeptNo);
 
             DepartmentManagerDetail updatedDepartmentManagerDetail =    
@@ -131,7 +131,7 @@ namespace EMP.Api.Controllers
                 };
             ActionResult<VwDeptManagerCurrent> postResult = await _deptManagerCurrentRepository.PostAsync(vwDeptManagerCurrent);
             VwDeptManagerCurrent value = postResult.Value;
-            Employees employee = await _employeeRepository.GetAsync(value.EmpNo);
+            Employees employee = await _employeeRepository.GetAsync(value.EmpNo.ToString());
             Departments department = await _departmentsRepository.GetAsync(value.DeptNo);
 
             var result = new DepartmentManagerDetail {

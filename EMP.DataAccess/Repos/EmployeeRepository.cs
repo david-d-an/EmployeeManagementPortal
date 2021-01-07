@@ -18,31 +18,38 @@ namespace EMP.DataAccess.Repos
 
         public async Task<IEnumerable<Employees>> GetAsync()
         {
-            // throw new System.NotImplementedException();
             return await TaskConstants<IEnumerable<Employees>>.NotImplemented;
         }
 
-        public async Task<Employees> GetAsync(int id)
+        public async Task<Employees> GetAsync(string id)
         {
-            // throw new System.NotImplementedException();
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<Employees>(null);
+
             return await TaskConstants<Employees>.NotImplemented;
         }
 
-        public async Task<Employees> PutAsync(int id, Employees employeeUpdateRequest)
+        public async Task<Employees> PutAsync(string id, Employees updateRequest)
         {
-            // throw new System.NotImplementedException();
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<Employees>(null);
+
             return await TaskConstants<Employees>.NotImplemented;
         }
 
-        public async Task<Employees> PostAsync(Employees employeeCreateRequest)
+        public async Task<Employees> PostAsync(Employees createRequest)
         {
-            // throw new System.NotImplementedException();
             return await TaskConstants<Employees>.NotImplemented;
         }
 
-        public async Task<Employees> DeleteAsync(int empNo)
+        public async Task<Employees> DeleteAsync(string id)
         {
-            // throw new System.NotImplementedException();
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<Employees>(null);
+
             return await TaskConstants<Employees>.NotImplemented;
         }
 

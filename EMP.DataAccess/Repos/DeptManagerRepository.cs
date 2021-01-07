@@ -23,19 +23,24 @@ namespace EMP.DataAccess.Repos
             return await deptManagers.ToListAsync();
         }
 
-        public async Task<DeptManager> GetAsync(string deptNo)
+        public async Task<DeptManager> GetAsync(string id)
         {            
             return await _context.DeptManager
-                        .Where(i => i.DeptNo == deptNo)
+                        .Where(i => i.DeptNo == id)
                         .FirstOrDefaultAsync();
         }
 
-        public async Task<DeptManager> PostAsync(DeptManager deptManagerCreateRequest)
+        public async Task<DeptManager> PutAsync(string id, DeptManager updateRequest)
         {
             return await TaskConstants<DeptManager>.NotImplemented;
         }
 
-        public async Task<DeptManager> PutAsync(string deptNo, DeptManager deptManagerUpdateRequest)
+        public async Task<DeptManager> PostAsync(DeptManager createRequest)
+        {
+            return await TaskConstants<DeptManager>.NotImplemented;
+        }
+
+        public async Task<DeptManager> DeleteAsync(string id)
         {
             return await TaskConstants<DeptManager>.NotImplemented;
         }

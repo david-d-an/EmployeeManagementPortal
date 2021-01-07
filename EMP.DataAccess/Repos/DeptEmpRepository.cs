@@ -15,27 +15,28 @@ namespace EMP.DataAccess.Repos
         {
             this._context = context;
         }
-        public async Task<VwDeptEmpCurrent> DeleteAsync(int empNo)
-        {
-            return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
-        }
 
         public async Task<IEnumerable<VwDeptEmpCurrent>> GetAsync()
         {
             return await TaskConstants<IEnumerable<VwDeptEmpCurrent>>.NotImplemented;
         }
 
-        public async Task<VwDeptEmpCurrent> GetAsync(int empNo)
+        public async Task<VwDeptEmpCurrent> GetAsync(string id)
         {
             return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }
 
-        public async Task<VwDeptEmpCurrent> PostAsync(VwDeptEmpCurrent deptEmpCreateRequest)
+        public async Task<VwDeptEmpCurrent> PostAsync(VwDeptEmpCurrent createRequest)
         {
             return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }
 
-        public async Task<VwDeptEmpCurrent> PutAsync(int empNo, VwDeptEmpCurrent deptEmpUpdateRequest)
+        public async Task<VwDeptEmpCurrent> PutAsync(string id, VwDeptEmpCurrent updateRequest)
+        {
+            return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
+        }
+
+        public async Task<VwDeptEmpCurrent> DeleteAsync(string id)
         {
             return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }

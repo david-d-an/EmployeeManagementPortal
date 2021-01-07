@@ -7,9 +7,9 @@ namespace EMP.Data.Repos
     public interface ITitleRepository
     {
         Task<IEnumerable<VwTitlesCurrent>> GetAsync();
-        Task<VwTitlesCurrent> GetAsync(int empNo);
-        Task<VwTitlesCurrent> PutAsync(int empNo, VwTitlesCurrent titleUpdateRequest);
-        Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent titleCreateRequest);
-        Task<VwTitlesCurrent> DeleteAsync(int empNo);
+        Task<VwTitlesCurrent> GetAsync(string id);
+        Task<VwTitlesCurrent> PutAsync(string id, VwTitlesCurrent updateRequest);
+        Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent createRequest);
+        Task<VwTitlesCurrent> DeleteAsync(string id);
     }
 }

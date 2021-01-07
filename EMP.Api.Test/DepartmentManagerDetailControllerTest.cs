@@ -112,7 +112,7 @@ namespace EMP.Api.Controllers
             //     .Setup(x => x.GetAsync())
             //     .ReturnsAsync(listDeptManagerCurrent);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(i => i == managerEmpNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == managerEmpNo.ToString())))
                 .ReturnsAsync(listEmployees.Where(i => i.EmpNo == managerEmpNo).FirstOrDefault());
 
             _controller = new DeptManagerDetailController(
@@ -226,7 +226,7 @@ namespace EMP.Api.Controllers
                 ))
                 .ReturnsAsync(vwDeptManagerCurrentUpdateResult);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(i => i == newManagerEmpNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == newManagerEmpNo.ToString())))
                 .ReturnsAsync(new Employees{ 
                     EmpNo = newManagerEmpNo,
                     BirthDate = DateTime.Now,
@@ -296,7 +296,7 @@ namespace EMP.Api.Controllers
                 ))
                 .ReturnsAsync(vwDeptManagerCurrentUpdateResult);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(i => i == newManagerEmpNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == newManagerEmpNo.ToString())))
                 .ReturnsAsync(new Employees{ 
                     EmpNo = newManagerEmpNo,
                     BirthDate = DateTime.Now,
@@ -362,7 +362,7 @@ namespace EMP.Api.Controllers
                 ))
                 .ReturnsAsync(vwDeptManagerCurrentUpdateResult);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(i => i == newManagerEmpNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == newManagerEmpNo.ToString())))
                 .ReturnsAsync(new Employees{ 
                     EmpNo = newManagerEmpNo,
                     BirthDate = DateTime.Now,
@@ -427,7 +427,7 @@ namespace EMP.Api.Controllers
                 ))
                 .ReturnsAsync(vwDeptManagerCurrentUpdateResult);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(i => i == managerEmpNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == managerEmpNo.ToString())))
                 .ReturnsAsync(new Employees{ 
                     EmpNo = managerEmpNo,
                     BirthDate = DateTime.Now,

@@ -3,7 +3,7 @@ using EMP.DataDataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace EMP.DataAccess
+namespace EMP.DataAccess.Context
 {
     public class EmployeesContextShould
     {

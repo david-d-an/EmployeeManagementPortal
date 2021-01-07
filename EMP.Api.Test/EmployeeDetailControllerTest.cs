@@ -66,7 +66,7 @@ namespace EMP.Api.Controllers
             mockTitleRepository = new Mock<ITitleRepository>();
 
             mockEmployeeDetailRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNo.ToString())))
                 .ReturnsAsync(vwEmpDetails);
 
             _controller = new EmployeeDetailController(
@@ -162,23 +162,23 @@ namespace EMP.Api.Controllers
                 };
 
             mockEmployeeDetailRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(employeeUpdateRequest);
 
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(employee);
 
             mockSalaryRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwSalariesCurrent { EmpNo = empNoUpdate, Salary = newSalary });
 
             mockTitleRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwTitlesCurrent { EmpNo = empNoUpdate, Title = newTitle });
 
             mockDeptEmpRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwDeptEmpCurrent { EmpNo = empNoUpdate, DeptNo = newDeptNo });
 
             // mockEmployeeDetailRepository
@@ -229,7 +229,7 @@ namespace EMP.Api.Controllers
                 };
 
             mockEmployeeDetailRepository
-                .Setup(x => x.PutAsync(invalidEmpNo, invalidEmployeeUpdateRequest))
+                .Setup(x => x.PutAsync(invalidEmpNo.ToString(), invalidEmployeeUpdateRequest))
                 .ReturnsAsync(null as VwEmpDetails);
 
             // Act

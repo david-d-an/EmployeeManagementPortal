@@ -50,16 +50,16 @@ namespace EMP.Api.Controllers
         [HttpGet("{id}", Name = "Get")]
         public async Task<ActionResult<VwEmpDetails>> Get(int id)
         {
-            return await _employeeDetailRepository.GetAsync(id);
+            return await _employeeDetailRepository.GetAsync(id.ToString());
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<VwEmpDetails>> Put(int id, VwEmpDetails employeeDetailUpdateRequest)
         {
-            Employees employee = await _employeeRepository.GetAsync(id);
-            VwSalariesCurrent salary = await _salaryRepository.GetAsync(id);
-            VwTitlesCurrent title = await _titleRepository.GetAsync(id);
-            VwDeptEmpCurrent deptEmp = await _deptEmpRepository.GetAsync(id);
+            Employees employee = await _employeeRepository.GetAsync(id.ToString());
+            VwSalariesCurrent salary = await _salaryRepository.GetAsync(id.ToString());
+            VwTitlesCurrent title = await _titleRepository.GetAsync(id.ToString());
+            VwDeptEmpCurrent deptEmp = await _deptEmpRepository.GetAsync(id.ToString());
 
             if (employee == null)
             {
@@ -82,7 +82,7 @@ namespace EMP.Api.Controllers
                 throw new NotImplementedException();
             }
 
-            VwEmpDetails result = await _employeeDetailRepository.GetAsync(id);
+            VwEmpDetails result = await _employeeDetailRepository.GetAsync(id.ToString());
 
             return result;
         }
