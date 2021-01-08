@@ -60,7 +60,7 @@ namespace EMP.Api.Controllers
             return Ok(departmentManagers);
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<DepartmentManagerDetail>> Get(string id)
         {
             IEnumerable<DepartmentManagerDetail> departmentManagers = 

@@ -40,14 +40,10 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VwEmpDetails>>> Get()
         {
-            // IEnumerable<VwEmpDetails> r = await _employeeDetailRepository.GetAsync();
-            // List<VwEmpDetails> l = r.ToList();
-            // long c = l.Count();
-
             return Ok(await _employeeDetailRepository.GetAsync());
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<VwEmpDetails>> Get(int id)
         {
             return await _employeeDetailRepository.GetAsync(id.ToString());

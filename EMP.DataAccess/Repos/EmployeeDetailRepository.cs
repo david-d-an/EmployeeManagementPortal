@@ -21,7 +21,15 @@ namespace EMP.DataAccess.Repos
 
         public async Task<IEnumerable<VwEmpDetails>> GetAsync()
         {
-            IQueryable<VwEmpDetails> query = _context.VwEmpDetails;
+            // IQueryable<VwEmpDetails> query = _context.VwEmpDetails;
+
+            int pageNum = 3001;
+            int pageSize = 10;
+
+            IQueryable<VwEmpDetails> query = _context.VwEmpDetails
+                // .OrderBy(i => i.EmpNo)
+                .Skip((pageNum - 1) * pageSize)
+                .Take(pageSize);
             return await query.ToListAsync();
         }
 

@@ -29,7 +29,7 @@ namespace EMP.Api.Controllers
             return await TaskConstants<ActionResult<IEnumerable<string>>>.NotImplemented;
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<string>> Get(string id)
         {
             return await TaskConstants<ActionResult<string>>.NotImplemented;

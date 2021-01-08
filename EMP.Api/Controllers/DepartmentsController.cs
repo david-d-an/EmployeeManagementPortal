@@ -29,7 +29,7 @@ namespace EMP.Api.Controllers
             return Ok(await _departmentsRepository.GetAsync());
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Departments>> Get(string id)
         {
             return await _departmentsRepository.GetAsync(id);

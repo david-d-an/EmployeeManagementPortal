@@ -30,7 +30,7 @@ namespace EMP.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Employees>> Get(int id)
         {
             return await _employeeRepository.GetAsync(id.ToString());
@@ -73,6 +73,14 @@ namespace EMP.Api.Controllers
             Employees deletedEmployee = await _employeeRepository.DeleteAsync(id.ToString());
             return deletedEmployee;
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Employees>>> GetLarge()
+        {
+            IEnumerable<Employees> result = await _employeeRepository.GetAsync();
+            return Ok(result);
+        }
+
     }
 }
 
