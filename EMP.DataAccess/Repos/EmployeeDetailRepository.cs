@@ -1,6 +1,6 @@
 using EMP.Data.Repos;
 using EMP.Data.Models;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;

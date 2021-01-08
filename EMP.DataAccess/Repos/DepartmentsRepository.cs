@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using EMP.Data.Models;
 using EMP.Data.Repos;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;

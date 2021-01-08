@@ -1,5 +1,5 @@
 using System.Linq;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 

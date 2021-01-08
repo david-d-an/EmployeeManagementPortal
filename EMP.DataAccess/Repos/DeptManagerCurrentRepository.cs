@@ -5,7 +5,7 @@ using EMP.Common.Tasks;
 using EMP.Data.Models;
 using EMP.Data.Models.Mapped;
 using EMP.Data.Repos;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos

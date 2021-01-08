@@ -7,7 +7,7 @@ using Moq;
 using Xunit;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 
 

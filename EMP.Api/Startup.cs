@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using EMP.Data.Repos;
 using EMP.Common.Security;
 using EMP.DataAccess.Repos;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
