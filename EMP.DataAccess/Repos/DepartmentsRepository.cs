@@ -19,7 +19,7 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<Departments>> GetAsync()
+        public async Task<IEnumerable<Departments>> GetAsync(int? pageNum = null, int? pageSize = null)
         {
             IQueryable<Departments> result = 
                 from d in this._context.Departments

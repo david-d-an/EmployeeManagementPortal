@@ -21,7 +21,7 @@ namespace EMP.DataAccess.Repos
            this._context = context;
        }
 
-        public async Task<IEnumerable<Employees>> GetAsync()
+        public async Task<IEnumerable<Employees>> GetAsync(int? pageNum = null, int? pageSize = null)
         {
             IQueryable<Employees> query = _context.Employees;
             return await query.ToListAsync();

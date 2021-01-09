@@ -85,7 +85,7 @@ namespace EMP.Api.Controllers
                 vwEmpDetails
             };
 
-            mockEmployeeDetailRepository.Setup(x => x.GetAsync())
+            mockEmployeeDetailRepository.Setup(x => x.GetAsync(null, null))
                                         .ReturnsAsync(listEmployeeDetails);
 
             // Act

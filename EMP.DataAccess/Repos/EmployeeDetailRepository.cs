@@ -19,17 +19,18 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<VwEmpDetails>> GetAsync()
+        public async Task<IEnumerable<VwEmpDetails>> GetAsync(int? pageNum = null, int? pageSize = null)
         {
-            // IQueryable<VwEmpDetails> query = _context.VwEmpDetails;
+            IQueryable<VwEmpDetails> query = _context.VwEmpDetails;
 
-            int pageNum = 3001;
-            int pageSize = 10;
+            if (pageNum != null && pageNum.Value > 0 && 
+                pageSize != null && pageSize.Value > 0) {
+                query = query
+                    .Where(i => i.DeptName == "Customer Service")
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
 
-            IQueryable<VwEmpDetails> query = _context.VwEmpDetails
-                // .OrderBy(i => i.EmpNo)
-                .Skip((pageNum - 1) * pageSize)
-                .Take(pageSize);
             return await query.ToListAsync();
         }
 

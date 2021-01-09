@@ -19,7 +19,7 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<VwDeptManagerCurrent>> GetAsync()
+        public async Task<IEnumerable<VwDeptManagerCurrent>> GetAsync(int? pageNum = null, int? pageSize = null)
         {
             IQueryable<VwDeptManagerCurrent> deptManagers  = _context.VwDeptManagerCurrent;
             return await deptManagers.ToListAsync();

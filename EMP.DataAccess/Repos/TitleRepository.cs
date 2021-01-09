@@ -16,7 +16,7 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
         
-        public async Task<IEnumerable<VwTitlesCurrent>> GetAsync()
+        public async Task<IEnumerable<VwTitlesCurrent>> GetAsync(int? pageNum = null, int? pageSize = null)
         {
             return await TaskConstants<IEnumerable<VwTitlesCurrent>>.NotImplemented;
         }

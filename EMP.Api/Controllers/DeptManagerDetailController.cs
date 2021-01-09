@@ -122,6 +122,7 @@ namespace EMP.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<DepartmentManagerDetail>> Post(DepartmentManagerDetail deptManagerCreateRequest) 
         {
+
             VwDeptManagerCurrent vwDeptManagerCurrent = 
                 new VwDeptManagerCurrent {
                     EmpNo = deptManagerCreateRequest.EmpNo.Value,

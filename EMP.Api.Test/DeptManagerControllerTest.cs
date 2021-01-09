@@ -78,9 +78,9 @@ namespace EMP.Api.Controllers
             mockDeptManagerRepository.Setup(x => x.GetAsync(invalidDeptNo)).ReturnsAsync((DeptManager)null);
 
             // Set up for Get() method
-            mockDeptManagerRepository.Setup(x => x.GetAsync()).ReturnsAsync(deptManagers);
-            mockEmployeeRepository.Setup(x => x.GetAsync()).ReturnsAsync(employees);
-            mockDepartmentsRepository.Setup(x => x.GetAsync()).ReturnsAsync(departments);
+            mockDeptManagerRepository.Setup(x => x.GetAsync(null, null)).ReturnsAsync(deptManagers);
+            mockEmployeeRepository.Setup(x => x.GetAsync(null, null)).ReturnsAsync(employees);
+            mockDepartmentsRepository.Setup(x => x.GetAsync(null, null)).ReturnsAsync(departments);
 
             _controller = new DeptManagerController(
                 mockLogger.Object,

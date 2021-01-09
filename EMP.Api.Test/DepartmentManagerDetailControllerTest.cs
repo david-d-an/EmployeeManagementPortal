@@ -96,13 +96,13 @@ namespace EMP.Api.Controllers
 
             // Arrange
             mockDepartmentsRepository
-                .Setup(x => x.GetAsync())
+                .Setup(x => x.GetAsync(null, null))
                 .ReturnsAsync(listDepartments);
             mockDeptManagerCurrentRepository
-                .Setup(x => x.GetAsync())
+                .Setup(x => x.GetAsync(null, null))
                 .ReturnsAsync(listDeptManagerCurrent);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync())
+                .Setup(x => x.GetAsync(null, null))
                 .ReturnsAsync(listEmployees);
 
             mockDepartmentsRepository
@@ -139,13 +139,13 @@ namespace EMP.Api.Controllers
 
             // Arrange
             mockDepartmentsRepository
-                .Setup(x => x.GetAsync())   //It.Is<string>(i => i == deptNo)))
+                .Setup(x => x.GetAsync(null, null))   //It.Is<string>(i => i == deptNo)))
                 .ReturnsAsync(listDepartments);
             mockDeptManagerCurrentRepository
-                .Setup(x => x.GetAsync())
+                .Setup(x => x.GetAsync(null, null))
                 .ReturnsAsync(listDeptManagerCurrent);
             mockEmployeeRepository
-                .Setup(x => x.GetAsync())
+                .Setup(x => x.GetAsync(null, null))
                 .ReturnsAsync(listEmployees);
             // mockDeptManagerCurrentRepository
             //     .Setup(x => x.GetAsync(It.Is<string>(i => i == deptNo)))
