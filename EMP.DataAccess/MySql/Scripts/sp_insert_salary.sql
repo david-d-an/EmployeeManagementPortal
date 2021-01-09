@@ -1,0 +1,63 @@
+
+use employees ;
+
+
+DROP PROCEDURE IF EXISTS employees.sp_insert_salary;
+
+DELIMITER $$
+
+CREATE PROCEDURE employees.sp_insert_salary(
+	in empNo int, 
+	in salary int
+)
+BEGIN
+-- 	10001	d005
+	
+	SELECT
+		@salary := salary, 
+		@from_Date := from_date, 
+		@to_Date := to_date 
+	FROM vw_salary_current vsc
+	WHERE
+		vsc.emp_no = empNo;
+
+
+	IF salary <> @salary 
+	THEN
+		UPDATE salaries s
+		SET
+			s.to_Date = CURDATE() 
+		WHERE
+			s.emp_no = empNo
+			AND s.salary = @salary
+			AND s.from_date = @from_Date
+			AND s.to_date = @to_Date;
+
+		INSERT INTO salaries (
+			emp_no, 
+			salary, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo, 
+			salary, 
+			CURDATE(), 
+			'9999-01-01'
+		);
+	
+		UPDATE salaries_current s
+		SET
+			s.salary = salary,
+			s.from_date = CURDATE(),
+			s.to_date = '9999-01-01'
+		WHERE
+			s.emp_no = empNo;
+
+	END IF;
+	
+END $$
+
+DELIMITER ;
+
+
