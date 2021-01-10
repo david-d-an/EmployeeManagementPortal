@@ -5,8 +5,8 @@ using EMP.DataAccess.Context;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System;
 using EMP.Common.Tasks;
+using System.Data;
 
 namespace EMP.DataAccess.Repos
 {
