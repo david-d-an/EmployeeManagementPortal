@@ -22,8 +22,49 @@ BEGIN
 		vdec.emp_no = empNo;
 
 
-	IF deptNo != @dept_no 
-	THEN
+	IF @dept_no IS NULL THEN
+		DELETE FROM dept_emp de
+        WHERE de.emp_no = empNo;
+
+		DELETE FROM dept_emp_current de
+        WHERE de.emp_no = empNo;
+
+		INSERT INTO dept_emp (
+			emp_no, 
+			dept_no, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo, 
+			deptNo, 
+			CURDATE(), 
+			'9999-01-01'
+		);
+
+		INSERT INTO dept_emp_current (
+			emp_no, 
+			dept_no, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo,
+			deptNo,
+			CURDATE(),
+			'9999-01-01'
+		);
+
+        SELECT 
+            emp_no, 
+			dept_no, 
+			from_date, 
+			to_date
+        FROM vw_dept_emp_current vdec
+        WHERE
+			vdec.emp_no = empNo;
+
+	ELSEIF deptNo != @dept_no THEN
 		UPDATE dept_emp de
 		SET
 			de.to_Date = CURDATE() 

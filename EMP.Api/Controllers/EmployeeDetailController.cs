@@ -67,7 +67,7 @@ namespace EMP.Api.Controllers
                     EmpNo = employeeDetailUpdateRequest.EmpNo,
                     Title = employeeDetailUpdateRequest.Title
                 };
-                var titleCreateResult = await _titleRepository.PostAsync(titleCreateRequest);
+                VwTitlesCurrent titleCreateResult = await _titleRepository.PostAsync(titleCreateRequest);
             }
 
             if (salary.Salary != employeeDetailUpdateRequest.Salary) {
@@ -75,7 +75,7 @@ namespace EMP.Api.Controllers
                     EmpNo = employeeDetailUpdateRequest.EmpNo,
                     Salary = employeeDetailUpdateRequest.Salary
                 };
-                var salaryCreateResult = await _salaryRepository.PostAsync(salaryCreateRequest);
+                VwSalariesCurrent salaryCreateResult = await _salaryRepository.PostAsync(salaryCreateRequest);
             }
 
             if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
@@ -83,11 +83,19 @@ namespace EMP.Api.Controllers
                     EmpNo = employeeDetailUpdateRequest.EmpNo,
                     DeptNo = employeeDetailUpdateRequest.DeptNo
                 };
-                var titleCreateResult = await _deptEmpRepository.PostAsync(deptEmpCreateRequest);
+                VwDeptEmpCurrent titleCreateResult = await _deptEmpRepository.PostAsync(deptEmpCreateRequest);
             }
 
             if (employeeBasicInfoChanged(employee, employeeDetailUpdateRequest)) {
-                throw new NotImplementedException();
+                Employees employeeUpdateRequest = new Employees {
+                    EmpNo = id,
+                    BirthDate = employeeDetailUpdateRequest.BirthDate,
+                    FirstName = employeeDetailUpdateRequest.FirstName,
+                    LastName = employeeDetailUpdateRequest .LastName,
+                    Gender = employeeDetailUpdateRequest .Gender,
+                    HireDate = employeeDetailUpdateRequest.HireDate
+                };
+                Employees employeeUpdateResult = await _employeeRepository.PutAsync(id.ToString(), employeeUpdateRequest);
             }
 
             VwEmpDetails result = await _employeeDetailRepository.GetAsync(id.ToString());
@@ -95,20 +103,9 @@ namespace EMP.Api.Controllers
             return result;
         }
 
-        private bool employeeBasicInfoChanged(Employees employee, VwEmpDetails employeeDetailUpdateRequest)
-        {
-            return    
-                employee.BirthDate != employeeDetailUpdateRequest.BirthDate ||
-                employee.FirstName != employeeDetailUpdateRequest.FirstName ||
-                employee.LastName != employeeDetailUpdateRequest.LastName ||
-                employee.Gender != employeeDetailUpdateRequest.Gender ||
-                employee.HireDate != employeeDetailUpdateRequest.HireDate;
-        }
-
         [HttpPost]
         public async Task<ActionResult<VwEmpDetails>> Post(VwEmpDetails employeeDetailCreateRequest) 
         {
-            // return await TaskConstants<ActionResult<EmployeeDetail>>.NotImplemented; 
             VwEmpDetails result = await _employeeDetailRepository.PostAsync(employeeDetailCreateRequest);
             return CreatedAtAction(
                 nameof(Post), 
@@ -122,6 +119,16 @@ namespace EMP.Api.Controllers
         public async Task<ActionResult<VwEmpDetails>> Delete(long id) 
         {
             return await TaskConstants<ActionResult<VwEmpDetails>>.NotImplemented;
+        }
+
+        private bool employeeBasicInfoChanged(Employees employee, VwEmpDetails employeeDetailUpdateRequest)
+        {
+            return    
+                employee.BirthDate != employeeDetailUpdateRequest.BirthDate ||
+                employee.FirstName != employeeDetailUpdateRequest.FirstName ||
+                employee.LastName != employeeDetailUpdateRequest.LastName ||
+                employee.Gender != employeeDetailUpdateRequest.Gender ||
+                employee.HireDate != employeeDetailUpdateRequest.HireDate;
         }
     }
 }

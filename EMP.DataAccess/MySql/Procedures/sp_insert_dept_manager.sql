@@ -22,8 +22,49 @@ BEGIN
 		vdmc.dept_no = deptNo;
 
 
-	IF empNo != @emp_no 
-	THEN
+	IF @emp_no IS NULL THEN
+		DELETE FROM dept_manager dm
+        WHERE dm.dept_no = deptNo;
+
+		DELETE FROM dept_manager_current dm
+        WHERE dm.dept_no = deptNo;
+
+		INSERT INTO dept_manager (
+			emp_no, 
+			dept_no, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo, 
+			deptNo, 
+			CURDATE(), 
+			'9999-01-01'
+		);
+
+		INSERT INTO dept_manager_current (
+			emp_no, 
+			dept_no, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo,
+			deptNo,
+			CURDATE(),
+			'9999-01-01'
+		);
+
+        SELECT 
+            emp_no, 
+			dept_no, 
+			from_date, 
+			to_date
+        FROM vw_dept_manager_current vdmc
+        WHERE
+			vdmc.dept_no = deptNo;
+
+	ELSEIF empNo != @emp_no THEN
 		UPDATE dept_manager dm
 		SET
 			dm.to_Date = CURDATE() 
@@ -61,8 +102,7 @@ BEGIN
 			to_Date
 		FROM vw_dept_manager_current vdmc
 		WHERE
-			vdmc.emp_no = empNo
-			-- AND vdmc.dept_no = deptNo;
+			vdmc.dept_no = deptNo;
 
 	ELSE
 		SELECT 

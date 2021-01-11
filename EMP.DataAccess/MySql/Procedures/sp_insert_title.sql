@@ -22,9 +22,50 @@ BEGIN
 		vtc.emp_no = empNo;
 
 
-	IF title != @title 
-	THEN
-		UPDATE titels t
+	IF @title IS NULL THEN
+		DELETE FROM title s
+        WHERE s.emp_no = empNo;
+
+		DELETE FROM titles_current s
+        WHERE s.emp_no = empNo;
+
+		INSERT INTO titles (
+			emp_no, 
+			title, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo, 
+			title, 
+			CURDATE(), 
+			'9999-01-01'
+		);
+
+		INSERT INTO titles_current (
+			emp_no, 
+			title, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo,
+			title,
+			CURDATE(),
+			'9999-01-01'
+		);
+
+        SELECT 
+            emp_no, 
+			title, 
+			from_date, 
+			to_date
+        FROM vw_titles_current s
+        WHERE
+			s.emp_no = empNo;
+
+	ELSEIF title != @title THEN
+		UPDATE titles t
 		SET
 			t.to_Date = CURDATE() 
 		WHERE
@@ -59,7 +100,7 @@ BEGIN
 			title, 
 			from_date, 
 			to_date
-        FROM titles_current t
+        FROM vw_titles_current t
 		WHERE
 			t.emp_no = empNo;
 
@@ -69,7 +110,7 @@ BEGIN
 			title, 
 			from_date, 
 			to_date
-        FROM titles_current t
+        FROM vw_titles_current t
 		WHERE FALSE;
 
 	END IF;

@@ -22,8 +22,49 @@ BEGIN
 		vsc.emp_no = empNo;
 
 
-	IF salary != @salary 
-	THEN
+	IF @salary IS NULL THEN
+		DELETE FROM salaries s
+        WHERE s.emp_no = empNo;
+
+		DELETE FROM salaries_current s
+        WHERE s.emp_no = empNo;
+
+		INSERT INTO salaries (
+			emp_no, 
+			salary, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo, 
+			salary, 
+			CURDATE(), 
+			'9999-01-01'
+		);
+
+		INSERT INTO salaries_current (
+			emp_no, 
+			salary, 
+			from_date, 
+			to_date
+		)
+		VALUES(
+			empNo,
+			salary,
+			CURDATE(),
+			'9999-01-01'
+		);
+
+        SELECT 
+            emp_no, 
+			salary, 
+			from_date, 
+			to_date
+        FROM vw_salaries_current s
+        WHERE
+			s.emp_no = empNo;
+
+	ELSEIF salary != @salary THEN
 		UPDATE salaries s
 		SET
 			s.to_Date = CURDATE() 
@@ -59,7 +100,7 @@ BEGIN
 			salary, 
 			from_date, 
 			to_date
-        FROM salaries_current s
+        FROM vw_salaries_current s
         WHERE
 			s.emp_no = empNo;
 
@@ -69,7 +110,7 @@ BEGIN
 			salary, 
 			from_date, 
 			to_date
-        FROM salaries_current s
+        FROM vw_salaries_current s
         WHERE FALSE;
 
 	END IF;
