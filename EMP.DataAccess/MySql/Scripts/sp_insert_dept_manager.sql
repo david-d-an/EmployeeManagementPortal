@@ -22,16 +22,16 @@ BEGIN
 		vdmc.dept_no = deptNo;
 
 
-	IF empNo <> @emp_no 
+	IF empNo != @emp_no 
 	THEN
 		UPDATE dept_manager dm
 		SET
 			dm.to_Date = CURDATE() 
 		WHERE
-			de.dept_no = deptNo
-			AND de.emp_no  = @emp_No
-			AND de.from_date = @from_Date
-			AND de.to_date = @to_Date;
+			dm.dept_no = deptNo
+			AND dm.emp_no  = @emp_No
+			AND dm.from_date = @from_Date
+			AND dm.to_date = @to_Date;
 
 		INSERT INTO dept_manager (
 			emp_no, 
@@ -52,12 +52,29 @@ BEGIN
 			dm.from_date = CURDATE(),
 			dm.to_date = '9999-01-01'
 		WHERE
-			de.dept_no = deptNo;
+			dm.dept_no = deptNo;
+
+		SELECT 
+			emp_No,
+			dept_no,
+			from_Date,
+			to_Date
+		FROM vw_dept_manager_current vdmc
+		WHERE
+			vdmc.emp_no = empNo
+			AND vdmc.dept_no = deptNo;
+	ELSE
+		SELECT 
+			emp_No,
+			dept_no,
+			from_Date,
+			to_Date
+		FROM vw_dept_manager_current vdmc
+		WHERE
+			FALSE;
 
 	END IF;
 	
 END $$
 
 DELIMITER ;
-
-

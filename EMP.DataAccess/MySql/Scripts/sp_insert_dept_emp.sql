@@ -22,7 +22,7 @@ BEGIN
 		vdec.emp_no = empNo;
 
 
-	IF deptNo <> @dept_no 
+	IF deptNo != @dept_no 
 	THEN
 		UPDATE dept_emp de
 		SET

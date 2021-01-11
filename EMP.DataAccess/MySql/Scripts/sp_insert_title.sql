@@ -22,7 +22,7 @@ BEGIN
 		vtc.emp_no = empNo;
 
 
-	IF title <> @title 
+	IF title != @title 
 	THEN
 		UPDATE titels t
 		SET
@@ -53,6 +53,24 @@ BEGIN
 			t.to_date = '9999-01-01'
 		WHERE
 			t.emp_no = empNo;
+
+        SELECT
+            emp_no, 
+			title, 
+			from_date, 
+			to_date
+        FROM titles_current t
+		WHERE
+			t.emp_no = empNo;
+
+    ELSE
+        SELECT
+            emp_no, 
+			title, 
+			from_date, 
+			to_date
+        FROM titles_current t
+		WHERE FALSE;
 
 	END IF;
 	

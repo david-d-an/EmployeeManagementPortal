@@ -22,7 +22,7 @@ BEGIN
 		vsc.emp_no = empNo;
 
 
-	IF salary <> @salary 
+	IF salary != @salary 
 	THEN
 		UPDATE salaries s
 		SET
@@ -53,6 +53,24 @@ BEGIN
 			s.to_date = '9999-01-01'
 		WHERE
 			s.emp_no = empNo;
+
+        SELECT 
+            emp_no, 
+			salary, 
+			from_date, 
+			to_date
+        FROM salaries_current s
+        WHERE
+			s.emp_no = empNo;
+
+    ELSE
+        SELECT 
+            emp_no, 
+			salary, 
+			from_date, 
+			to_date
+        FROM salaries_current s
+        WHERE FALSE;
 
 	END IF;
 	
