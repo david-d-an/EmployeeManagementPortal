@@ -26,21 +26,19 @@ namespace EMP.DataAccess.EFCore
             bool prependDefaultSchema = true, 
             short commandTimeout = 30)
         {
-            var cmd = context.Database.GetDbConnection().CreateCommand();
-            cmd.CommandTimeout = commandTimeout;
-
             if (prependDefaultSchema)
             {
-                var schemaName = context.Model["DefaultSchema"];
-                if (schemaName != null)
-                {
-                    storedProcName = $"{schemaName}.{storedProcName}";
-                }
+                var database = context.Database.GetDbConnection().Database;
+                if (database != null)
+                    storedProcName = $"{database}.{storedProcName}";
+                else
+                    storedProcName = $"{storedProcName}";
             }
 
+            var cmd = context.Database.GetDbConnection().CreateCommand();
+            cmd.CommandTimeout = commandTimeout;
             cmd.CommandText = storedProcName;
             cmd.CommandType = CommandType.StoredProcedure;
-
             return cmd;
         }
 
