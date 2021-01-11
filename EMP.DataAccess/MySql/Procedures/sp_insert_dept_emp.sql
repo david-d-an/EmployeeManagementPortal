@@ -54,10 +54,27 @@ BEGIN
 		WHERE
 			de.emp_no = empNo;
 
+		SELECT 
+			emp_No,
+			dept_no,
+			from_Date,
+			to_Date
+		FROM vw_dept_emp_current vdec
+		WHERE
+			vdec.emp_no = empNo;
+			
+	ELSE
+		SELECT 
+			emp_No,
+			dept_no,
+			from_Date,
+			to_Date
+		FROM vw_dept_emp_current vdec
+		WHERE
+			FALSE;
+
 	END IF;
 	
 END $$
 
 DELIMITER ;
-
-

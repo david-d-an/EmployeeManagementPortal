@@ -9,6 +9,10 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
+/************************************************************/
+/* Snickler.EFCore                                          */
+/* https://github.com/snickler/EFCore-FluentStoredProcedure */
+/************************************************************/
 namespace EMP.DataAccess.EFCore
 {
     public static class EFExtensions
@@ -94,7 +98,8 @@ namespace EMP.DataAccess.EFCore
         /// <param name="cmd"></param>
         /// <param name="parameter"></param>
         /// <returns></returns>
-        public static DbCommand WithSqlParam(this DbCommand cmd, IDbDataParameter parameter)
+        public static DbCommand WithSqlParam(this DbCommand cmd, 
+            IDbDataParameter parameter)
         {
             if (string.IsNullOrEmpty(cmd.CommandText) && cmd.CommandType != System.Data.CommandType.StoredProcedure)
                 throw new InvalidOperationException("Call LoadStoredProc before using this method");

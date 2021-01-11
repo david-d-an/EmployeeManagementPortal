@@ -62,7 +62,8 @@ BEGIN
 		FROM vw_dept_manager_current vdmc
 		WHERE
 			vdmc.emp_no = empNo
-			AND vdmc.dept_no = deptNo;
+			-- AND vdmc.dept_no = deptNo;
+
 	ELSE
 		SELECT 
 			emp_No,
