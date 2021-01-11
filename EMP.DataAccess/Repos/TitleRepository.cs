@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
 using EMP.Data.Models;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
+using EMP.DataAccess.EFCore;
 
 namespace EMP.DataAccess.Repos
 {
@@ -41,7 +43,24 @@ namespace EMP.DataAccess.Repos
 
         public async Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent createRequest)
         {
-            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
+            string storedProcName = "sp_insert_title";
+            // DbParameter outputParam;
+            VwTitlesCurrent spResults = null;
+            await _context
+                .LoadStoredProc(storedProcName)
+                .WithSqlParam("empNo", createRequest.EmpNo)
+                .WithSqlParam("title", createRequest.Title)
+                // .WithSqlParam("result", (dbParam) =>
+                // {
+                //     dbParam.Direction = System.Data.ParameterDirection.Output;
+                //     dbParam.DbType = System.Data.DbType.String;
+                //     outputParam = dbParam;
+                // })
+                .ExecuteStoredProcAsync(_context, (handler) => {
+                    spResults = handler.ReadToList<VwTitlesCurrent>().FirstOrDefault();
+                });
+
+            return spResults;
         }
 
         public async Task<VwTitlesCurrent> DeleteAsync(string id)

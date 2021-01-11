@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
 using EMP.Data.Models;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
+using EMP.DataAccess.EFCore;
 
 namespace EMP.DataAccess.Repos
 {
@@ -32,7 +34,24 @@ namespace EMP.DataAccess.Repos
 
         public async Task<VwSalariesCurrent> PostAsync(VwSalariesCurrent createRequest)
         {
-            return await TaskConstants<VwSalariesCurrent>.NotImplemented;
+            string storedProcName = "sp_insert_salary";
+            // DbParameter outputParam;
+            VwSalariesCurrent spResults = null;
+            await _context
+                .LoadStoredProc(storedProcName)
+                .WithSqlParam("empNo", createRequest.EmpNo)
+                .WithSqlParam("salary", createRequest.Salary)
+                // .WithSqlParam("result", (dbParam) =>
+                // {
+                //     dbParam.Direction = System.Data.ParameterDirection.Output;
+                //     dbParam.DbType = System.Data.DbType.String;
+                //     outputParam = dbParam;
+                // })
+                .ExecuteStoredProcAsync(_context, (handler) => {
+                    spResults = handler.ReadToList<VwSalariesCurrent>().FirstOrDefault();
+                });
+
+            return spResults;
         }
 
         public async Task<VwSalariesCurrent> PutAsync(string id, VwSalariesCurrent updateRequest)

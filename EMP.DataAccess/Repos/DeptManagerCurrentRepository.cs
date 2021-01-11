@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
@@ -6,6 +7,7 @@ using EMP.Data.Models;
 using EMP.Data.Models.Mapped;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
+using EMP.DataAccess.EFCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
@@ -34,7 +36,24 @@ namespace EMP.DataAccess.Repos
 
         public async Task<VwDeptManagerCurrent> PostAsync(VwDeptManagerCurrent createRequest)
         {
-            return await TaskConstants<VwDeptManagerCurrent>.NotImplemented;
+            string storedProcName = "sp_insert_dept_manager";
+            // DbParameter outputParam;
+            VwDeptManagerCurrent spResults = null;
+            await _context
+                .LoadStoredProc(storedProcName)
+                .WithSqlParam("empNo", createRequest.EmpNo)
+                .WithSqlParam("deptNo", createRequest.DeptNo)
+                // .WithSqlParam("result", (dbParam) =>
+                // {
+                //     dbParam.Direction = System.Data.ParameterDirection.Output;
+                //     dbParam.DbType = System.Data.DbType.String;
+                //     outputParam = dbParam;
+                // })
+                .ExecuteStoredProcAsync(_context, (handler) => {
+                    spResults = handler.ReadToList<VwDeptManagerCurrent>().FirstOrDefault();
+                });
+
+            return spResults;
         }
 
         public async Task<VwDeptManagerCurrent> PutAsync(string id, VwDeptManagerCurrent updateRequest)

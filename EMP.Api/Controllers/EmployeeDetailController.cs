@@ -63,15 +63,27 @@ namespace EMP.Api.Controllers
             }
 
             if (title.Title != employeeDetailUpdateRequest.Title) {
-                throw new NotImplementedException();
+                VwTitlesCurrent titleCreateRequest = new VwTitlesCurrent {
+                    EmpNo = employeeDetailUpdateRequest.EmpNo,
+                    Title = employeeDetailUpdateRequest.Title
+                };
+                var titleCreateResult = await _titleRepository.PostAsync(titleCreateRequest);
             }
 
             if (salary.Salary != employeeDetailUpdateRequest.Salary) {
-                throw new NotImplementedException();
+                VwSalariesCurrent salaryCreateRequest = new VwSalariesCurrent {
+                    EmpNo = employeeDetailUpdateRequest.EmpNo,
+                    Salary = employeeDetailUpdateRequest.Salary
+                };
+                var salaryCreateResult = await _salaryRepository.PostAsync(salaryCreateRequest);
             }
 
             if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
-                throw new NotImplementedException();
+                VwDeptEmpCurrent deptEmpCreateRequest = new VwDeptEmpCurrent {
+                    EmpNo = employeeDetailUpdateRequest.EmpNo,
+                    DeptNo = employeeDetailUpdateRequest.DeptNo
+                };
+                var titleCreateResult = await _deptEmpRepository.PostAsync(deptEmpCreateRequest);
             }
 
             if (employeeBasicInfoChanged(employee, employeeDetailUpdateRequest)) {
