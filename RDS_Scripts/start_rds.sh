@@ -9,8 +9,8 @@ PATH=/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin
 instance_names=$1
 region="us-east-1"
 for db_instance in $(echo $instance_names | sed "s/,/ /g"); do
-    stop_command="/usr/local/bin/aws rds start-db-instance --region "$region" --db-instance-identifier "$db_instance
+    start_command="/usr/local/bin/aws rds start-db-instance --region "$region" --db-instance-identifier "$db_instance
     echo "Starting RDS instance: "$db_instance
-    output=`$stop_command`
+    output=`$start_command`
     echo "${output}"
 done
