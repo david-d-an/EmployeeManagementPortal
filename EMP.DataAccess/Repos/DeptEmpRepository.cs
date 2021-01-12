@@ -27,6 +27,10 @@ namespace EMP.DataAccess.Repos
         {
             return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }
+        public async Task<VwDeptEmpCurrent> PutAsync(string id, VwDeptEmpCurrent updateRequest)
+        {
+            return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
+        }
 
         public async Task<VwDeptEmpCurrent> PostAsync(VwDeptEmpCurrent createRequest)
         {
@@ -48,11 +52,6 @@ namespace EMP.DataAccess.Repos
                 });
 
             return spResults;
-        }
-
-        public async Task<VwDeptEmpCurrent> PutAsync(string id, VwDeptEmpCurrent updateRequest)
-        {
-            return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }
 
         public async Task<VwDeptEmpCurrent> DeleteAsync(string id)

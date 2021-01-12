@@ -83,6 +83,16 @@ namespace EMP.DataAccess.Repos
             return updateRequest;
         }
 
+        public async Task<VwEmpDetails> PostAsync(VwEmpDetails createRequest)
+        {
+            return await TaskConstants<VwEmpDetails>.NotImplemented;
+        }
+
+        public async Task<VwEmpDetails> DeleteAsync(string id)
+        {
+            return await TaskConstants<VwEmpDetails>.NotImplemented;
+        }
+
         private bool employeeBasicInfoChanged(Employees employee, VwEmpDetails employeeDetailUpdateRequest)
         {
             bool result =
@@ -93,16 +103,6 @@ namespace EMP.DataAccess.Repos
                 employee.HireDate != employeeDetailUpdateRequest.HireDate;
 
             return result;
-        }
-
-        public async Task<VwEmpDetails> PostAsync(VwEmpDetails createRequest)
-        {
-            return await TaskConstants<VwEmpDetails>.NotImplemented;
-        }
-
-        public async Task<VwEmpDetails> DeleteAsync(string id)
-        {
-            return await TaskConstants<VwEmpDetails>.NotImplemented;
         }
 
     }
