@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "TrialWeb": {
+    "T8": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,6 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "aot": true,
             "progress": false,
             "extractCss": true,
             "outputPath": "dist",
@@ -30,12 +29,6 @@
           },
           "configurations": {
             "production": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -57,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "TrialWeb:build"
+            "browserTarget": "T8:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "TrialWeb:build:production"
+              "browserTarget": "T8:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "TrialWeb:build"
+            "browserTarget": "T8:build"
           }
         },
         "test": {
@@ -118,7 +111,7 @@
         }
       }
     },
-    "TrialWeb-e2e": {
+    "T8-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -126,7 +119,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "TrialWeb:serve"
+            "devServerTarget": "T8:serve"
           }
         },
         "lint": {
@@ -139,5 +132,5 @@
       }
     }
   },
-  "defaultProject": "TrialWeb"
+  "defaultProject": "T8"
 }

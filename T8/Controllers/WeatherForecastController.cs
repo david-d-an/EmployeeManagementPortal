@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace TrialWeb.Controllers
+namespace T8.Controllers
 {
     [ApiController]
     [Route("[controller]")]
