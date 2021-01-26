@@ -1,6 +1,6 @@
 using System;
 
-namespace EMP.TrialWeb
+namespace TrialWeb
 {
     public class WeatherForecast
     {
