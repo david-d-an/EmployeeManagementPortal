@@ -23,11 +23,11 @@ BEGIN
 
 
 	IF @dept_no IS NULL THEN
-		DELETE FROM dept_emp de
-        WHERE de.emp_no = empNo;
+		DELETE FROM dept_emp 
+        WHERE emp_no = empNo;
 
-		DELETE FROM dept_emp_current de
-        WHERE de.emp_no = empNo;
+		DELETE FROM dept_emp_current 
+        WHERE emp_no = empNo;
 
 		INSERT INTO dept_emp (
 			emp_no, 

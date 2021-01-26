@@ -23,11 +23,11 @@ BEGIN
 
 
 	IF @title IS NULL THEN
-		DELETE FROM title s
-        WHERE s.emp_no = empNo;
+		DELETE FROM title 
+        WHERE emp_no = empNo;
 
-		DELETE FROM titles_current s
-        WHERE s.emp_no = empNo;
+		DELETE FROM titles_current 
+        WHERE emp_no = empNo;
 
 		INSERT INTO titles (
 			emp_no, 

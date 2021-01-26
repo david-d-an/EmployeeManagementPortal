@@ -36,8 +36,9 @@ namespace EMP.Api
             services.AddControllers();
 
             // Make MySql Connection Service
-            var encConnStrMySql = Configuration.GetConnectionString("MySqlConnection");
+            var encConnStrMySql = Configuration.GetConnectionString("MySqlConnection(Azure)");
             var connStrMySql = cryptoUtil.Decrypt(encConnStrMySql);
+
             services.AddDbContext<EmployeesContext>(builder =>                   
                 builder.UseMySQL(connStrMySql)
             );

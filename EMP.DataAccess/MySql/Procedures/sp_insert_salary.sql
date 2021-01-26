@@ -23,11 +23,11 @@ BEGIN
 
 
 	IF @salary IS NULL THEN
-		DELETE FROM salaries s
-        WHERE s.emp_no = empNo;
+		DELETE FROM salaries 
+        WHERE emp_no = empNo;
 
-		DELETE FROM salaries_current s
-        WHERE s.emp_no = empNo;
+		DELETE FROM salaries_current 
+        WHERE emp_no = empNo;
 
 		INSERT INTO salaries (
 			emp_no, 
