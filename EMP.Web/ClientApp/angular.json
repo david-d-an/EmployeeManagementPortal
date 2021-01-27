@@ -50,7 +50,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "EMP.Web:build"
+            "browserTarget": "EMP.Web:build",
+            "proxyConfig": "./proxy.conf.json"
           },
           "configurations": {
             "production": {
