@@ -1,0 +1,14 @@
+<div>
+  <!-- {{employeeDetails[0].firstName}} {{employeeDetails[0].lastName}} -->
+
+  <cdk-virtual-scroll-viewport itemSize="200" class="viewport">
+    <mat-card *cdkVirtualFor="let e of employeeDetails">
+      <mat-card-title>{{e.firstName}} {{e.lastName}}</mat-card-title>
+      <mat-card-content>
+        {{e.deptName}}
+        <br>
+        Contents Placeholder
+      </mat-card-content>
+    </mat-card>
+  </cdk-virtual-scroll-viewport>
+</div>
