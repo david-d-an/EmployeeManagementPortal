@@ -19,23 +19,23 @@ namespace EMP.Api.Controllers
         private IRepository<VwDeptManagerCurrent> _deptManagerCurrentRepository;
         private IRepository<VwDeptManagerDetail> _deptManagerDetailRepository;
         private IRepository<Employees> _employeeRepository;
-        private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
-        private IRepository<VwTitlesCurrent> _titleRepository;
+        // private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
+        // private IRepository<VwTitlesCurrent> _titleRepository;
         private IRepository<Departments> _departmentsRepository;
 
         public DeptManagerDetailController(
             ILogger<DeptManagerDetailController> logger,
             IRepository<Employees> employeeRepository,
-            IRepository<VwDeptEmpCurrent> deptEmpRepository,
-            IRepository<VwTitlesCurrent> titleRepository,
+            // IRepository<VwDeptEmpCurrent> deptEmpRepository,
+            // IRepository<VwTitlesCurrent> titleRepository,
             IRepository<VwDeptManagerCurrent> deptManagerCurrentRepository,
             IRepository<VwDeptManagerDetail> deptManagerDetailRepository,
             IRepository<Departments> departmentsRepository)
         {
             this._logger = logger;
             this._employeeRepository = employeeRepository;
-            this._deptEmpRepository = deptEmpRepository;
-            this._titleRepository = titleRepository;
+            // this._deptEmpRepository = deptEmpRepository;
+            // this._titleRepository = titleRepository;
             this._deptManagerCurrentRepository = deptManagerCurrentRepository;
             this._deptManagerDetailRepository = deptManagerDetailRepository;
             this._departmentsRepository = departmentsRepository;

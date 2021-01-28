@@ -26,7 +26,7 @@ namespace EMP.Api.Controllers
         private string managerGender;
         private Mock<ILogger<DeptManagerDetailController>> mockLogger;
         private Mock<IRepository<Employees>> mockEmployeeRepository;
-        private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpRepository;
+        // private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpRepository;
         private Mock<IRepository<VwTitlesCurrent>> mockTitleRepository;
         private Mock<IRepository<VwDeptManagerCurrent>> mockDeptManagerCurrentRepository;
         private Mock<IRepository<VwDeptManagerDetail>> mockDeptManagerDetailRepository;
@@ -64,7 +64,7 @@ namespace EMP.Api.Controllers
 
             // mockEmployeeDetailRepository = new Mock<IEmployeeDetailRepository>();
             mockEmployeeRepository = new Mock<IRepository<Employees>>();
-            mockDeptEmpRepository = new Mock<IRepository<VwDeptEmpCurrent>>();
+            // mockDeptEmpRepository = new Mock<IRepository<VwDeptEmpCurrent>>();
             // mockSalaryRepository = new Mock<ISalaryRepository>();
             mockTitleRepository = new Mock<IRepository<VwTitlesCurrent>>();
             mockDeptManagerCurrentRepository = new Mock<IRepository<VwDeptManagerCurrent>>();
@@ -120,8 +120,8 @@ namespace EMP.Api.Controllers
             _controller = new DeptManagerDetailController(
                 mockLogger.Object,
                 mockEmployeeRepository.Object,
-                mockDeptEmpRepository.Object,
-                mockTitleRepository.Object,
+                // mockDeptEmpRepository.Object,
+                // mockTitleRepository.Object,
                 mockDeptManagerCurrentRepository.Object,
                 mockDeptManagerDetailRepository.Object,
                 mockDepartmentsRepository.Object);
