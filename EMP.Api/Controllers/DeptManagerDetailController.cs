@@ -17,6 +17,7 @@ namespace EMP.Api.Controllers
     {
         private ILogger<DeptManagerDetailController> _logger;
         private IRepository<VwDeptManagerCurrent> _deptManagerCurrentRepository;
+        private IRepository<VwDeptManagerDetail> _deptManagerDetailRepository;
         private IRepository<Employees> _employeeRepository;
         private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
         private IRepository<VwTitlesCurrent> _titleRepository;
@@ -28,6 +29,7 @@ namespace EMP.Api.Controllers
             IRepository<VwDeptEmpCurrent> deptEmpRepository,
             IRepository<VwTitlesCurrent> titleRepository,
             IRepository<VwDeptManagerCurrent> deptManagerCurrentRepository,
+            IRepository<VwDeptManagerDetail> deptManagerDetailRepository,
             IRepository<Departments> departmentsRepository)
         {
             this._logger = logger;
@@ -35,52 +37,21 @@ namespace EMP.Api.Controllers
             this._deptEmpRepository = deptEmpRepository;
             this._titleRepository = titleRepository;
             this._deptManagerCurrentRepository = deptManagerCurrentRepository;
+            this._deptManagerDetailRepository = deptManagerDetailRepository;
             this._departmentsRepository = departmentsRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<DepartmentManagerDetail>>> Get()
+        public async Task<ActionResult<IEnumerable<VwDeptManagerDetail>>> Get()
         {
-            IEnumerable<DepartmentManagerDetail> departmentManagers = 
-                from d in await _departmentsRepository.GetAsync()
-                join dm in await _deptManagerCurrentRepository.GetAsync()
-                on d.DeptNo equals dm.DeptNo
-                join e in await _employeeRepository.GetAsync()
-                on dm.EmpNo equals e.EmpNo
-                select new DepartmentManagerDetail {
-                    DeptNo = d.DeptNo,
-                    DeptName = d.DeptName,
-                    FromDate = dm.FromDate,
-                    ToDate = dm.ToDate,
-                    EmpNo = e.EmpNo,
-                    FirstName = e.FirstName,
-                    LastName = e.LastName,
-                };
-
-            return Ok(departmentManagers);
+            await Task.Delay(0);
+            return Ok(_deptManagerDetailRepository.GetAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<DepartmentManagerDetail>> Get(string id)
+        public async Task<ActionResult<VwDeptManagerDetail>> Get(string id)
         {
-            IEnumerable<DepartmentManagerDetail> departmentManagers = 
-                from d in await _departmentsRepository.GetAsync()
-                join dm in await _deptManagerCurrentRepository.GetAsync()
-                on d.DeptNo equals dm.DeptNo
-                join e in await _employeeRepository.GetAsync()
-                on dm.EmpNo equals e.EmpNo
-                where d.DeptNo == id
-                select new DepartmentManagerDetail {
-                    DeptNo = d.DeptNo,
-                    DeptName = d.DeptName,
-                    FromDate = dm.FromDate,
-                    ToDate = dm.ToDate,
-                    EmpNo = e.EmpNo,
-                    FirstName = e.FirstName,
-                    LastName = e.LastName,
-                };
-
-            return departmentManagers.FirstOrDefault();
+            return await _deptManagerDetailRepository.GetAsync(id);
         }
 
         [HttpPut("{id}")]

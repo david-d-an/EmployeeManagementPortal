@@ -15,8 +15,9 @@ namespace EMP.Api.Controllers
     public class EmployeeDetailController : ControllerBase
     {
         private ILogger<EmployeeDetailController> _logger;
-        private IRepository<VwEmpDetails> _employeeDetailRepository;
         private IRepository<Employees> _employeeRepository;
+        private IRepository<VwEmpDetails> _employeeDetailRepository;
+        private IRepository<VwEmpDetailsShort> _employeeDetailShortRepository;
         private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
         private IRepository<VwSalariesCurrent> _salaryRepository;
         private IRepository<VwTitlesCurrent> _titleRepository;
@@ -25,22 +26,25 @@ namespace EMP.Api.Controllers
             ILogger<EmployeeDetailController> logger,
             IRepository<Employees> employeeRepository,
             IRepository<VwEmpDetails> employeeDetailRepository,
+            IRepository<VwEmpDetailsShort> employeeDetailShortRepository,
             IRepository<VwDeptEmpCurrent> deptEmpRepository,
             IRepository<VwSalariesCurrent> salaryRepository,
             IRepository<VwTitlesCurrent> titleRepository)
         {
             this._logger = logger;
-            this._employeeDetailRepository = employeeDetailRepository;
             this._employeeRepository = employeeRepository;
+            this._employeeDetailRepository = employeeDetailRepository;
+            this._employeeDetailShortRepository = employeeDetailShortRepository;
             this._deptEmpRepository = deptEmpRepository;
             this._salaryRepository = salaryRepository;
             this._titleRepository = titleRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VwEmpDetails>>> Get()
+        public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get()
         {
-            return Ok(await _employeeDetailRepository.GetAsync());
+            await Task.Delay(0);
+            return Ok(_employeeDetailShortRepository.GetAsync());
         }
 
         [HttpGet("{id}")]
@@ -118,7 +122,7 @@ namespace EMP.Api.Controllers
             Employees employeeCreateResult = await _employeeRepository.PostAsync(employeeCreateRequest);
             int? empNo = employeeCreateResult?.EmpNo;
 
-            if (empNo != null)
+            if (empNo == null)
                 return BadRequest();
 
             VwDeptEmpCurrent deptEmpCreateRequest = new VwDeptEmpCurrent {

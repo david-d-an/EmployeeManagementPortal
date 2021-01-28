@@ -29,6 +29,7 @@ namespace EMP.Api.Controllers
         private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpRepository;
         private Mock<IRepository<VwTitlesCurrent>> mockTitleRepository;
         private Mock<IRepository<VwDeptManagerCurrent>> mockDeptManagerCurrentRepository;
+        private Mock<IRepository<VwDeptManagerDetail>> mockDeptManagerDetailRepository;
         private Mock<IRepository<Departments>> mockDepartmentsRepository;
         private DeptManagerDetailController _controller;
         private string deptName;
@@ -67,6 +68,7 @@ namespace EMP.Api.Controllers
             // mockSalaryRepository = new Mock<ISalaryRepository>();
             mockTitleRepository = new Mock<IRepository<VwTitlesCurrent>>();
             mockDeptManagerCurrentRepository = new Mock<IRepository<VwDeptManagerCurrent>>();
+            mockDeptManagerDetailRepository = new Mock<IRepository<VwDeptManagerDetail>>();
             mockDepartmentsRepository = new Mock<IRepository<Departments>>();
 
             var listDepartments = new List<Departments>{ 
@@ -97,13 +99,13 @@ namespace EMP.Api.Controllers
             // Arrange
             mockDepartmentsRepository
                 .Setup(x => x.GetAsync(null, null))
-                .ReturnsAsync(listDepartments);
+                .Returns(listDepartments);
             mockDeptManagerCurrentRepository
                 .Setup(x => x.GetAsync(null, null))
-                .ReturnsAsync(listDeptManagerCurrent);
+                .Returns(listDeptManagerCurrent);
             mockEmployeeRepository
                 .Setup(x => x.GetAsync(null, null))
-                .ReturnsAsync(listEmployees);
+                .Returns(listEmployees);
 
             mockDepartmentsRepository
                 .Setup(x => x.GetAsync(It.Is<string>(i => i == deptNo)))
@@ -121,6 +123,7 @@ namespace EMP.Api.Controllers
                 mockDeptEmpRepository.Object,
                 mockTitleRepository.Object,
                 mockDeptManagerCurrentRepository.Object,
+                mockDeptManagerDetailRepository.Object,
                 mockDepartmentsRepository.Object);
         }
 
@@ -129,8 +132,8 @@ namespace EMP.Api.Controllers
 
             var listDepartments = new List<Departments>{ new Departments { DeptNo = deptNo }};
             var listDeptManagerCurrent = 
-                new List<VwDeptManagerCurrent>{ 
-                    new VwDeptManagerCurrent { 
+                new List<VwDeptManagerDetail>{ 
+                    new VwDeptManagerDetail { 
                         DeptNo = deptNo, 
                         EmpNo = managerEmpNo 
                     }
@@ -140,13 +143,13 @@ namespace EMP.Api.Controllers
             // Arrange
             mockDepartmentsRepository
                 .Setup(x => x.GetAsync(null, null))   //It.Is<string>(i => i == deptNo)))
-                .ReturnsAsync(listDepartments);
-            mockDeptManagerCurrentRepository
+                .Returns(listDepartments);
+            mockDeptManagerDetailRepository
                 .Setup(x => x.GetAsync(null, null))
-                .ReturnsAsync(listDeptManagerCurrent);
+                .Returns(listDeptManagerCurrent);
             mockEmployeeRepository
                 .Setup(x => x.GetAsync(null, null))
-                .ReturnsAsync(listEmployees);
+                .Returns(listEmployees);
             // mockDeptManagerCurrentRepository
             //     .Setup(x => x.GetAsync(It.Is<string>(i => i == deptNo)))
             //     .ReturnsAsync(new VwDeptManagerCurrent { DeptNo = deptNo, EmpNo = empNo });
@@ -155,12 +158,12 @@ namespace EMP.Api.Controllers
             //     .ReturnsAsync(new Employees { EmpNo = empNo });
 
             // Act
-            ActionResult<IEnumerable<DepartmentManagerDetail>> searchResult = await _controller.Get();
+            ActionResult<IEnumerable<DepartmentManagerDetail>> searchResult = (await _controller.Get()).Result;
             OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert
             Assert.Equal(200, listResult.StatusCode);
-            IEnumerable<DepartmentManagerDetail> list = listResult.Value as IEnumerable<DepartmentManagerDetail>;
+            IEnumerable<VwDeptManagerDetail> list = listResult.Value as IEnumerable<VwDeptManagerDetail>;
             Assert.Single(list);
             Assert.NotNull(list.FirstOrDefault());
             Assert.Equal(managerEmpNo, list.FirstOrDefault().EmpNo);
@@ -168,20 +171,34 @@ namespace EMP.Api.Controllers
 
         [Fact]
         public async void ShouldReturnDeptMangerDetailForValidDeptNo() {
-
+            
             // Arrange
+            DateTime timeNow = DateTime.Now;
+            var deptManagerDetail = new VwDeptManagerDetail { 
+                DeptNo = deptNo, 
+                DeptName = deptName,
+                FromDate = timeNow,
+                ToDate = timeNow,
+                EmpNo = managerEmpNo,
+                FirstName = managerFirstName,
+                LastName = managerLastName
+            };
+
+            mockDeptManagerDetailRepository
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == deptNo)))
+                .ReturnsAsync(deptManagerDetail);
 
             // Act
-            ActionResult<DepartmentManagerDetail> searchResult = await _controller.Get(deptNo);
+            ActionResult<VwDeptManagerDetail> searchResult = (await _controller.Get(deptNo));
 
             // Assert
-            Assert.Equal(managerEmpNo, searchResult.Value.EmpNo);
             Assert.Equal(deptNo, searchResult.Value.DeptNo);
+            Assert.Equal(deptName, searchResult.Value.DeptName);
+            Assert.Equal(timeNow, searchResult.Value.FromDate);
+            Assert.Equal(timeNow, searchResult.Value.ToDate);
+            Assert.Equal(managerEmpNo, searchResult.Value.EmpNo);
             Assert.Equal(managerFirstName, searchResult.Value.FirstName);
             Assert.Equal(managerLastName, searchResult.Value.LastName);
-            Assert.Equal(fromDate, searchResult.Value.FromDate);
-            Assert.Equal(toDate, searchResult.Value.ToDate);
-            Assert.Equal(toDate, searchResult.Value.ToDate);
         }
 
         [Fact]

@@ -5,6 +5,7 @@ using EMP.Common.Tasks;
 using EMP.Data.Models;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
+using EMP.DataAccess.Repos.Extension;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
@@ -17,10 +18,18 @@ namespace EMP.DataAccess.Repos
         {
             this._context = context;
         }
-        public async Task<IEnumerable<DeptManager>> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<DeptManager> GetAsync(int? pageNum = null, int? pageSize = null)
         {
-            IQueryable<DeptManager> deptManagers  = _context.DeptManager;
-            return await deptManagers.ToListAsync();
+            DbSet<DeptManager> dbSet =  _context.DeptManager;
+
+            IQueryable<DeptManager> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
         }
 
         public async Task<DeptManager> GetAsync(string id)

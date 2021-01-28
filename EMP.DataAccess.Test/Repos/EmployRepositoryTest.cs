@@ -20,14 +20,14 @@ namespace EMP.DataAccess.Repos
 
         public EmployRepositoryTest()
         {
-            connStrMySql = "server=mycompany.cniwlvrfgzdc.us-east-1.rds.amazonaws.com;uid=appuser;password=Soil9303;port=3306;database=employees;";
+            connStrMySql = "Server=mycompany6921.mysql.database.azure.com; Port=3306; Database=employees; Uid=appuser@mycompany6921; Pwd=Soil9303; SslMode=Preferred;";
             dbOptionsbuilder = new DbContextOptionsBuilder<EmployeesContext>().UseMySQL(connStrMySql);
             context = new EmployeesContext(dbOptionsbuilder.Options);
         }
 
         [Fact]
         public void ShouldPass() {
-
+            Assert.True(0 == 0);
         }
     }
 

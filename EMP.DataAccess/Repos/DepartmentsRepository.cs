@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using EMP.Common.Tasks;
 using System.Data;
+using EMP.DataAccess.Repos.Extension;
 
 namespace EMP.DataAccess.Repos
 {
@@ -19,13 +20,18 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<Departments>> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<Departments> GetAsync(int? pageNum = null, int? pageSize = null)
         {
-            IQueryable<Departments> result = 
-                from d in this._context.Departments
-                select d;
+            DbSet<Departments> dbSet =  _context.Departments;
 
-            return await result.ToListAsync();
+            IQueryable<Departments> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
         }
 
         public async Task<Departments> GetAsync(string id)

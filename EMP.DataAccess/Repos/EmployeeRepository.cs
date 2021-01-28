@@ -8,6 +8,7 @@ using EMP.Common.Tasks;
 using EMP.Data.Models;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
+using EMP.DataAccess.Repos.Extension;
 using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
@@ -21,10 +22,18 @@ namespace EMP.DataAccess.Repos
            this._context = context;
        }
 
-        public async Task<IEnumerable<Employees>> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<Employees> GetAsync(int? pageNum = null, int? pageSize = null)
         {
-            IQueryable<Employees> query = _context.Employees;
-            return await query.ToListAsync();
+            DbSet<Employees> dbSet =  _context.Employees;
+
+            IQueryable<Employees> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
         }
 
         public async Task<Employees> GetAsync(string id)

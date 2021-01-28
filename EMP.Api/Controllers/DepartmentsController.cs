@@ -26,7 +26,8 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Departments>>> Get()
         {
-            return Ok(await _departmentsRepository.GetAsync());
+            await Task.Delay(0);
+            return Ok(_departmentsRepository.GetAsync());
         }
 
         [HttpGet("{id}")]

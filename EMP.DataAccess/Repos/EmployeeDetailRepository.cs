@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System;
 using EMP.Common.Tasks;
+using EMP.DataAccess.Repos.Extension;
 
 namespace EMP.DataAccess.Repos
 {
@@ -19,19 +20,42 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<VwEmpDetails>> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<VwEmpDetails> GetAsync(int? pageNum = null, int? pageSize = null)
         {
-            IQueryable<VwEmpDetails> query = _context.VwEmpDetails;
+            DbSet<VwEmpDetails> dbSet =  _context.VwEmpDetails;
 
-            if (pageNum != null && pageNum.Value > 0 && 
-                pageSize != null && pageSize.Value > 0) {
+            IQueryable<VwEmpDetails> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
                 query = query
-                    .Where(i => i.DeptName == "Customer Service")
                     .Skip((pageNum.Value - 1) * pageSize.Value)
                     .Take(pageSize.Value);
             }
 
-            return await query.ToListAsync();
+            return query.ToEnumerable();
+
+            // query = query
+            //     .Where(i => i.DeptName == "Production")
+            //     .Where(i => i.LastName.ToLower().StartsWith("c"));
+
+            // query = from r in query
+            //         select 
+            //         new VwEmpDetails {                        
+            //             EmpNo = r.EmpNo,
+            //             FirstName = r.FirstName,
+            //             LastName = r.LastName,
+            //             BirthDate = r.BirthDate,
+            //             HireDate = r.HireDate,
+            //             Gender = r.Gender,
+            //             Salary = r.Salary,
+            //             Title = r.Title,
+            //             DeptName = r.DeptName,
+            //             DeptNo = r.DeptNo,
+            //             ManagerFirstName = r.ManagerFirstName,
+            //             ManagerLastName = r.ManagerLastName,
+            //             ManagerEmpNo = r.ManagerEmpNo
+            //         };
+
+            // return await query.ToListAsync();
         }
 
         public async Task<VwEmpDetails> GetAsync(string id)

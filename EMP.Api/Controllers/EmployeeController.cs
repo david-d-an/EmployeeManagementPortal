@@ -26,7 +26,8 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employees>>> Get()
         {
-            IEnumerable<Employees> result = await _employeeRepository.GetAsync();
+            await Task.Delay(0);
+            IEnumerable<Employees> result = _employeeRepository.GetAsync();
             return Ok(result);
         }
 
@@ -53,7 +54,6 @@ namespace EMP.Api.Controllers
         public async Task<ActionResult<Employees>> Post(Employees employeeCreateRequest) 
         {
             Employees result = await _employeeRepository.PostAsync(employeeCreateRequest);
-            // return result;
             return CreatedAtAction(
                 nameof(Post), 
                 nameof(EmployeeController), 
@@ -74,13 +74,13 @@ namespace EMP.Api.Controllers
             return deletedEmployee;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employees>>> GetLarge()
-        {
-            IEnumerable<Employees> result = await _employeeRepository.GetAsync();
-            return Ok(result);
-        }
-
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Employees>>> GetLarge()
+        // {
+        //     await Task.Delay(0);
+        //     IEnumerable<Employees> result = _employeeRepository.GetAsync();
+        //     return Ok(result);
+        // }
     }
 }
 

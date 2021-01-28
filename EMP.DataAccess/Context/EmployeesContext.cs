@@ -30,8 +30,9 @@ namespace EMP.DataAccess.Context
         public virtual DbSet<TitlesCurrent> TitlesCurrent { get; set; }
         public virtual DbSet<VwDeptEmpCurrent> VwDeptEmpCurrent { get; set; }
         public virtual DbSet<VwDeptManagerCurrent> VwDeptManagerCurrent { get; set; }
+        public virtual DbSet<VwDeptManagerDetail> VwDeptManagerDetail { get; set; }
         public virtual DbSet<VwEmpDetails> VwEmpDetails { get; set; }
-        public virtual DbSet<VwEmpDetailsCurrent> VwEmpDetailsCurrent { get; set; }
+        public virtual DbSet<VwEmpDetailsShort> VwEmpDetailsShort { get; set; }
         public virtual DbSet<VwSalariesCurrent> VwSalariesCurrent { get; set; }
         public virtual DbSet<VwTitlesCurrent> VwTitlesCurrent { get; set; }
 
@@ -436,6 +437,43 @@ namespace EMP.DataAccess.Context
                     .HasColumnType("date");
             });
 
+            modelBuilder.Entity<VwDeptManagerDetail>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("vw_dept_manager_detail");
+
+                entity.Property(e => e.DeptNo)
+                    .IsRequired()
+                    .HasColumnName("dept_no")
+                    .HasMaxLength(4)
+                    .IsFixedLength();
+
+                entity.Property(e => e.DeptName)
+                    .HasColumnName("dept_name")
+                    .HasMaxLength(40);
+
+                entity.Property(e => e.FromDate)
+                    .HasColumnName("from_date")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.ToDate)
+                    .HasColumnName("to_date")
+                    .HasColumnType("date");
+
+                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+
+                entity.Property(e => e.FirstName)
+                    .IsRequired()
+                    .HasColumnName("first_name")
+                    .HasMaxLength(14);
+
+                entity.Property(e => e.LastName)
+                    .IsRequired()
+                    .HasColumnName("last_name")
+                    .HasMaxLength(16);
+            });
+
             modelBuilder.Entity<VwEmpDetails>(entity =>
             {
                 entity.HasNoKey();
@@ -498,15 +536,15 @@ namespace EMP.DataAccess.Context
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<VwEmpDetailsCurrent>(entity =>
+            modelBuilder.Entity<VwEmpDetailsShort>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("vw_emp_details_current");
+                entity.ToView("vw_emp_details_short");
 
-                entity.Property(e => e.BirthDate)
-                    .HasColumnName("birth_date")
-                    .HasColumnType("date");
+                // entity.Property(e => e.BirthDate)
+                //     .HasColumnName("birth_date")
+                //     .HasColumnType("date");
 
                 entity.Property(e => e.DeptName)
                     .IsRequired()
@@ -526,14 +564,14 @@ namespace EMP.DataAccess.Context
                     .HasColumnName("first_name")
                     .HasMaxLength(14);
 
-                entity.Property(e => e.Gender)
-                    .IsRequired()
-                    .HasColumnName("gender")
-                    .HasColumnType("enum('M','F')");
+                // entity.Property(e => e.Gender)
+                //     .IsRequired()
+                //     .HasColumnName("gender")
+                //     .HasColumnType("enum('M','F')");
 
-                entity.Property(e => e.HireDate)
-                    .HasColumnName("hire_date")
-                    .HasColumnType("date");
+                // entity.Property(e => e.HireDate)
+                //     .HasColumnName("hire_date")
+                //     .HasColumnType("date");
 
                 entity.Property(e => e.LastName)
                     .IsRequired()
@@ -542,17 +580,17 @@ namespace EMP.DataAccess.Context
 
                 entity.Property(e => e.ManagerEmpNo).HasColumnName("manager_emp_no");
 
-                entity.Property(e => e.ManagerFirstName)
-                    .IsRequired()
-                    .HasColumnName("manager_first_name")
-                    .HasMaxLength(14);
+                // entity.Property(e => e.ManagerFirstName)
+                //     .IsRequired()
+                //     .HasColumnName("manager_first_name")
+                //     .HasMaxLength(14);
 
-                entity.Property(e => e.ManagerLastName)
-                    .IsRequired()
-                    .HasColumnName("manager_last_name")
-                    .HasMaxLength(16);
+                // entity.Property(e => e.ManagerLastName)
+                //     .IsRequired()
+                //     .HasColumnName("manager_last_name")
+                //     .HasMaxLength(16);
 
-                entity.Property(e => e.Salary).HasColumnName("salary");
+                // entity.Property(e => e.Salary).HasColumnName("salary");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")

@@ -6,6 +6,8 @@ using EMP.Data.Models;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 using EMP.DataAccess.EFCore;
+using EMP.DataAccess.Repos.Extension;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
 {
@@ -18,9 +20,18 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<VwDeptEmpCurrent>> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<VwDeptEmpCurrent> GetAsync(int? pageNum = null, int? pageSize = null)
         {
-            return await TaskConstants<IEnumerable<VwDeptEmpCurrent>>.NotImplemented;
+            DbSet<VwDeptEmpCurrent> dbSet =  _context.VwDeptEmpCurrent;
+
+            IQueryable<VwDeptEmpCurrent> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
         }
 
         public async Task<VwDeptEmpCurrent> GetAsync(string id)

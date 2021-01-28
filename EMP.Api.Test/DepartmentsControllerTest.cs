@@ -48,7 +48,7 @@ namespace EMP.Api.Controllers
                 department
             };
 
-            mockDepartmentsRepository.Setup(x => x.GetAsync(null, null)).ReturnsAsync(departments);
+            mockDepartmentsRepository.Setup(x => x.GetAsync(null, null)).Returns(departments);
 
             // Act
             ActionResult<IEnumerable<Departments>> searchResult = await _controller.Get();
