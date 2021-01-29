@@ -72,9 +72,10 @@ namespace EMP.Api.Controllers
                 FirstName = string.Empty,
                 LastName = string.Empty,
                 Title = string.Empty,
+                Salary = salary,
                 DeptNo = deptNo,
                 DeptName = string.Empty,
-                ManagerEmpNo =  managerEmpNo
+                // ManagerEmpNo =  managerEmpNo
             };
 
 

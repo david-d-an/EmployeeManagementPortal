@@ -578,7 +578,7 @@ namespace EMP.DataAccess.Context
                     .HasColumnName("last_name")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.ManagerEmpNo).HasColumnName("manager_emp_no");
+                // entity.Property(e => e.ManagerEmpNo).HasColumnName("manager_emp_no");
 
                 // entity.Property(e => e.ManagerFirstName)
                 //     .IsRequired()
@@ -590,7 +590,7 @@ namespace EMP.DataAccess.Context
                 //     .HasColumnName("manager_last_name")
                 //     .HasMaxLength(16);
 
-                // entity.Property(e => e.Salary).HasColumnName("salary");
+                entity.Property(e => e.Salary).HasColumnName("salary");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
