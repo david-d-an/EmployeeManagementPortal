@@ -28,20 +28,43 @@ export class MyComponent implements OnInit {
   // // managerLastName: string;
 
   employeeDetails = [];
+  rows: any;
+  columns: any;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
+
+    this.columns = [
+      { prop: 'empNo', name: 'Employee ID' } ,
+      { prop: 'firstName', name: 'First Name' },
+      { prop: 'lastName', name: 'Last Name' },
+      { prop: 'title', name: 'Title' },
+      { prop: 'salary', name: 'Salary' },
+      { prop: 'deptNo', name: 'Dept No.' },
+      { prop: 'deptName', name: 'Department' },
+    ];
+
     this.dataService.getEmployeeDetails()
-      .pipe(
-        tap(data => console.log(JSON.stringify(data.length)))
-      )
+      // .pipe(
+      //   tap(data => console.log(data.length))
+      // )
       .subscribe(
-        data => this.employeeDetails = data
-        // stream => {
-        //   this.dataSource.data = new TableVirtualScrollDataSource<EmployeeDetail>(stream);
-        // }
-      );
+        data => {
+          this.rows = data;
+        }
+    );
+
+    // this.dataService.getEmployeeDetails()
+    //   .pipe(
+    //     tap(data => console.log(JSON.stringify(data.length)))
+    //   )
+    //   .subscribe(
+    //     data => this.employeeDetails = data
+    //     // stream => {
+    //     //   this.dataSource.data = new TableVirtualScrollDataSource<EmployeeDetail>(stream);
+    //     // }
+    //   );
 
     // this.dataService.getEmployeeDetails()
     // .subscribe(

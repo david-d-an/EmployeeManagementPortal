@@ -16,6 +16,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCardModule, MatCard } from '@angular/material/card';
 
 import { MyComponent } from './Scroll/my.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { MyComponent } from './Scroll/my.component';
     TableVirtualScrollModule,
     ScrollingModule,
     MatTableModule,
-    MatCardModule
+    MatCardModule,
+    NgxDatatableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
