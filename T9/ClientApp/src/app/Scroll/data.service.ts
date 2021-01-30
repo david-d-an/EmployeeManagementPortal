@@ -20,7 +20,7 @@ import { EmployeeDetail } from './EmployeeDetail';
 })
 export class DataService {
 
-  svcUrl = '/api/EmployeeDetail';
+  svcUrl = 'https://localhost:15001/api/EmployeeDetail';
 
   constructor(private http: HttpClient) {
 
@@ -45,7 +45,8 @@ export class DataService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
+      // errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
+      errorMessage = `Backend returned Error ${err.status}: ${err}`;
     }
     console.log('error detected');
     console.error(err);

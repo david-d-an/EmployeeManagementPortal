@@ -1,0 +1,4 @@
+> cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Web
+> dotnet publish -c Release
+> cd bin/Release/netcoreapp3.1/publish/
+> dotnet EMP.Web.dll

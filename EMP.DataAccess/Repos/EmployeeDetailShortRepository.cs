@@ -21,6 +21,8 @@ namespace EMP.DataAccess.Repos
 
         public IEnumerable<VwEmpDetailsShort> GetAsync(int? pageNum = null, int? pageSize = null)
         {
+            pageNum = 1;
+            pageSize = 2;
             DbSet<VwEmpDetailsShort> dbSet =  _context.VwEmpDetailsShort;
 
             IQueryable<VwEmpDetailsShort> query = dbSet.AsNoTracking();

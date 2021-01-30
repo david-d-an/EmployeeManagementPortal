@@ -21,6 +21,8 @@ namespace EMP.Api
 {
     public class Startup
     {
+        private readonly string EmpWebOrigins = "EMP.Web";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,6 +33,17 @@ namespace EMP.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: EmpWebOrigins, builder =>
+                {
+                    builder.WithOrigins(
+                        "http://localhos:5000",
+                        "https://localhost:5001"
+                    );
+                });
+            });
+
             var cryptoUtil = new AesCryptoUtil();
 
             services.AddControllers();
@@ -83,6 +96,8 @@ namespace EMP.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(EmpWebOrigins);
 
             app.UseHttpsRedirection();
 

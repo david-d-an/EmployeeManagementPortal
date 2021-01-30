@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  appTitle = 'Employee Management Portal';
 
   collapse() {
     this.isExpanded = false;
