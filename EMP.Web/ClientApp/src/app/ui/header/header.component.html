@@ -17,12 +17,9 @@
       <li ngbDropdown class="nav-item dropdown">
         <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
-          <a class="dropdown-item" href="heroes">Heroes</a>
-          <a class="dropdown-item" href="http-test">Http Test</a>
-          <a class="dropdown-item" href="listing-page">Listing</a>
+          <a class="dropdown-item" href="employees">Employees List</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="my-custom">Custom</a>
-          <a class="dropdown-item" href="pizza">Pizza</a>
+          <a class="dropdown-item" href="departments">Department List</a>
         </div>
       </li>
 
@@ -35,10 +32,20 @@
     </ul>
 
     <div class="navbar-expand ml-auto navbar-nav">
-      <div class="navbar-nav navbar-text">
+      <!-- <div class="navbar-nav navbar-text">
         <i class="fa fa-user"></i>
         Anonymous User
+      </div> -->
+
+      <div class="navbar-nav navbar-text"
+        *ngIf="!isLoggedIn">
+          <a class="nav-link" [routerLink]="['/login']" >Log In</a>
       </div>
+      <div class="navbar-nav navbar-text"
+        *ngIf="isLoggedIn">
+          <a class="nav-link" (click)="logOut()">Log Out</a>
+      </div>
+
     </div>
   </div>
 </nav>

@@ -13,7 +13,7 @@ export class AppComponent {
   // textcolor: string;
 
   constructor(private router: Router) {
-
+    this.loading = false;
   }
 
   // changeColor() {

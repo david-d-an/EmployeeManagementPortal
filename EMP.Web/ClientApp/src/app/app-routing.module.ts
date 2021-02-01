@@ -1,24 +1,47 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+
 import { HomeComponent } from './home/home.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
+
+// import { DepartmentListComponent } from './departments/list/department-list.component';
+// import { EmployeeListComponent } from './employees/list/employee-list.component';
+// import { CommonModule } from '@angular/common';
+// import { CounterComponent } from './counter/counter.component';
+// import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent, pathMatch: 'full' },
-    { path: 'employees', component: CounterComponent },
-    { path: 'departments', component: CounterComponent },
-    { path: 'counter', component: CounterComponent },
-    { path: 'fetch-data', component: FetchDataComponent },
-    { path: '**', component: PageNotFoundComponent }
-  ];
-
+  { path: 'home', component: HomeComponent },
+  { path: 'welcome', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  // { path: 'employees', component: EmployeeListComponent },
+  { path: 'employees',
+    loadChildren: () =>
+      import('./employees/employees.module').then(m => m.EmployeesModule),
+    // canActivate: [AuthGuard],
+    // canLoad: [AuthGuard],
+    data: { preload: true, delay: 1000 }
+  },
+  // { path: 'departments', component: DepartmentListComponent },
+  { path: 'departments',
+    loadChildren: () =>
+      import('./departments/departments.module').then(m => m.DepartmentsModule),
+    // canActivate: [AuthGuard],
+    // canLoad: [AuthGuard],
+    data: { preload: true, delay: 1000 }
+  },
+  { path: 'contact', component: ContactComponent },
+  { path: 'about', component: AboutComponent },
+  // { path: 'counter', component: CounterComponent },
+  // { path: 'fetch-data', component: FetchDataComponent },
+  { path: '**', component: PageNotFoundComponent }
+];
 
 @NgModule({
   imports: [
-    CommonModule,
+    // CommonModule,
     RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })
   ],
   exports: [
