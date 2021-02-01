@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { EmployeeDetailComponent } from './detail/employee-detail.component';
 import { EmployeeListComponent } from './list/employee-list.component';
 import { EmployeeEditComponent } from './edit/employee-edit.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 
 
@@ -18,6 +19,7 @@ import { EmployeeEditComponent } from './edit/employee-edit.component';
     // CommonModule,
     EmpCommonModule,
     EmployeesRoutingModule,
+    NgxDatatableModule
   ]
 })
 export class EmployeesModule { }
