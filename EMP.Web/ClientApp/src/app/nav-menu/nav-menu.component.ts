@@ -6,8 +6,11 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  isExpanded = false;
+  loading = false;
+  isExpanded = true;
   appTitle = 'Employee Management Portal';
+  isLoggedIn = true;
+  userName = 'Test User';
 
   collapse() {
     this.isExpanded = false;
@@ -16,4 +19,6 @@ export class NavMenuComponent {
   toggle() {
     this.isExpanded = !this.isExpanded;
   }
+
+  logOut() {}
 }
