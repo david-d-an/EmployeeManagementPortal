@@ -10,8 +10,17 @@ export class AppComponent {
   title = 'app';
   pageTitle = 'Employee Portal';
   loading: boolean;
+  // textcolor: string;
 
   constructor(private router: Router) {
 
   }
+
+  // changeColor() {
+  //   this.textcolor = 'red';
+  // }
+
+  // returnColor() {
+  //   this.textcolor = 'black';
+  // }
 }
