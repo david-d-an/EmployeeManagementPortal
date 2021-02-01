@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" role = "navigation">
+  <a class="navbar-brand" href="/">
+    <img width="25" alt="Angular Logo" src="../../../assets/images/logo_small.jpg">
+  </a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/home">
+          <i class="fa fa-home"></i><span class="sr-only">(current)</span>
+        </a>
+      </li>
+
+      <li ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+        <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
+          <a class="dropdown-item" href="heroes">Heroes</a>
+          <a class="dropdown-item" href="http-test">Http Test</a>
+          <a class="dropdown-item" href="listing-page">Listing</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="my-custom">Custom</a>
+          <a class="dropdown-item" href="pizza">Pizza</a>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="about">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="contact">Contact</a>
+      </li>
+    </ul>
+
+    <div class="navbar-expand ml-auto navbar-nav">
+      <div class="navbar-nav navbar-text">
+        <i class="fa fa-user"></i>
+        Anonymous User
+      </div>
+    </div>
+  </div>
+</nav>
