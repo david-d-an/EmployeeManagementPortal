@@ -42,6 +42,8 @@ namespace EMP.Api.Controllers
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get(
+            [FromQuery] int? pageNum,
+            [FromQuery] int? pageSize,
             [FromQuery] string firstName,
             [FromQuery] string lastName,
             [FromQuery] string salaryMin,
@@ -59,8 +61,9 @@ namespace EMP.Api.Controllers
                 new KeyValuePair<string, string> ("title", title ),
                 new KeyValuePair<string, string> ("deptName", deptName ),
             };
+
             await Task.Delay(0);
-            return Ok(_employeeDetailShortRepository.GetAsync(parameters));
+            return Ok(_employeeDetailShortRepository.GetAsync(parameters, pageNum, pageSize));
         }
 
         [HttpGet("{id}")]
