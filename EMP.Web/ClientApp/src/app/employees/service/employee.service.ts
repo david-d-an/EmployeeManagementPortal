@@ -12,7 +12,10 @@ import { EmployeeDetail } from 'src/app/models/EmployeeDetail';
 })
 export class EmployeeService {
 
-  svcUrl = 'https://localhost:15001/api/EmployeeDetail';
+
+  pageNum = 1;
+  pageSize = 12;
+  svcUrl = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
 
   constructor(private http: HttpClient) { }
 

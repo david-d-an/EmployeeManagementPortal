@@ -1,6 +1,6 @@
 <div>
-  <ngx-datatable
-    #mydatatable
+  <ngx-datatable #employListDatatable
+    (activate)="onActivate($event)"
     class="material"
     [headerHeight]="50"
     [footerHeight]="50"

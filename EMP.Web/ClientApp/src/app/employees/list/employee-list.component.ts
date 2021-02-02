@@ -52,4 +52,11 @@ export class EmployeeListComponent implements OnInit {
           }
         });
     }
+
+    onActivate(event: any): void {
+      if (event.type === 'click') {
+        console.log(event.row);
+        console.log(`Employee ID: ${event.row.empNo}`);
+      }
+    }
 }
