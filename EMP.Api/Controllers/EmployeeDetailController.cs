@@ -41,10 +41,26 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get()
+        public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get(
+            [FromQuery] string firstName,
+            [FromQuery] string lastName,
+            [FromQuery] string salaryMin,
+            [FromQuery] string salaryMax,
+            [FromQuery] string title,
+            [FromQuery] string deptName)
         {
+            // api/EmployeeDetail?firstName=john&lastName=smith&salaryMin=4&salaryMax=100&title=admin&deptName=marketing
+
+            object parameters = new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string> ("firstName", firstName ),
+                new KeyValuePair<string, string> ("lastName", lastName ),
+                new KeyValuePair<string, string> ("salaryMin", salaryMin ),
+                new KeyValuePair<string, string> ("salaryMax", salaryMax ),
+                new KeyValuePair<string, string> ("title", title ),
+                new KeyValuePair<string, string> ("deptName", deptName ),
+            };
             await Task.Delay(0);
-            return Ok(_employeeDetailShortRepository.GetAsync());
+            return Ok(_employeeDetailShortRepository.GetAsync(parameters));
         }
 
         [HttpGet("{id}")]

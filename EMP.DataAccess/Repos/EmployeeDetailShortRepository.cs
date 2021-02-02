@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EMP.DataAccess.Repos.Extension;
 using EMP.Common.Tasks;
+using EMP.Common.Data;
 
 namespace EMP.DataAccess.Repos
 {
@@ -19,13 +20,48 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public IEnumerable<VwEmpDetailsShort> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<VwEmpDetailsShort> GetAsync(
+            object parameters = null, 
+            int? pageNum = null, 
+            int? pageSize = null)
         {
-            pageNum = 1;
-            pageSize = 10;
             DbSet<VwEmpDetailsShort> dbSet =  _context.VwEmpDetailsShort;
-
             IQueryable<VwEmpDetailsShort> query = dbSet.AsNoTracking();
+
+            if (parameters != null) {
+                var param = (List<KeyValuePair<string, string>>)parameters;
+
+                foreach(KeyValuePair<string, string> kv in param) {
+                    if (kv.Value == null)
+                        continue;
+
+                    if (kv.Key == "firstName") {
+                        query = query.Where(i => i.FirstName.Contains(kv.Value));
+                    }
+                    else if (kv.Key == "lastName") {
+                        query = query.Where(i => i.LastName.Contains(kv.Value));
+                    }
+                    else if (kv.Key == "salaryMin") {
+                        decimal s;
+                        if (decimal.TryParse(kv.Value, out s)){
+                            query = query.Where(i => i.Salary >= s);
+                        }
+                    }
+                    else if (kv.Key == "salaryMax") {
+                        decimal s;
+                        if (decimal.TryParse(kv.Value, out s)){
+                            query = query.Where(i => i.Salary <= s);
+                        }
+                    }
+                    else if (kv.Key == "title") {
+                        query = query.Where(i => i.Title.Contains(kv.Value));
+                    }
+                    else if (kv.Key == "deptName") {
+                        query = query.Where(i => i.DeptName.Contains(kv.Value));
+                    }
+                }
+            }
+
             if ((pageNum??0) >  0 && (pageSize??0) > 0) {
                 query = query
                     .Skip((pageNum.Value - 1) * pageSize.Value)

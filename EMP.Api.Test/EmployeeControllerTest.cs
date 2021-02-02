@@ -58,7 +58,7 @@ namespace EMP.Api.Controllers
                 employee
             };
 
-            mockEmployeeRepository.Setup(x => x.GetAsync(null, null)).Returns(employees);
+            mockEmployeeRepository.Setup(x => x.GetAsync(null, null, null)).Returns(employees);
 
             // Act
             ActionResult<IEnumerable<Employees>> searchResult = await _controller.Get();

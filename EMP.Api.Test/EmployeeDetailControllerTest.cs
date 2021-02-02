@@ -110,11 +110,12 @@ namespace EMP.Api.Controllers
             };
 
             mockEmployeeDetailShortRepository
-                .Setup(x => x.GetAsync(null, null))
+                .Setup(x => x.GetAsync(null, null, null))
                 .Returns(listEmployeeDetails);
 
             // Act
-            ActionResult<IEnumerable<VwEmpDetails>> searchResult = (await _controller.Get()).Result;
+            ActionResult<IEnumerable<VwEmpDetails>> searchResult = 
+                (await _controller.Get(null, null, null, null, null, null)).Result;
             OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert

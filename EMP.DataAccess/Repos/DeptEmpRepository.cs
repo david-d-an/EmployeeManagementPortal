@@ -20,7 +20,10 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public IEnumerable<VwDeptEmpCurrent> GetAsync(int? pageNum = null, int? pageSize = null)
+        public IEnumerable<VwDeptEmpCurrent> GetAsync(
+            object parameters = null, 
+            int? pageNum = null, 
+            int? pageSize = null)
         {
             DbSet<VwDeptEmpCurrent> dbSet =  _context.VwDeptEmpCurrent;
 
