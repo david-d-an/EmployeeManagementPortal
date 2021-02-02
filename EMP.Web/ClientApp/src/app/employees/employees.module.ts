@@ -1,13 +1,12 @@
-import { EmpCommonModule } from '../shared/emp-common.module';
-import { EmployeesRoutingModule } from './employees-routing.module';
 import { NgModule } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-import { EmployeeDetailComponent } from './detail/employee-detail.component';
+import { EmpCommonModule } from '../shared/emp-common.module';
+import { EmpStyleModule } from './../shared/emp-style.module';
+import { EmployeesRoutingModule } from './employees-routing.module';
+
 import { EmployeeListComponent } from './list/employee-list.component';
+import { EmployeeDetailComponent } from './detail/employee-detail.component';
 import { EmployeeEditComponent } from './edit/employee-edit.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-
-
 
 @NgModule({
   declarations: [
@@ -16,10 +15,10 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     EmployeeEditComponent
   ],
   imports: [
-    // CommonModule,
     EmpCommonModule,
     EmployeesRoutingModule,
-    NgxDatatableModule
+    EmpStyleModule,
+    NgxDatatableModule,
   ]
 })
 export class EmployeesModule { }

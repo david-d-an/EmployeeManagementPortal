@@ -1,1 +1,49 @@
-<p>department-list works!</p>
+<div class="card">
+  <div class="card-header">
+    {{ this.pageTitle }}
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-2 ">
+        <button
+          (click)="openModal()"
+          class="btn btn-outline-primary"
+          style="width:80px">
+          Filter
+        </button>
+      </div>
+      <div class="col-md-8">
+        <span *ngFor="let filter of filters; let i = index">
+          <button class="btn btn-outline-secondary"
+                  style="font-size:smaller;margin-bottom:12px;margin-right:2px"
+                  title="Click to remove this filter"
+                  (click)="removeFilter(i)">
+            {{filter}}
+            <span class="fa fa-times-circle"></span>
+          </button>
+        </span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div>
+      Contents
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <modal #myModal (onOpen)="foo()" (onClose)="foo()">
+      <modal-header>
+          <h1>Modal header</h1>
+      </modal-header>
+      <modal-content>
+          Hello Modal!
+      </modal-content>
+      <modal-footer>
+          <button class="btn btn-primary" (click)="closeModal()">close</button>
+      </modal-footer>
+  </modal>
+</div>
