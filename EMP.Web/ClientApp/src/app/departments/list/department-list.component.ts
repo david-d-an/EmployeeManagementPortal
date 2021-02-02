@@ -14,7 +14,6 @@ export class DepartmentListComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router) { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void { }
 
 }
