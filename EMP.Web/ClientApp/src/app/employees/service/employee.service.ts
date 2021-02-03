@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
-import { EmployeeDetail } from 'src/app/models/EmployeeDetail';
+import { EmployeeDetail, EmployeeFilter } from 'src/app/models/EmployeeDetail';
 
 
 
@@ -12,16 +12,24 @@ import { EmployeeDetail } from 'src/app/models/EmployeeDetail';
 })
 export class EmployeeService {
 
-
   pageNum = 1;
   pageSize = 12;
-  svcUrl = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+  svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
 
   constructor(private http: HttpClient) { }
 
-  getEmployeeDetails(): Observable<EmployeeDetail[]> {
-    // return this.http.get<EmployeeDetails[]>(this.svcUrl, { 'headers': httpOptions.headers })
-    return this.http.get<EmployeeDetail[]>(this.svcUrl)
+  getSvcUrl(filter: EmployeeFilter) {
+    return this.svcUrlBase +
+      `&firstName=${filter.firstName}` +
+      `&lastName=${filter.lastName}` +
+      `&deptName=${filter.deptName}` +
+      `&title=${filter.title}` +
+      `&salaryMin=${filter.salaryMin}` +
+      `&salaryMax=${filter.salaryMax}`;
+  }
+
+  getEmployeeDetails(filter: EmployeeFilter): Observable<EmployeeDetail[]> {
+    return this.http.get<EmployeeDetail[]>(this.getSvcUrl(filter))
       .pipe(
         // tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)

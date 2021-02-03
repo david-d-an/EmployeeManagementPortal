@@ -13,3 +13,13 @@ export interface EmployeeDetail {
   // managerFirstName: string;
   // managerLastName: string;
 }
+
+export interface EmployeeFilter {
+  empNo: string;
+  firstName: string;
+  lastName: string;
+  salaryMin: string;
+  salaryMax: string;
+  title: string;
+  deptName: string;
+}
