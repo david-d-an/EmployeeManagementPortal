@@ -115,7 +115,7 @@ namespace EMP.Api.Controllers
 
             // Act
             ActionResult<IEnumerable<VwEmpDetails>> searchResult = 
-                (await _controller.Get(null, null, null, null, null, null)).Result;
+                (await _controller.Get(null, null, null, null, null, null, null, null)).Result;
             OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert

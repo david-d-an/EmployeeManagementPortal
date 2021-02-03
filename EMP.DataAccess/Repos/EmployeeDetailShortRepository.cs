@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using EMP.DataAccess.Repos.Extension;
 using EMP.Common.Tasks;
-using EMP.Common.Data;
 
 namespace EMP.DataAccess.Repos
 {
