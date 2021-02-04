@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 /* @import "~font-awesome/css/font-awesome.css"; */
 /* @import '~bootstrap/dist/css/bootstrap.min.css'; */
+/* @import '@fortawesome/fontawesome-free/css/fontawesome.css'; */
 
 /* Provide sufficient contrast against white background */
 a {
@@ -15,4 +16,22 @@ code {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+button.delete {
+  background-color: #f64d2f;
+  border-radius: 5px;
+  border-color: #f64d2f;
+}
+
+button.edit {
+  background-color: #1c60e9;
+  border-radius: 5px;
+  border-color: #1c60e9;
+  padding-right: 2px;
+}
+
+span.fa-standard {
+  font-size: 1em;
+  color: white;
 }
