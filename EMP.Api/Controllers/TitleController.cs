@@ -13,20 +13,24 @@ namespace EMP.Api.Controllers
     public class TitleController : ControllerBase
     {
         private ILogger<TitleController> _logger;
-        private IRepository<VwTitlesCurrent> _titleRepository;
+        // private IRepository<VwTitlesCurrent> _titleRepository;
+        private IRepository<DistinctTitles> _distinctTitleRepository;
 
         public TitleController(
             ILogger<TitleController> logger,
-            IRepository<VwTitlesCurrent> titleRepository)
+            // IRepository<VwTitlesCurrent> titleRepository,
+            IRepository<DistinctTitles> distinctTitleRepository)
         {
             this._logger = logger;
-            this._titleRepository = titleRepository;
+            // this._titleRepository = titleRepository;
+            this._distinctTitleRepository = distinctTitleRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<string>>> Get()
         {
-            return await TaskConstants<ActionResult<IEnumerable<string>>>.NotImplemented;
+            await Task.Delay(0);
+            return Ok(_distinctTitleRepository.GetAsync());            
         }
 
         [HttpGet("{id}")]

@@ -66,6 +66,7 @@ namespace EMP.Api
             services.AddScoped<IRepository<VwEmpDetailsShort>, EmployeeDetailShortRepository>();
             services.AddScoped<IRepository<Employees>, EmployeeRepository>();
             services.AddScoped<IRepository<VwTitlesCurrent>, TitleRepository>();
+            services.AddScoped<IRepository<DistinctTitles>, DistinctTitleRepository>();
             services.AddScoped<IRepository<VwSalariesCurrent>, SalaryRepository>();
         }
 
