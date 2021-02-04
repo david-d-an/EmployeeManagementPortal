@@ -1,21 +1,21 @@
 import { EmployeeFilter } from './../../models/EmployeeDetail';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalManager } from 'ngb-modal';
 import { tap } from 'rxjs/operators';
 
 import { EmployeeService } from '../service/employee.service';
 import { SpinnerService } from './../../shared/spinner.service';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/Validators';
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css']
 })
-export class EmployeeListComponent implements OnInit {
-@ViewChild('filterModal') filterModal;
-// @ViewChild(NgForm) filterForm: NgForm;
+export class EmployeeListComponent implements OnInit, AfterViewChecked {
+  @ViewChild('filterModal') filterModal;
 
   private modalRef;
   pageTitle = 'Employee List';
@@ -28,7 +28,27 @@ export class EmployeeListComponent implements OnInit {
   currentFilter: EmployeeFilter;
   lastFilter: EmployeeFilter;
 
+  filterFormGroup = this.formBuilder.group({
+    firstName: [ '' ],
+    lastName: [ '' ],
+    title: [ '' ],
+    deptName: [ '' ],
+    salaryMin: [ '', [
+      Validators.maxLength(10),
+      positiveNumber
+    ]],
+    salaryMax: [ '', [
+      Validators.maxLength(10),
+      positiveNumber
+    ]],
+  }, {
+    validators: [
+      salaryMinLessThanSalaryMax
+  ]});
+
+
   constructor(
+    private formBuilder: FormBuilder,
     private employeeService: EmployeeService,
     private modalService: ModalManager,
     private spinnerService: SpinnerService,
@@ -62,9 +82,14 @@ export class EmployeeListComponent implements OnInit {
       this.loadData();
     }
 
+    ngAfterViewChecked(): void {
+      // console.log(`filterFormGroup valid: ${this.filterFormGroup.valid}`);
+    }
+
     initializeDeptNameFilter(deptName: string) {
-      this.currentFilter.deptName = deptName;
-      const f = this.currentFilter;
+      this.filterFormGroup.patchValue({
+        deptName: deptName
+      });
       this.runFilter();
     }
 
@@ -119,6 +144,17 @@ export class EmployeeListComponent implements OnInit {
     }
 
     runFilter(): void {
+
+      this.currentFilter = {
+        empNo: '',
+        firstName: this.filterFormGroup.value.firstName,
+        lastName: this.filterFormGroup.value.lastName,
+        salaryMin: this.filterFormGroup.value.salaryMin,
+        salaryMax: this.filterFormGroup.value.salaryMax,
+        title: this.filterFormGroup.value.title,
+        deptName: this.filterFormGroup.value.deptName
+      };
+
       this.lastFilter = { ... this.currentFilter };
 
       this.filterItems = [];
@@ -172,11 +208,9 @@ export class EmployeeListComponent implements OnInit {
       this.loadData();
     }
 
-    blockAgent(v): void {
-
+    deleteUser(v): void {
     }
 
-    approveAgent(v): void {
-
+    editUser(v): void {
     }
 }
