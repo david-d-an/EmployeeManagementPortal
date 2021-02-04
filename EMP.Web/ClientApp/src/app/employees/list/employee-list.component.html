@@ -54,13 +54,13 @@
           </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column prop="lastName" [width]="200">
+        <ngx-datatable-column prop="lastName" [width]="190">
           <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.lastName}}
           </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column prop="title" [width]="150">
+        <ngx-datatable-column prop="title" [width]="160">
           <ng-template let-row="row" ngx-datatable-cell-template>
               {{row.title}}
           </ng-template>
@@ -75,7 +75,7 @@
           </ng-template>
         </ngx-datatable-column>
 
-        <ngx-datatable-column prop="deptName" [width]="240">
+        <ngx-datatable-column prop="deptName" [width]="230">
           <ng-template let-column="column" ngx-datatable-header-template>
             Department
           </ng-template>
@@ -83,17 +83,33 @@
               {{row.deptName}}
           </ng-template>
         </ngx-datatable-column>
+
+        <ngx-datatable-column name="Actions" sortable="false" prop="id">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+              {{column.name}}
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+              <button md-icon-button class="delete" (click)="blockAgent(value)">
+                <span class="fa-standard">
+                  <i class="fas fa-trash-alt"></i>
+                </span>
+              </button>
+              &nbsp;
+              <button md-icon-button class="edit" (click)="approveAgent(value)">
+                <span class="fa-standard">
+                  <i class="fas fa-edit"></i>
+                </span>
+              </button>
+            </ng-template>
+      </ngx-datatable-column>
       </ngx-datatable>
     </div>
   </div>
 </div>
 
+<form>
 <div class="row">
-  <modal
-        #filterModal
-        (onOpen)="onFilterModalOpen()"
-        (onClose)="onFilterModalClose()">
-
+  <modal #filterModal>
     <modal-header>
       <h3>Filter</h3>
     </modal-header>
@@ -132,7 +148,7 @@
           <input class="form-control"
                   id="title"
                   type="text"
-                  placeholder="title"
+                  placeholder="Title"
                   [(ngModel)] = currentFilter.title
                   name="title"
                   #titleVar="ngModel" />
@@ -160,7 +176,12 @@
                   placeholder="Minimum"
                   [(ngModel)] = currentFilter.salaryMin
                   name="salaryMin"
-                  #salaryMinVar="ngModel" />
+                  #salaryMinVar="ngModel"
+                  [ngClass]="{'is-invalid': (
+                    currentFilter.salaryMin &&
+                    currentFilter.salaryMax &&
+                    currentFilter.salaryMin > currentFilter.salaryMax
+                  )}" />
           <div class="input-group-prepend">
             <span class="input-group-text">-</span>
           </div>
@@ -170,14 +191,27 @@
                   placeholder="Maxiumum"
                   [(ngModel)] = currentFilter.salaryMax
                   name="salaryMax"
-                  #salaryMaxVar="ngModel" />
+                  #salaryMaxVar="ngModel"
+                  [ngClass]="{'is-invalid': (
+                        currentFilter.salaryMin &&
+                        currentFilter.salaryMax &&
+                        currentFilter.salaryMin > currentFilter.salaryMax
+                      )}" />
+                  <span class="invalid-feedback">
+                    {{'Salary range values are reversed'}}
+                  </span>
         </div>
       </div>
     </modal-content>
     <modal-footer>
-      <div class="row">
+      <div class="row col-md-11">
         <div class="col-md-6">
-          <button class="btn btn-primary" (click)="applyFilter()">Apply</button>
+          <button class="btn btn-primary" (click)="applyFilter()"
+                  [disabled]='currentFilter.salaryMin &&
+                              currentFilter.salaryMax &&
+                              currentFilter.salaryMin > currentFilter.salaryMax'>
+            Apply
+          </button>
         </div>
         <div class="col-md-6">
           <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
@@ -186,3 +220,4 @@
     </modal-footer>
   </modal>
 </div>
+</form>
