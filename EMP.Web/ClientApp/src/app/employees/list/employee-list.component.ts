@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 
 import { EmployeeService } from '../service/employee.service';
 import { SpinnerService } from './../../shared/spinner.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-employee-list',
@@ -14,6 +15,7 @@ import { SpinnerService } from './../../shared/spinner.service';
 })
 export class EmployeeListComponent implements OnInit {
 @ViewChild('filterModal') filterModal;
+// @ViewChild(NgForm) filterForm: NgForm;
 
   private modalRef;
   pageTitle = 'Employee List';
@@ -56,7 +58,14 @@ export class EmployeeListComponent implements OnInit {
   }
 
     ngOnInit(): void {
+      this.initializeDeptNameFilter('customer service');
       this.loadData();
+    }
+
+    initializeDeptNameFilter(deptName: string) {
+      this.currentFilter.deptName = deptName;
+      const f = this.currentFilter;
+      this.runFilter();
     }
 
     loadData(): void {
@@ -90,9 +99,9 @@ export class EmployeeListComponent implements OnInit {
           modalClass: '',
           hideCloseButton: false,
           centered: false,
-          backdrop: true,
-          animation: true,
+          backdrop: 'static',
           keyboard: false,
+          animation: true,
           closeOnOutsideClick: true,
           backdropClass: 'modal-backdrop'
       });
@@ -100,8 +109,6 @@ export class EmployeeListComponent implements OnInit {
 
     applyFilter() {
       this.modalService.close(this.modalRef);
-      this.lastFilter = { ... this.currentFilter };
-
       this.runFilter();
       this.loadData();
     }
@@ -112,6 +119,8 @@ export class EmployeeListComponent implements OnInit {
     }
 
     runFilter(): void {
+      this.lastFilter = { ... this.currentFilter };
+
       this.filterItems = [];
       const f = this.currentFilter;
 
@@ -163,8 +172,11 @@ export class EmployeeListComponent implements OnInit {
       this.loadData();
     }
 
-    onFilterModalOpen(): void { }
+    blockAgent(v): void {
 
-    onFilterModalClose(): void { }
+    }
 
+    approveAgent(v): void {
+
+    }
 }
