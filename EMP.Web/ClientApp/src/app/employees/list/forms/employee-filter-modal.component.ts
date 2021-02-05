@@ -70,6 +70,7 @@ export class EmployeeFilterModalComponent implements OnInit {
       deptName: deptName
     });
     this.updateFilterTags();
+    this.applyFilterEvent.next();
   }
 
   openModal(): void {
@@ -118,7 +119,7 @@ export class EmployeeFilterModalComponent implements OnInit {
 
     this.currentFilter[key] = '';
     this.filterFormGroup.controls[key].patchValue('');
+
+    this.applyFilterEvent.next();
   }
-
-
 }

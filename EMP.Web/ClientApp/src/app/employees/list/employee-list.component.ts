@@ -16,7 +16,6 @@ import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/V
   styleUrls: ['./employee-list.component.css']
 })
 export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewChecked {
-  // @ViewChild('filterModal') filterModal;
   @ViewChild(EmployeeFilterModalComponent) filterModalComponent: EmployeeFilterModalComponent;
 
   // private modalRef;
@@ -27,73 +26,25 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
   greatherThanOrEqualTo = '\u2267';
   lessThanOrEqualTo = '\u2266';
   filterItems: any[];
-  // currentFilter: EmployeeFilter;
-
-  // filterFormGroup = this.formBuilder.group({
-  //   firstName: [ '' ],
-  //   lastName: [ '' ],
-  //   title: [ '' ],
-  //   deptName: [ '' ],
-  //   salaryMin: [ '', [
-  //     Validators.maxLength(10),
-  //     positiveNumber
-  //   ]],
-  //   salaryMax: [ '', [
-  //     Validators.maxLength(10),
-  //     positiveNumber
-  //   ]],
-  // }, {
-  //   validators: [
-  //     salaryMinLessThanSalaryMax
-  // ]});
-
 
   constructor(
     private employeeService: EmployeeService,
-    // private formBuilder: FormBuilder,
-    // private modalService: ModalManager,
     private spinnerService: SpinnerService,
     private route: ActivatedRoute,
     private router: Router) {
-
-      // this.columns = [
-      //   { prop: 'empNo', name: 'Employee ID' } ,
-      //   { prop: 'firstName', name: 'First Name' },
-      //   { prop: 'lastName', name: 'Last Name' },
-      //   { prop: 'title', name: 'Title' },
-      //   { prop: 'salary', name: 'Salary' },
-      //   { prop: 'deptNo', name: 'Dept No.' },
-      //   { prop: 'deptName', name: 'Department' },
-      // ];
   }
 
     ngOnInit(): void {
-      // const userDeptName = 'customer service';
-      // // this.initializeDeptNameFilter(userDeptName);
-      // console.log(this.filterModalComponent);
-      // this.filterModalComponent.initializeDeptNameFilter(userDeptName);
-      // this.loadData();
     }
 
     ngAfterViewInit() {
       const userDeptName = 'customer service';
-      // this.initializeDeptNameFilter(userDeptName);
-      // console.log(this.filterModalComponent);
       this.filterModalComponent.initializeDeptNameFilter(userDeptName);
-      this.runFilter();
-      this.loadData();
     }
 
     ngAfterViewChecked(): void {
       // console.log(`filterFormGroup valid: ${this.filterFormGroup.valid}`);
     }
-
-    // initializeDeptNameFilter(deptName: string) {
-    //   this.filterFormGroup.patchValue({
-    //     deptName: deptName
-    //   });
-    //   this.runFilter();
-    // }
 
     applyFilterhandler() {
       setTimeout(() => {
@@ -130,62 +81,10 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
 
     openModal(): void {
       this.filterModalComponent.openModal();
-      // this.modalRef = this.modalService.open(this.filterModal, {
-      //     size: 'md',
-      //     modalClass: '',
-      //     hideCloseButton: false,
-      //     centered: false,
-      //     backdrop: 'static',
-      //     keyboard: false,
-      //     animation: true,
-      //     closeOnOutsideClick: true,
-      //     backdropClass: 'modal-backdrop'
-      // });
-    }
-
-    // applyFilter() {
-    //   // this.modalService.close(this.modalRef);
-    //   this.filterModalComponent.closeModal();
-    //   this.runFilter();
-    //   this.loadData();
-    // }
-
-    // closeModal() {
-    //   // this.modalService.close(this.modalRef);
-    //   // this.filterFormGroup.patchValue(this.currentFilter);
-    //   this.filterModalComponent.closeModal();
-    // }
-
-    runFilter(): void {
-      // this.currentFilter = this.filterFormGroup.getRawValue();
-      // this.filterItems = [];
-      // const f = this.filterModalComponent.currentFilter;
-
-      // Object.keys(this.filterModalComponent.filterFormGroup.controls).forEach(key => {
-      //   if (f[key]) {
-      //     this.filterItems.push({
-      //       'key': key,
-      //       'value': `${EmployeeFilterAnnotation.get(key)}: ${f[key]}`
-      //     });
-      //   }
-      // });
-      this.filterModalComponent.updateFilterTags();
-      setTimeout(() => {
-        this.filterItems = this.filterModalComponent.filterItems;
-      });
     }
 
     removeFilter(idx: number): void {
-      // const key = this.filterItems[idx].key;
-      // this.filterItems.splice(idx, 1);
-
-      // this.currentFilter[key] = '';
-      // this.filterFormGroup.controls[key].patchValue('');
       this.filterModalComponent.removeFilter(idx);
-      setTimeout(() => {
-        this.filterItems = this.filterModalComponent.filterItems;
-      });
-      this.loadData();
     }
 
     deleteUser(row): void {
