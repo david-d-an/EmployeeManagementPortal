@@ -8,6 +8,7 @@ import { EmployeeService } from './../../service/employee.service';
 import { SpinnerService } from './../../../shared/spinner.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/Validators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-employee-filter-modal',
@@ -16,7 +17,7 @@ import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/V
 })
 export class EmployeeFilterModalComponent implements OnInit {
   @ViewChild('filterModal') filterModal;
-  @Output() applyFilterEvent = new EventEmitter();
+  // @Output() applyFilterEvent = new EventEmitter();
 
   private modalRef;
   pageTitle = 'Employee List';
@@ -27,6 +28,7 @@ export class EmployeeFilterModalComponent implements OnInit {
   lessThanOrEqualTo = '\u2266';
   filterItems: any[];
   currentFilter: EmployeeFilter;
+  filterChanged: Subject<EmployeeFilter> = new Subject<EmployeeFilter>();
 
   filterFormGroup = this.formBuilder.group({
     firstName: [ '' ],
@@ -70,7 +72,7 @@ export class EmployeeFilterModalComponent implements OnInit {
       deptName: deptName
     });
     this.updateFilterTags();
-    this.applyFilterEvent.next();
+    // this.applyFilterEvent.next();
   }
 
   openModal(): void {
@@ -90,7 +92,7 @@ export class EmployeeFilterModalComponent implements OnInit {
   applyFilter() {
     this.modalService.close(this.modalRef);
     this.updateFilterTags();
-    this.applyFilterEvent.next();
+    // this.applyFilterEvent.next();
   }
 
   closeModal() {
@@ -100,6 +102,8 @@ export class EmployeeFilterModalComponent implements OnInit {
 
   updateFilterTags(): void {
     this.currentFilter = this.filterFormGroup.getRawValue();
+    this.filterChanged.next(this.currentFilter);
+
     this.filterItems = [];
     const f = this.currentFilter;
 
@@ -118,8 +122,11 @@ export class EmployeeFilterModalComponent implements OnInit {
     this.filterItems.splice(idx, 1);
 
     this.currentFilter[key] = '';
+    this.filterChanged.next(this.currentFilter);
+
     this.filterFormGroup.controls[key].patchValue('');
 
-    this.applyFilterEvent.next();
+    // this.applyFilterEvent.next();
   }
+
 }

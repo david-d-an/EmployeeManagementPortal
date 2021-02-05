@@ -3,7 +3,7 @@ import { EmployeeFilter, EmployeeFilterAnnotation } from 'src/app/models/Employe
 import { AfterViewChecked, Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalManager } from 'ngb-modal';
-import { tap } from 'rxjs/operators';
+import { debounceTime, tap } from 'rxjs/operators';
 
 import { EmployeeService } from '../service/employee.service';
 import { SpinnerService } from './../../shared/spinner.service';
@@ -26,6 +26,7 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
   greatherThanOrEqualTo = '\u2267';
   lessThanOrEqualTo = '\u2266';
   filterItems: any[];
+  filterChangeSubscription: any;
 
   constructor(
     private employeeService: EmployeeService,
@@ -38,6 +39,14 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
     }
 
     ngAfterViewInit() {
+      this.filterChangeSubscription = this.filterModalComponent.filterChanged
+      .pipe(debounceTime(500))
+      .subscribe(f => {
+        // console.log(`Filter by Observable: ${JSON.stringify(f)}`);
+        this.filterItems = this.filterModalComponent.filterItems;
+        this.loadData();
+      });
+
       const userDeptName = 'customer service';
       this.filterModalComponent.initializeDeptNameFilter(userDeptName);
     }
@@ -46,16 +55,16 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
       // console.log(`filterFormGroup valid: ${this.filterFormGroup.valid}`);
     }
 
-    applyFilterhandler() {
-      setTimeout(() => {
-        this.filterItems = this.filterModalComponent.filterItems;
-      });
-      this.loadData();
-    }
+    // decided to go with subscription instead of event emitter
+    // applyFilterhandler() {
+    //   setTimeout(() => {
+    //     this.filterItems = this.filterModalComponent.filterItems;
+    //   });
+    //   this.loadData();
+    // }
 
     loadData(): void {
       this.spinnerService.startLoading();
-      // console.log(this.filterModalComponent.currentFilter);
       this.employeeService.getEmployeeDetails(this.filterModalComponent.currentFilter)
         // .pipe(
         //   tap(data => console.log(data.length))
