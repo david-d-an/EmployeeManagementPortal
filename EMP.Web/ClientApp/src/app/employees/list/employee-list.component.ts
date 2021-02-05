@@ -1,4 +1,4 @@
-import { EmployeeFilter } from './../../models/EmployeeDetail';
+import { EmployeeFilter, EmployeeFilterAnnotation } from 'src/app/models/EmployeeDetail';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalManager } from 'ngb-modal';
@@ -26,7 +26,6 @@ export class EmployeeListComponent implements OnInit, AfterViewChecked {
   lessThanOrEqualTo = '\u2266';
   filterItems: any[];
   currentFilter: EmployeeFilter;
-  lastFilter: EmployeeFilter;
 
   filterFormGroup = this.formBuilder.group({
     firstName: [ '' ],
@@ -64,17 +63,6 @@ export class EmployeeListComponent implements OnInit, AfterViewChecked {
         { prop: 'deptNo', name: 'Dept No.' },
         { prop: 'deptName', name: 'Department' },
       ];
-
-      this.lastFilter = {
-        empNo: '',
-        firstName: '',
-        lastName: '',
-        salaryMin: '',
-        salaryMax: '',
-        title: '',
-        deptName: ''
-      };
-      this.currentFilter = { ... this.lastFilter };
   }
 
     ngOnInit(): void {
@@ -112,10 +100,10 @@ export class EmployeeListComponent implements OnInit, AfterViewChecked {
     }
 
     onActivate(event: any): void {
-      if (event.type === 'click') {
-        console.log(event.row);
-        console.log(`Employee ID: ${event.row.empNo}`);
-      }
+      // if (event.type === 'click') {
+      //   console.log(event.row);
+      //   console.log(`Employee ID: ${event.row.empNo}`);
+      // }
     }
 
     openModal(): void {
@@ -140,62 +128,22 @@ export class EmployeeListComponent implements OnInit, AfterViewChecked {
 
     closeModal() {
       this.modalService.close(this.modalRef);
-      this.currentFilter = { ... this.lastFilter };
+      this.filterFormGroup.patchValue(this.currentFilter);
     }
 
     runFilter(): void {
-
-      this.currentFilter = {
-        empNo: '',
-        firstName: this.filterFormGroup.value.firstName,
-        lastName: this.filterFormGroup.value.lastName,
-        salaryMin: this.filterFormGroup.value.salaryMin,
-        salaryMax: this.filterFormGroup.value.salaryMax,
-        title: this.filterFormGroup.value.title,
-        deptName: this.filterFormGroup.value.deptName
-      };
-
-      this.lastFilter = { ... this.currentFilter };
-
+      this.currentFilter = this.filterFormGroup.getRawValue();
       this.filterItems = [];
       const f = this.currentFilter;
 
-      if (f.firstName) {
-        this.filterItems.push({
-          'key': 'firstName',
-          'value': `First Name: ${f.firstName}`
-        });
-      }
-      if (f.lastName) {
-        this.filterItems.push({
-          'key': 'lastName',
-          'value': `Last Name: ${f.lastName}`
-        });
-      }
-      if (f.title) {
-        this.filterItems.push({
-          'key': 'title',
-          'value': `Title: ${f.title}`
-        });
-      }
-      if (f.deptName) {
-        this.filterItems.push({
-          'key': 'deptName',
-          'value': `Department: ${f.deptName}`
-        });
-      }
-      if (f.salaryMin) {
-        this.filterItems.push({
-          'key': 'salaryMin',
-          'value': `Salary ${this.greatherThanOrEqualTo} ${f.salaryMin}`
-        });
-      }
-      if (f.salaryMax) {
-        this.filterItems.push({
-          'key': 'salaryMax',
-          'value': `Salary ${this.lessThanOrEqualTo} ${f.salaryMax}`
-        });
-      }
+      Object.keys(this.filterFormGroup.controls).forEach(key => {
+        if (f[key]) {
+          this.filterItems.push({
+            'key': key,
+            'value': `${EmployeeFilterAnnotation.get(key)}: ${f[key]}`
+          });
+        }
+      });
     }
 
     removeFilter(idx: number): void {
@@ -203,14 +151,16 @@ export class EmployeeListComponent implements OnInit, AfterViewChecked {
       this.filterItems.splice(idx, 1);
 
       this.currentFilter[key] = '';
-      this.lastFilter[key] = '';
+      this.filterFormGroup.controls[key].patchValue('');
 
       this.loadData();
     }
 
-    deleteUser(v): void {
+    deleteUser(row): void {
+      console.log(`Delete User initiated for Employee ID: ${row.empNo}`);
     }
 
-    editUser(v): void {
+    editUser(row): void {
+      console.log(`Edit User initiated for Employee ID: ${row.empNo}`);
     }
 }
