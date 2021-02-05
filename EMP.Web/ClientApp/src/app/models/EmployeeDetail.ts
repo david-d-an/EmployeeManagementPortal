@@ -15,11 +15,31 @@ export interface EmployeeDetail {
 }
 
 export interface EmployeeFilter {
-  empNo: string;
+  // empNo: string;
   firstName: string;
   lastName: string;
   salaryMin: string;
   salaryMax: string;
   title: string;
   deptName: string;
+}
+
+export module EmployeeFilterAnnotation {
+  const items = {
+    'empNo': 'Employee ID',
+    'firstName': 'First Name',
+    'lastName': 'Last Name',
+    'salaryMin': 'Minimum Salary',
+    'salaryMax': 'Maximum Salary',
+    'title': 'Title',
+    'deptName': 'Department Name'
+  };
+
+  export function get(key: string): string {
+    return items[key];
+  }
+
+  export function getAll(): any {
+    return items;
+  }
 }
