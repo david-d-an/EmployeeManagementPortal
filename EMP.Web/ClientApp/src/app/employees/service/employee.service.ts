@@ -12,10 +12,10 @@ import { EmployeeDetail, EmployeeFilter } from 'src/app/models/EmployeeDetail';
 })
 export class EmployeeService {
 
-  // pageNum = 1;
-  // pageSize = 12;
-  // svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
-  svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=&pageSize=`;
+  pageNum = '';
+  pageSize = '';
+  svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+  // svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=1&pageSize=1`;
 
   constructor(private http: HttpClient) { }
 
