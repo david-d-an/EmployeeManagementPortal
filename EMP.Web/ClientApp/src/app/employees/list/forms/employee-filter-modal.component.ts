@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 import { EmployeeService } from './../../service/employee.service';
 import { SpinnerService } from './../../../shared/spinner.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/Validators';
+import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validators/Validators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -22,7 +22,6 @@ export class EmployeeFilterModalComponent implements OnInit {
   private modalRef;
   pageTitle = 'Employee List';
   rows: any;
-  columns: any;
   isLoading = false;
   greatherThanOrEqualTo = '\u2267';
   lessThanOrEqualTo = '\u2266';
@@ -50,18 +49,7 @@ export class EmployeeFilterModalComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private modalService: ModalManager) {
-      this.columns = [
-        { prop: 'empNo', name: 'Employee ID' } ,
-        { prop: 'firstName', name: 'First Name' },
-        { prop: 'lastName', name: 'Last Name' },
-        { prop: 'title', name: 'Title' },
-        { prop: 'salary', name: 'Salary' },
-        { prop: 'deptNo', name: 'Dept No.' },
-        { prop: 'deptName', name: 'Department' },
-      ];
-
-    }
+    private modalService: ModalManager) { }
 
   ngOnInit(): void {
     // this.initializeDeptNameFilter('customer service');
