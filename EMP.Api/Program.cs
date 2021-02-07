@@ -20,13 +20,16 @@ namespace EMP.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                // .ConfigureServices((context, services) =>
-                // {
+                // .ConfigureServices((context, services) => {
                 //     services.Configure<KestrelServerOptions>(
                 //         context.Configuration.GetSection("Kestrel"));
                 // })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
+                .ConfigureLogging(logging => {
+                    logging.ClearProviders();
+                    logging.AddConsole();
+                    logging.AddDebug();
+                })
+                .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
                     // webBuilder.UseKestrel(options => {
                     //     options.Limits.MaxRequestBodySize = null;

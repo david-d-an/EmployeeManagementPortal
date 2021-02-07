@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using EMP.Data.Models;
+using Microsoft.Net.Http.Headers;
 
 namespace EMP.Api
 {
@@ -37,10 +38,14 @@ namespace EMP.Api
             {
                 options.AddPolicy(name: EmpWebOrigins, builder =>
                 {
-                    builder.WithOrigins(
+                    builder
+                    .WithOrigins(
                         "http://localhos:5000",
                         "https://localhost:5001"
-                    );
+                    )
+                    .WithMethods("GET", "PUT", "POST", "DELETE")
+                    // .AllowAnyHeader();
+                    .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type");
                 });
             });
 
