@@ -8,7 +8,8 @@ import { debounceTime, tap } from 'rxjs/operators';
 import { EmployeeService } from '../service/employee.service';
 import { SpinnerService } from './../../shared/spinner.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/Validators';
+import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validators/Validators';
+import { EmployeeEditModalComponent } from './forms/employee-edit-modal.component';
 
 @Component({
   selector: 'app-employee-list',
@@ -17,6 +18,7 @@ import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validation/V
 })
 export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewChecked {
   @ViewChild(EmployeeFilterModalComponent) filterModalComponent: EmployeeFilterModalComponent;
+  @ViewChild(EmployeeEditModalComponent) editModalComponent: EmployeeEditModalComponent;
 
   // private modalRef;
   pageTitle = 'Employee List';
@@ -101,6 +103,7 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
     }
 
     editUser(row): void {
-      console.log(`Edit User initiated for Employee ID: ${row.empNo}`);
+      // console.log(`Edit User initiated for Employee ID: ${row.empNo}`);
+      this.editModalComponent.openModal(row.empNo);
     }
 }
