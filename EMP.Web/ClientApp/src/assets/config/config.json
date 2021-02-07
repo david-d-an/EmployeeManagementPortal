@@ -1,0 +1,12 @@
+{
+  "env": {
+    "name": "DEV"
+   },
+  "logging": {
+    "console": true,
+    "appInsights": false
+  },
+  "apiServer": {
+    "employees": "https://localhost:15001"
+  }
+}

@@ -2,18 +2,17 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
+import { AppConfig } from 'src/app/app.config';
 import { DepartmentDetail } from 'src/app/models/DepartmentDetail';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartmentService {
-  svcRootUrl = 'http://localhost:15000/api';
-
   constructor(private http: HttpClient) { }
 
   getSvcUrlForAll() {
-    return `${this.svcRootUrl}/departments`;
+    return `${AppConfig.settings.apiServer.employees}/api/departments`;
   }
 
   getDepartmentDetails(): Observable<DepartmentDetail[]> {

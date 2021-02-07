@@ -1,0 +1,12 @@
+{
+  "env": {
+    "name": "#{envName}"
+  },
+  "logging": {
+    "console": true,
+    "appInsights": true
+  },
+  "apiServer": {
+    "employees": "https://#{employeeApiUrlRoot}"
+  }
+}

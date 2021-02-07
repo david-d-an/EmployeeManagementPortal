@@ -2,10 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
+import { AppConfig } from 'src/app/app.config';
 import { EmployeeDetail, EmployeeEditDetail, EmployeeFilter } from 'src/app/models/EmployeeDetail';
-
-
-
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +12,13 @@ export class EmployeeService {
 
   pageNum = '';
   pageSize = '';
-  svcRootUrl = 'https://localhost:15001/api';
-  // getAllUrl = this.svcRootUrl + `/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
-  // getOneUrl = this.svcRootUrl + `/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
-  // svcUrlBase = `http://localhost:15000/api/EmployeeDetail?pageNum=1&pageSize=1`;
 
   get urlForAll(): string {
-    return this.svcRootUrl + `/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+    return `${AppConfig.settings.apiServer.employees}/api/EmployeeDetail` +
+           `?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
   }
   get urlForOne(): string {
-    return this.svcRootUrl + `/EmployeeDetail`;
+    return `${AppConfig.settings.apiServer.employees}/api/EmployeeDetail`;
   }
 
   constructor(private http: HttpClient) { }
