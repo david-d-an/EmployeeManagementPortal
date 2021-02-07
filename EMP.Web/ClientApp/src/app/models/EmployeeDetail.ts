@@ -24,6 +24,23 @@ export interface EmployeeFilter {
   deptName: string;
 }
 
+export interface EmployeeEditDetail {
+  empNo: number;
+  firstName: string;
+  lastName: string;
+  birthDate: string;
+  hireDate: string;
+  gender: string;
+  salary: number;
+  title: string;
+  // deptNo: string;
+  deptNo: string;
+  // managerEmpNo: number;
+  // managerFirstName: string;
+  // managerLastName: string;
+}
+
+
 export module EmployeeFilterAnnotation {
   const items = {
     'empNo': 'Employee ID',

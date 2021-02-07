@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
-import { EmployeeDetail, EmployeeFilter } from 'src/app/models/EmployeeDetail';
+import { EmployeeDetail, EmployeeEditDetail, EmployeeFilter } from 'src/app/models/EmployeeDetail';
 
 
 
@@ -14,13 +14,22 @@ export class EmployeeService {
 
   pageNum = '';
   pageSize = '';
-  svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
-  // svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=1&pageSize=1`;
+  svcRootUrl = 'https://localhost:15001/api';
+  // getAllUrl = this.svcRootUrl + `/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+  // getOneUrl = this.svcRootUrl + `/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+  // svcUrlBase = `http://localhost:15000/api/EmployeeDetail?pageNum=1&pageSize=1`;
+
+  get urlForAll(): string {
+    return this.svcRootUrl + `/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+  }
+  get urlForOne(): string {
+    return this.svcRootUrl + `/EmployeeDetail`;
+  }
 
   constructor(private http: HttpClient) { }
 
-  getSvcUrl(filter: EmployeeFilter) {
-    return this.svcUrlBase +
+  getSvcUrlForAll(filter: EmployeeFilter) {
+    return this.urlForAll +
       `&firstName=${filter.firstName}` +
       `&lastName=${filter.lastName}` +
       `&deptName=${filter.deptName}` +
@@ -29,11 +38,39 @@ export class EmployeeService {
       `&salaryMax=${filter.salaryMax}`;
   }
 
+  getSvcUrlForOne(empNo: string) {
+    return this.urlForOne + `/${empNo}`;
+  }
+
   getEmployeeDetails(filter: EmployeeFilter): Observable<EmployeeDetail[]> {
-    return this.http.get<EmployeeDetail[]>(this.getSvcUrl(filter))
+    return this.http.get<EmployeeDetail[]>(this.getSvcUrlForAll(filter))
       .pipe(
         // tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
+      );
+  }
+
+  getOneEmployeeDetails(empNo: string): Observable<EmployeeDetail[]> {
+    return this.http.get<EmployeeDetail[]>(this.getSvcUrlForOne(empNo))
+      .pipe(
+        // tap(data => console.log(JSON.stringify(data))),
+        catchError(this.handleError)
+      );
+  }
+
+  putOneEmployeeDetails(empNo: string, updatedEmployeeData: any): void {
+    console.log(`PUTing to Url: ${this.getSvcUrlForOne(empNo)}`);
+    console.log(JSON.stringify(updatedEmployeeData));
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    this.http
+      .put(this.getSvcUrlForOne(empNo),
+        JSON.stringify(updatedEmployeeData), { headers: headers} )
+      .pipe(
+        tap(data => console.log(`updating: ${data}`)),
+        catchError(this.handleError)
+      )
+      .subscribe(
+        (r) => { console.log(r); }
       );
   }
 
