@@ -53,19 +53,16 @@ export class EmployeeService {
       );
   }
 
-  putOneEmployeeDetails(empNo: string, updatedEmployeeData: any): void {
-    console.log(`PUTing to Url: ${this.getSvcUrlForOne(empNo)}`);
-    console.log(JSON.stringify(updatedEmployeeData));
+  putOneEmployeeDetails(empNo: string, updatedEmployeeData: any): Observable<any> {
+    // console.log(`PUTing to Url: ${this.getSvcUrlForOne(empNo)}`);
+    // console.log(JSON.stringify(updatedEmployeeData));
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    this.http
+    return this.http
       .put(this.getSvcUrlForOne(empNo),
         JSON.stringify(updatedEmployeeData), { headers: headers} )
       .pipe(
         tap(data => console.log(`updating: ${data}`)),
         catchError(this.handleError)
-      )
-      .subscribe(
-        (r) => { console.log(r); }
       );
   }
 
