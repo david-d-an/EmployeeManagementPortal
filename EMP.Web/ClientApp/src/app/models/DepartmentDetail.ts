@@ -1,18 +1,10 @@
 export interface DepartmentDetail {
-  deptNo: number;
-  firstName: string;
-  lastName: string;
-  // birthDate: string;
-  // hireDate: string;
-  // gender: string;
-  // salary: number;
-  title: string;
-  // deptNo: string;
-  // deptName: string;
-  // managerEmpNo: number;
-  // managerFirstName: string;
-  // managerLastName: string;
+  deptNo: string;
+  deptName: string;
+  deptEmp: any;
+  deptManager: any;
 }
+
 
 export interface DepartmentFilter {
   empNo: string;
