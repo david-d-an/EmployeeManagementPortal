@@ -43,7 +43,10 @@ namespace EMP.DataAccess.Repos
             if (!int.TryParse(id, out empNo))
                 return await Task.FromResult<VwTitlesCurrent>(null);
 
-            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
+            IQueryable<VwTitlesCurrent> query = _context.VwTitlesCurrent
+                .Where(i => i.EmpNo == empNo);
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<VwTitlesCurrent> PutAsync(string id, VwTitlesCurrent updateRequest)
