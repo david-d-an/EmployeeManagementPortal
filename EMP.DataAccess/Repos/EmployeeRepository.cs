@@ -45,7 +45,10 @@ namespace EMP.DataAccess.Repos
             if (!int.TryParse(id, out empNo))
                 return await Task.FromResult<Employees>(null);
 
-            return await TaskConstants<Employees>.NotImplemented;
+            IQueryable<Employees> query = _context.Employees
+                .Where(i => i.EmpNo == empNo);
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<Employees> PutAsync(string id, Employees updateRequest)
