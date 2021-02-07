@@ -40,3 +40,9 @@
         transform: rotate(359deg);
     }
 }
+
+fieldset:disabled {
+  opacity: 0.4;
+  filter: alpha(opacity=40); /* msie */
+  background-color: #000;
+}

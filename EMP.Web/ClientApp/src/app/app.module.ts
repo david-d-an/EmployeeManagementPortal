@@ -12,6 +12,7 @@ import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 
 import { AppConfig } from './app.config';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // import { RouterModule } from '@angular/router';
 // import { FormsModule } from '@angular/forms';
@@ -38,6 +39,7 @@ export function initializeApp(appConfig: AppConfig) {
     BrowserAnimationsModule,
     HttpClientModule,
     AppRoutingModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     AppConfig,
