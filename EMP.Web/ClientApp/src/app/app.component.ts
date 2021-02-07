@@ -1,8 +1,8 @@
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { SpinnerService } from './shared/spinner.service';
 // import { DepartmentListComponent } from './departments/list/department-list.component';
 // import { EmployeeListComponent } from './employees/list/employee-list.component';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
