@@ -2,30 +2,22 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
-import { DepartmentDetail, DepartmentFilter } from 'src/app/models/DepartmentDetail';
+import { DepartmentDetail } from 'src/app/models/DepartmentDetail';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartmentService {
-  pageNum = 1;
-  pageSize = 12;
-  svcUrlBase = `https://localhost:15001/api/EmployeeDetail?pageNum=${this.pageNum}&pageSize=${this.pageSize}`;
+  svcRootUrl = 'http://localhost:15000/api';
 
   constructor(private http: HttpClient) { }
 
-  getSvcUrl(filter: DepartmentFilter) {
-    return this.svcUrlBase +
-      `&firstName=${filter.firstName}` +
-      `&lastName=${filter.lastName}` +
-      `&deptName=${filter.deptName}` +
-      `&title=${filter.title}` +
-      `&salaryMin=${filter.salaryMin}` +
-      `&salaryMax=${filter.salaryMax}`;
+  getSvcUrlForAll() {
+    return `${this.svcRootUrl}/departments`;
   }
 
-  getDepartmentDetails(filter: DepartmentFilter): Observable<DepartmentDetail[]> {
-    return this.http.get<DepartmentDetail[]>(this.getSvcUrl(filter))
+  getDepartmentDetails(): Observable<DepartmentDetail[]> {
+    return this.http.get<DepartmentDetail[]>(this.getSvcUrlForAll())
       .pipe(
         // tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
