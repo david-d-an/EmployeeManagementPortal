@@ -466,6 +466,9 @@ ServiceFabricBackup/
 # SQL Server files
 *.ndf
 
+# MySql dump files
+dump-*.sql
+
 # Business Intelligence projects
 *.rptproj.rsuser
 *- [Bb]ackup.rdl
