@@ -65,6 +65,7 @@ namespace EMP.DataAccess.Repos
                 //     outputParam = dbParam;
                 // })
                 .ExecuteStoredProcAsync(_context, (handler) => {
+                    bool nr = handler.NextResult();
                     spResults = handler.ReadToList<VwSalariesCurrent>().FirstOrDefault();
                 });
 
