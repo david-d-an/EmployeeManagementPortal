@@ -11,6 +11,8 @@ SELECT
 FROM
     departments d
     INNER JOIN dept_manager_current dmc
-    ON d.dept_no = dmc.dept_no
+    ON 
+        d.dept_no = dmc.dept_no
+        AND dmc.to_date > CURDATE()
     INNER JOIN employees e
     ON dmc.emp_No = e.emp_No;

@@ -19,8 +19,9 @@ SELECT
 FROM 
     employees e 
     LEFT JOIN dept_emp_current vdec 
-    ON e.emp_no = vdec.emp_no AND
-        vdec.to_date > curdate()
+    ON 
+        e.emp_no = vdec.emp_no
+        AND vdec.to_date > CURDATE()
     LEFT JOIN departments d 
     ON vdec.dept_no = d.dept_no 
     LEFT JOIN dept_manager_current vdmc 

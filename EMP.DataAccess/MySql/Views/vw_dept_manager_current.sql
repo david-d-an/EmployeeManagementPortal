@@ -8,13 +8,15 @@ SELECT
     dm.from_date AS from_date,
     dm.to_date AS to_date
 FROM
-    employees.dept_manager dm
+    dept_manager dm
     INNER JOIN (
         SELECT
             dm_inside.dept_no AS dept_no,
             max(dm_inside.to_date) AS MaxToDate
         FROM
-            employees.dept_manager dm_inside
+            dept_manager dm_inside
+        WHERE
+            dm_inside.to_date > CURDATE()
         GROUP BY
             dm_inside.dept_no
     ) dm_agg 

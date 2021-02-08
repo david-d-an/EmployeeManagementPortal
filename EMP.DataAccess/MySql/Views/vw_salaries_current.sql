@@ -16,6 +16,8 @@ FROM
             max(t_inside.to_date) AS MaxToDate
         FROM
             employees.salaries t_inside
+        WHERE
+            t_inside.to_date > CURDATE()
         GROUP BY
             t_inside.emp_no
     ) em_agg 
