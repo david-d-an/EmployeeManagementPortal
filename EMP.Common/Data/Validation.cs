@@ -1,7 +1,7 @@
 
 // Created but not needed
 // Keeping it as a POC
-namespace EMP.Common.Numeric
+namespace EMP.Common.Data
 {
     public static class Validation
     {
