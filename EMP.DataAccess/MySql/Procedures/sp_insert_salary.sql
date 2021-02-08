@@ -17,7 +17,7 @@ BEGIN
 		@salary := salary, 
 		@from_Date := from_date, 
 		@to_Date := to_date 
-	FROM vw_salary_current vsc
+	FROM vw_salaries_current vsc
 	WHERE
 		vsc.emp_no = empNo;
 
