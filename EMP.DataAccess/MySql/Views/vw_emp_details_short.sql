@@ -17,12 +17,19 @@ FROM
     LEFT JOIN dept_emp_current vdec 
     ON 
         e.emp_no = vdec.emp_no
-        AND vdec.to_date > curdate()
+        AND vdec.to_date > CURDATE()
     LEFT JOIN departments d 
     ON vdec.dept_no = d.dept_no
     LEFT JOIN dept_manager_current vdmc 
-    ON vdec.dept_no = vdmc.dept_no
+    ON 
+        vdec.dept_no = vdmc.dept_no
+        AND vdmc.to_date > CURDATE()
     LEFT JOIN salaries_current vsc 
-    ON e.emp_no = vsc.emp_no 
+    ON 
+        e.emp_no = vsc.emp_no
+        AND vsc.to_date > CURDATE()
     LEFT JOIN titles_current vtc 
-    ON e.emp_no = vtc.emp_no
+    ON 
+        e.emp_no = vtc.emp_no
+        AND vtc.to_date > CURDATE()
+;
