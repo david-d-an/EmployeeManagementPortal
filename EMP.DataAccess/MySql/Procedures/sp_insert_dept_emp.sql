@@ -23,8 +23,8 @@ BEGIN
 
 
 	IF @dept_no IS NULL THEN
-		DELETE FROM dept_emp 
-        WHERE emp_no = empNo;
+		-- DELETE FROM dept_emp 
+        -- WHERE emp_no = empNo;
 
 		DELETE FROM dept_emp_current 
         WHERE emp_no = empNo;

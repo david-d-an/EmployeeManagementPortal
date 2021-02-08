@@ -23,8 +23,8 @@ BEGIN
 
 
 	IF @salary IS NULL THEN
-		DELETE FROM salaries 
-        WHERE emp_no = empNo;
+		-- DELETE FROM salaries 
+        -- WHERE emp_no = empNo;
 
 		DELETE FROM salaries_current 
         WHERE emp_no = empNo;
