@@ -94,7 +94,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptEmp>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo })
+                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_emp");
@@ -133,7 +133,8 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptEmpCurrent>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
+                    .HasName("PRIMARY");
 
                 entity.ToTable("dept_emp_current");
 
@@ -180,7 +181,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptManager>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo })
+                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_manager");
@@ -216,7 +217,8 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptManagerCurrent>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.DeptNo)
+                    .HasName("PRIMARY");
 
                 entity.ToTable("dept_manager_current");
 
@@ -280,7 +282,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<Salaries>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.FromDate })
+                entity.HasKey(e => new { e.EmpNo, e.Salary, e.FromDate, e.ToDate })
                     .HasName("PRIMARY");
 
                 entity.ToTable("salaries");
@@ -308,7 +310,8 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<SalariesCurrent>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.EmpNo })
+                    .HasName("PRIMARY");
 
                 entity.ToTable("salaries_current");
 
@@ -334,7 +337,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<Titles>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.Title, e.FromDate })
+                entity.HasKey(e => new { e.EmpNo, e.Title, e.FromDate, e.ToDate })
                     .HasName("PRIMARY");
 
                 entity.ToTable("titles");
@@ -364,7 +367,8 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<TitlesCurrent>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.EmpNo })
+                    .HasName("PRIMARY");
 
                 entity.ToTable("titles_current");
 
