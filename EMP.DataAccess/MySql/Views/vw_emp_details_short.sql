@@ -10,18 +10,19 @@ SELECT
     vsc.salary AS salary,
     d.dept_no AS dept_no, 
     d.dept_name AS dept_name
+    -- vdec.to_date
     -- em.emp_no AS manager_emp_no
 FROM
     employees e
-    INNER JOIN dept_emp_current vdec 
-    ON e.emp_no = vdec.emp_no 
-    INNER JOIN departments d 
+    LEFT JOIN dept_emp_current vdec 
+    ON e.emp_no = vdec.emp_no AND
+        vdec.to_date > curdate()
+    LEFT JOIN departments d 
     ON vdec.dept_no = d.dept_no
-    INNER JOIN dept_manager_current vdmc 
+    LEFT JOIN dept_manager_current vdmc 
     ON vdec.dept_no = vdmc.dept_no
-    -- INNER JOIN employees em 
-    -- ON vdmc.emp_no = em.emp_no
     LEFT JOIN salaries_current vsc 
     ON e.emp_no = vsc.emp_no 
     LEFT JOIN titles_current vtc 
-    ON e.emp_no = vtc.emp_no;
+    ON e.emp_no = vtc.emp_no
+;

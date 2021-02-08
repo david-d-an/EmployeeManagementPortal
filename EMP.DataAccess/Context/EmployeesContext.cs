@@ -485,12 +485,12 @@ namespace EMP.DataAccess.Context
                     .HasColumnType("date");
 
                 entity.Property(e => e.DeptName)
-                    .IsRequired()
+                    //.IsRequired()
                     .HasColumnName("dept_name")
                     .HasMaxLength(40);
 
                 entity.Property(e => e.DeptNo)
-                    .IsRequired()
+                    //.IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
@@ -498,12 +498,12 @@ namespace EMP.DataAccess.Context
                 entity.Property(e => e.EmpNo).HasColumnName("emp_no");
 
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("first_name")
                     .HasMaxLength(14);
 
                 entity.Property(e => e.Gender)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("gender")
                     .HasColumnType("enum('M','F')");
 
@@ -512,26 +512,26 @@ namespace EMP.DataAccess.Context
                     .HasColumnType("date");
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(16);
 
                 entity.Property(e => e.ManagerEmpNo).HasColumnName("manager_emp_no");
 
                 entity.Property(e => e.ManagerFirstName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("manager_first_name")
                     .HasMaxLength(14);
 
                 entity.Property(e => e.ManagerLastName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("manager_last_name")
                     .HasMaxLength(16);
 
                 entity.Property(e => e.Salary).HasColumnName("salary");
 
                 entity.Property(e => e.Title)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("title")
                     .HasMaxLength(50);
             });
@@ -547,12 +547,12 @@ namespace EMP.DataAccess.Context
                 //     .HasColumnType("date");
 
                 entity.Property(e => e.DeptName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("dept_name")
                     .HasMaxLength(40);
 
                 entity.Property(e => e.DeptNo)
-                    .IsRequired()
+                    //.IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
@@ -560,7 +560,7 @@ namespace EMP.DataAccess.Context
                 entity.Property(e => e.EmpNo).HasColumnName("emp_no");
 
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("first_name")
                     .HasMaxLength(14);
 
@@ -574,7 +574,7 @@ namespace EMP.DataAccess.Context
                 //     .HasColumnType("date");
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
+                    // .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(16);
 
