@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
 using EMP.Data.Models;
@@ -10,6 +7,8 @@ using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 using EMP.DataAccess.Repos.Extension;
 using Microsoft.EntityFrameworkCore;
+using EMP.Common.Data;
+using System;
 
 namespace EMP.DataAccess.Repos
 {
@@ -57,8 +56,26 @@ namespace EMP.DataAccess.Repos
             if (!int.TryParse(id, out empNo))
                 return await Task.FromResult<Employees>(null);
 
-            return await TaskConstants<Employees>.NotImplemented;
+            Employees employee = await _context.Employees.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+
+            // try {
+            //     DataCloneExtension.CopyProperties(updateRequest, employee);
+            // } catch(Exception ex) {
+            //     var e = ex;                
+            // }
+            employee.FirstName = updateRequest.FirstName;
+            employee.LastName = updateRequest.LastName;
+            employee.BirthDate = updateRequest.BirthDate;
+            employee .HireDate= updateRequest.HireDate;
+            employee.Gender = updateRequest.Gender;
+
+            _context.Entry(employee).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            return updateRequest;
         }
+
+
 
         public async Task<Employees> PostAsync(Employees createRequest)
         {
