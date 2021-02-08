@@ -80,8 +80,7 @@ namespace EMP.Api.Controllers
             VwTitlesCurrent title = await _titleRepository.GetAsync(id.ToString());
             VwDeptEmpCurrent deptEmp = await _deptEmpRepository.GetAsync(id.ToString());
 
-            if (employee == null)
-            {
+            if (employee == null) {
                 return NotFound();
             }
 
@@ -94,34 +93,44 @@ namespace EMP.Api.Controllers
                     Gender = employeeDetailUpdateRequest .Gender,
                     HireDate = employeeDetailUpdateRequest.HireDate
                 };
-                Employees employeeUpdateResult = await _employeeRepository.PutAsync(id.ToString(), employeeUpdateRequest);
+                Employees employeeUpdateResult = await 
+                    _employeeRepository
+                    .PutAsync(id.ToString(), employeeUpdateRequest);
             }
 
-            if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
+            if (deptEmp?.DeptNo != employeeDetailUpdateRequest.DeptNo) {
                 VwDeptEmpCurrent deptEmpCreateRequest = new VwDeptEmpCurrent {
                     EmpNo = employeeDetailUpdateRequest.EmpNo,
                     DeptNo = employeeDetailUpdateRequest.DeptNo
                 };
-                VwDeptEmpCurrent deptEmpCreateResult = await _deptEmpRepository.PostAsync(deptEmpCreateRequest);
+                VwDeptEmpCurrent deptEmpCreateResult = await 
+                    _deptEmpRepository
+                    .PostAsync(deptEmpCreateRequest);
             }
 
-            if (salary.Salary != employeeDetailUpdateRequest.Salary) {
+            if (salary?.Salary != employeeDetailUpdateRequest.Salary) {
                 VwSalariesCurrent salaryCreateRequest = new VwSalariesCurrent {
                     EmpNo = employeeDetailUpdateRequest.EmpNo,
                     Salary = employeeDetailUpdateRequest.Salary
                 };
-                VwSalariesCurrent salaryCreateResult = await _salaryRepository.PostAsync(salaryCreateRequest);
+                VwSalariesCurrent salaryCreateResult = await 
+                    _salaryRepository
+                    .PostAsync(salaryCreateRequest);
             }
 
-            if (title.Title != employeeDetailUpdateRequest.Title) {
+            if (title?.Title != employeeDetailUpdateRequest.Title) {
                 VwTitlesCurrent titleCreateRequest = new VwTitlesCurrent {
                     EmpNo = employeeDetailUpdateRequest.EmpNo,
                     Title = employeeDetailUpdateRequest.Title
                 };
-                VwTitlesCurrent titleCreateResult = await _titleRepository.PostAsync(titleCreateRequest);
+                VwTitlesCurrent titleCreateResult = await 
+                    _titleRepository
+                    .PostAsync(titleCreateRequest);
             }
 
-            VwEmpDetails result = await _employeeDetailRepository.GetAsync(id.ToString());
+            VwEmpDetails result = await 
+                _employeeDetailRepository
+                .GetAsync(id.ToString());
 
             return result;
         }
