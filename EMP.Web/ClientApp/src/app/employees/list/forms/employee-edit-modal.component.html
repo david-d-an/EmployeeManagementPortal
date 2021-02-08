@@ -1,12 +1,11 @@
 <div class="row">
   <modal #editModal>
     <modal-header>
-      <h3>Edit Employee (ID: {{empNo}})</h3>
+      <span class="modal-title">Edit Employee (ID: {{empNo}})</span>
     </modal-header>
 
     <modal-content>
       <form novalidate [formGroup]="editFormGroup" (ngSubmit)="saveEdit()">
-
       <div class="form-group row">
         <label class="col-md-3 col-form-label"
                 for="empNo">Employee ID</label>
