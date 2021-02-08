@@ -145,10 +145,24 @@ export class EmployeeEditModalComponent implements OnInit {
 
 
   saveEdit(): void {
+    this.spinnerService.startLoading();
     this.modalService.close(this.modalRef);
     this.updatedEmployeeData = this.editFormGroup.getRawValue();
-    // console.log(this.updatedEmployeeData);
-    this.employeeService.putOneEmployeeDetails(this.empNo, this.updatedEmployeeData);
+    console.log(JSON.stringify(this.updatedEmployeeData));
+    this.employeeService
+      .putOneEmployeeDetails(this.empNo, this.updatedEmployeeData)
+      .subscribe({
+        next: res => {
+          alert('Success');
+          this.spinnerService.stopLoading();
+          console.log(JSON.stringify(res));
+        },
+        error: err => {
+          alert('Error');
+          this.spinnerService.stopLoading();
+          console.log(err);
+        },
+      });
   }
 
 }
