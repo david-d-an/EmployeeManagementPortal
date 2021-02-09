@@ -61,13 +61,16 @@
         <label class="col-md-3 col-form-label"
                 for="title">Title</label>
         <div class="col-md-8">
-          <input class="form-control"
+          <select class="form-control"
                   id="title"
                   name="title"
                   formControlName="title"
                   type="text"
-                  placeholder="Title"
-                  [ngClass]="{'is-invalid': isControlInvalid('title')}" />
+                  [ngClass]="{'is-invalid': isControlInvalid('title')}" >
+            <option disabled value="">Select Title</option>
+            <option *ngFor="let t of titles"
+              value="{{t.title}}" >{{t.title}}</option>
+          </select>
           <span class="invalid-feedback">
             <span *ngIf="controlErrors('title')?.required">
               Title is required.
@@ -128,7 +131,7 @@
           </select>
           <span class="invalid-feedback">
             <span *ngIf="controlErrors('deptNo')?.required">
-              website is required.
+              Department is required.
             </span>
           </span>
         </div>
@@ -138,11 +141,21 @@
         <label class="col-md-3 col-form-label"
                 for="gender">Gender</label>
         <div class="col-md-8">
-          <input class="form-control"
+          <select class="form-control"
                   id="gender"
                   name="gender"
                   formControlName="gender"
-                  type="text"/>
+                  type="text"
+                  [ngClass]="{'is-invalid': isControlInvalid('gender')}" >
+            <option disabled value="">Select Gender</option>
+            <option *ngFor="let g of genders"
+              value="{{g.gender}}">{{getFulllGenderName(g.gender)}}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('gender')?.required">
+              Gender is required.
+            </span>
+          </span>
         </div>
       </div>
 

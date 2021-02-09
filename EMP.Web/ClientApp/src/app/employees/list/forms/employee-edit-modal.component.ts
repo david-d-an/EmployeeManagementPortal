@@ -1,3 +1,4 @@
+import { getTestBed } from '@angular/core/testing';
 import { EmployeeEditDetail } from './../../../models/EmployeeDetail';
 import { FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { ModalManager } from 'ngb-modal';
@@ -5,9 +6,11 @@ import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/cor
 
 import { DepartmentDetail } from 'src/app/models/DepartmentDetail';
 
-import { EmployeeService } from '../../service/employee.service';
+import { SpinnerService } from './../../../shared/spinner.service';
+import { EmployeeService } from './../../../employees/service/employee.service';
+import { TitleService } from './../../../titles/service/title.service';
 import { DepartmentService } from './../../../departments/service/department.service';
-import { SpinnerService } from 'src/app/shared/spinner.service';
+import { GenderService } from './../../../genders/service/gender.service';
 
 import { positiveNumber } from 'src/app/Validators/Validators';
 
@@ -59,13 +62,16 @@ export class EmployeeEditModalComponent implements OnInit {
     validators: [
       // salaryMinLessThanSalaryMax
   ]});
-
+  genders: any;
+  titles: string[];
 
   constructor(
     private formBuilder: FormBuilder,
     private modalService: ModalManager,
     private spinnerService: SpinnerService,
     private employeeService: EmployeeService,
+    private titleService: TitleService,
+    private genderService: GenderService,
     private departmentService: DepartmentService) { }
 
   ngOnInit(): void {
@@ -76,6 +82,23 @@ export class EmployeeEditModalComponent implements OnInit {
       },
       error => console.log(error)
     );
+
+    this.genderService.getGenders().subscribe(
+      data => {
+        this.genders = data;
+        console.log(`Genders: ${JSON.stringify(this.genders)}`);
+      },
+      error => console.log(error)
+    );
+
+    this.titleService.getTitles().subscribe(
+      data => {
+        this.titles = data;
+        console.log(`Titles: ${JSON.stringify(this.titles)}`);
+      },
+      error => console.log(error)
+    );
+
   }
 
   isControlInvalid(controlName): boolean {
@@ -143,7 +166,6 @@ export class EmployeeEditModalComponent implements OnInit {
     this.modalService.close(this.modalRef);
   }
 
-
   saveEdit(): void {
     this.spinnerService.startLoading();
     this.modalService.close(this.modalRef);
@@ -165,4 +187,13 @@ export class EmployeeEditModalComponent implements OnInit {
       });
   }
 
+  getFulllGenderName(g: string): string {
+    if (g && g.toLowerCase() === 'f') {
+      return 'Female';
+    } else if (g && g.toLowerCase() === 'm') {
+      return 'Male';
+    } else {
+      return g;
+    }
+  }
 }
