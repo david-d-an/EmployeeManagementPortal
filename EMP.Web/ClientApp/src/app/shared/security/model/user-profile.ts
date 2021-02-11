@@ -1,4 +1,4 @@
-import { UserPermission } from "./user-permission";
+import { UserPermission } from './user-permission';
 
 export class UserProfile {
     id: string;

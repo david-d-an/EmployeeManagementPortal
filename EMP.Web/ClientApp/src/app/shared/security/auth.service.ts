@@ -34,7 +34,8 @@ export class AuthService {
       //   jwks_uri: `${Constants.stsAuthority}.well-known/jwks.json`,
       //   token_endpoint: `${Constants.stsAuthority}oauth/token`,
       //   userinfo_endpoint: `${Constants.stsAuthority}userinfo`,
-      //   end_session_endpoint: `${Constants.stsAuthority}v2/logout?client_id=${Constants.clientId}&returnTo=${encodeURI(Constants.clientRoot)}signout-callback`
+      //   end_session_endpoint: `${Constants.stsAuthority}v2/logout?client_id=${Constants.clientId}\
+      //                           &returnTo=${encodeURI(Constants.clientRoot)}signout-callback`
       // }
     };
     this._userManager = new UserManager(stsSettings);
@@ -91,8 +92,7 @@ export class AuthService {
     return this._userManager.getUser().then(user => {
       if (!!user && !user.expired) {
         return user.access_token;
-      }
-      else {
+      } else {
         return null;
       }
     });
