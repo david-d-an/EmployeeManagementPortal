@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EMP.DbScaffold.Models
+namespace EMP.DbScaffold.Models.Employees
 {
     public partial class VwEmpDetails
     {
@@ -11,12 +11,12 @@ namespace EMP.DbScaffold.Models
         public DateTime BirthDate { get; set; }
         public DateTime HireDate { get; set; }
         public string Gender { get; set; }
-        public int Salary { get; set; }
+        public int? Salary { get; set; }
         public string Title { get; set; }
         public string DeptNo { get; set; }
         public string DeptName { get; set; }
         public string ManagerFirstName { get; set; }
         public string ManagerLastName { get; set; }
-        public int ManagerEmpNo { get; set; }
+        public int? ManagerEmpNo { get; set; }
     }
 }

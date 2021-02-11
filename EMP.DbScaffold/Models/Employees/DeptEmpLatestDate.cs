@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EMP.DbScaffold.Models
+namespace EMP.DbScaffold.Models.Employees
 {
     public partial class DeptEmpLatestDate
     {

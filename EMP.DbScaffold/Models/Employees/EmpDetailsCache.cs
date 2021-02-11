@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EMP.DbScaffold.Models
+namespace EMP.DbScaffold.Models.Employees
 {
-    public partial class VwEmpDetailsCurrent
+    public partial class EmpDetailsCache
     {
         public int EmpNo { get; set; }
         public string FirstName { get; set; }
