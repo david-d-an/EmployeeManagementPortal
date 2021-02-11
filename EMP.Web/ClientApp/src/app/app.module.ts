@@ -1,6 +1,6 @@
 import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UiModule } from './ui/ui.module';
@@ -13,6 +13,7 @@ import { AboutComponent } from './about/about.component';
 
 import { AppConfig } from './app.config';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthInterceptorsService } from './shared/security/auth-interceptors.service';
 
 // import { RouterModule } from '@angular/router';
 // import { FormsModule } from '@angular/forms';
@@ -46,7 +47,13 @@ export function initializeApp(appConfig: AppConfig) {
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
-      deps: [AppConfig], multi: true
+      deps: [AppConfig],
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorsService,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
