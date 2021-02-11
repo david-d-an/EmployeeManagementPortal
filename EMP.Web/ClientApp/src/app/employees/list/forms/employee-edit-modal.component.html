@@ -69,7 +69,7 @@
                   [ngClass]="{'is-invalid': isControlInvalid('title')}" >
             <option disabled value="">Select Title</option>
             <option *ngFor="let t of titles"
-              value="{{t.title}}" >{{t.title}}</option>
+              value="{{t['title']}}" >{{t['title']}}</option>
           </select>
           <span class="invalid-feedback">
             <span *ngIf="controlErrors('title')?.required">
