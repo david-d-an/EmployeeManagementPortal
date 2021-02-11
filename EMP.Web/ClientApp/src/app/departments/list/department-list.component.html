@@ -30,6 +30,19 @@
 
     <div>
       Contents
+
+      <button md-icon-button class="delete">
+        <span style="font-size: 1em; color: white;">
+          <i class="fas fa-trash-alt"></i>
+        </span>
+      </button>
+      &nbsp;
+      <button md-icon-button class="edit">
+        <span style="font-size: 1em; color: white;">
+          <i class="fa fa-edit"></i>
+        </span>
+      </button>
+
     </div>
   </div>
 </div>
@@ -133,3 +146,44 @@
   </modal>
 </div>
 
+
+
+<form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+
+  <div>
+    <label for="name">
+      Name
+    </label>
+    <input id="name" type="text" formControlName="name">
+  </div>
+
+  <div>
+    <label for="address">
+      Address
+    </label>
+    <input id="address" type="text" formControlName="address">
+  </div>
+
+  <button class="button" type="submit">Purchase</button>
+
+</form>
+
+<form novalidate [formGroup]="checkoutForm2" (ngSubmit)="onSubmit2()">
+
+  <div>
+    <label for="salaryMin">
+      Name
+    </label>
+    <input id="salaryMin" type="text" formControlName="salaryMin">
+  </div>
+
+  <div>
+    <label for="salaryM">
+      Address
+    </label>
+    <input id="salaryMax" type="text" formControlName="salaryMax">
+  </div>
+
+  <button class="button" type="submit">Purchase2</button>
+
+</form>

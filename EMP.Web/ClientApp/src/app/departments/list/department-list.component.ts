@@ -1,18 +1,34 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild,
+         OnInit, AfterViewInit, AfterViewChecked, OnChanges, DoCheck,
+         AfterContentInit, AfterContentChecked, OnDestroy, Input } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalManager } from 'ngb-modal';
 import { DepartmentFilter } from 'src/app/models/DepartmentDetail';
+import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validators/Validators';
 
 import { DepartmentService } from '../service/department.service';
 import { SpinnerService } from './../../shared/spinner.service';
+// import { ValidatorFn } from 'src/app/Validation/Validators';
+
 
 @Component({
   selector: 'app-department-list',
   templateUrl: './department-list.component.html',
   styleUrls: ['./department-list.component.css']
 })
-export class DepartmentListComponent implements OnInit {
-@ViewChild('filterModal') filterModal;
+export class DepartmentListComponent implements
+  OnChanges,
+  OnInit,
+  DoCheck,
+  AfterContentInit,
+  AfterContentChecked,
+  AfterViewInit,
+  AfterViewChecked,
+  OnDestroy {
+
+  @ViewChild('filterModal') filterModal: any;
+  @Input() power: string;
 
   private modalRef;
   pageTitle = 'Department List';
@@ -23,7 +39,41 @@ export class DepartmentListComponent implements OnInit {
   currentFilter: DepartmentFilter;
   lastFilter: DepartmentFilter;
 
+
+  checkoutForm = this.formBuilder.group({
+    name: ['', Validators.required],
+    address: ''
+  });
+
+  checkoutForm2 = this.formBuilder.group({
+    salaryMin: [ '', [
+      positiveNumber
+      // Validators.required,
+      // Validators.maxLength(3),
+      // blue
+      ]
+    ],
+    salaryMax: [ '', [
+      positiveNumber
+      // Validators.required,
+      // Validators.maxLength(3),
+      // blue
+    ]],
+  },
+  { validators: salaryMinLessThanSalaryMax });
+
+  onSubmit(): void {
+    console.warn('1 - Your order has been submitted', this.checkoutForm.value);
+    this.checkoutForm.reset();
+  }
+
+  onSubmit2(): void {
+    console.warn('2 - Your order has been submitted', this.checkoutForm.value);
+    this.checkoutForm.reset();
+  }
+
   constructor(
+    private formBuilder: FormBuilder,
     private departmentService: DepartmentService,
     private modalService: ModalManager,
     private spinnerService: SpinnerService,
@@ -42,12 +92,46 @@ export class DepartmentListComponent implements OnInit {
       this.currentFilter = { ... this.lastFilter };
   }
 
-  ngOnInit(): void {
+
+  ngOnChanges(): void {
+    console.log('OnChanges');
   }
+
+  ngOnInit(): void {
+    console.log('OnInit');
+  }
+
+  ngDoCheck(): void {
+    console.log('DoCheck');
+  }
+
+  ngAfterContentInit(): void {
+    console.log('AfterContentInit');
+  }
+
+  ngAfterContentChecked(): void {
+    console.log('AfterContentChecked');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('AfterViewInit');
+  }
+
+  ngAfterViewChecked(): void {
+    console.log('AfterViewChecked');
+    // console.log(`Form1 valid: ${this.checkoutForm.valid}`);
+    console.log(`Form2 valid: ${this.checkoutForm2.valid}`);
+  }
+
+  ngOnDestroy(): void {
+    alert('OnDestroy');
+    console.log('OnDestroy');
+  }
+
 
   loadData(): void {
     this.spinnerService.startLoading();
-    this.departmentService.getDepartmentDetails(this.currentFilter)
+    this.departmentService.getDepartmentDetails()
       // .pipe(
       //   tap(data => console.log(data.length))
       // )
