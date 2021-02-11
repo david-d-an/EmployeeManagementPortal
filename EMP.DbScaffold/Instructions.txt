@@ -1,0 +1,41 @@
+Steps to Migrate Employees Database
+
+1. Get current models
+> dotnet ef dbcontext scaffold "server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=employees;" MySql.Data.EntityFrameworkCore -o Models/Employees -f
+
+2. Update connection string in Scaffold project
+"server=migrationtest6921.mysql.database.azure.com;uid=appuser@migrationtest6921;password=Soil9303;port=3306;database=employees;"
+
+3. Run db update
+> dotnet ef database update --context employeesContext
+
+4. Run db migration
+> dotnet ef migrations add {migrationname} -o Migrations/Employees --context employeesContext
+
+5. Adjust migration code
+Comment out anything realted to __efmigrationshistory as this causes Table already exists exception.
+
+6. Run db update
+> dotnet ef database update --context employeesContext
+
+
+
+Steps to Migrate STS Database
+
+1. Get current models
+> dotnet ef dbcontext scaffold "server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;" MySql.Data.EntityFrameworkCore -o Models/STS -f
+
+2. Update connection string in Scaffold project
+"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;"
+
+3. Run db update
+> dotnet ef database update --context stsContext
+
+4. Run db migration
+> dotnet ef migrations add {migrationname} -o Migrations/STS --context stsContext
+
+5. Adjust migration code
+Comment out anything realted to __efmigrationshistory as this causes Table already exists exception.
+
+6. Run db update
+> dotnet ef database update --context stsContext
