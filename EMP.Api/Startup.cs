@@ -39,23 +39,27 @@ namespace EMP.Api
                 options.AddPolicy(name: EmpWebOrigins, builder =>
                 {
                     builder
+                    // .AllowAnyHeader()
+                    .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type")
+                    // .AllowAnyOrigin()
                     .WithOrigins(
                         "http://localhos:5000",
                         "https://localhost:5001"
                     )
-                    .WithMethods("GET", "PUT", "POST", "DELETE")
-                    // .AllowAnyHeader();
-                    .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type");
+                    // .AllowAnyMethod()
+                    .WithMethods("GET", "PUT", "POST", "DELETE");
                 });
             });
 
-            var cryptoUtil = new AesCryptoUtil();
-
             services.AddControllers();
+
+            // var a = AesCryptoUtil.GetStringSha256Hash("Soil9303");
+            // Before Hash: Soil9303
+            // After Hash: 6D2450AD484CF4C9F99007D0C4D0E2D694F110BB580D74062E3A3A79F33E432C
 
             // Make MySql Connection Service
             var encConnStrMySql = Configuration.GetConnectionString("MySqlConnection(Azure)");
-            var connStrMySql = cryptoUtil.Decrypt(encConnStrMySql);
+            var connStrMySql = AesCryptoUtil.Decrypt(encConnStrMySql);
 
             services.AddDbContext<EmployeesContext>(builder =>                   
                 builder.UseMySQL(connStrMySql)
