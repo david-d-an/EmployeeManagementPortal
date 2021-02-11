@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EMP.DataAccess.Context;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
@@ -15,7 +16,20 @@ namespace EMP.Api
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            IHost host = CreateHostBuilder(args).Build();
+            SeedEmployeeDatabase(host);
+            host.Run();
+        }
+
+        private static void SeedEmployeeDatabase(IHost host)
+        {
+            // Trying to keep seeder withing a scope
+            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+            using (var scope = scopeFactory.CreateScope()) {
+                // var seeder = host.Services.GetService<EmployeesDataSeeder>();
+                var seeder = scope.ServiceProvider.GetService<EmployeesDataSeeder>();
+                seeder.Seed();
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -24,6 +38,7 @@ namespace EMP.Api
                 //     services.Configure<KestrelServerOptions>(
                 //         context.Configuration.GetSection("Kestrel"));
                 // })
+                .ConfigureAppConfiguration(SetupConfiguration)
                 .ConfigureLogging(logging => {
                     logging.ClearProviders();
                     logging.AddConsole();
@@ -38,5 +53,13 @@ namespace EMP.Api
                     //     // Set properties and call methods on options
                     // });
                 });
+
+        private static void SetupConfiguration(HostBuilderContext ctx, IConfigurationBuilder builder)
+        {
+            // builder.Sources.Clear();
+            builder
+                .AddJsonFile("config.json", false, true)
+                .AddEnvironmentVariables();
+        }
     }
 }

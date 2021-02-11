@@ -62,6 +62,8 @@ namespace EMP.Api
             );
             EnsureDatabaseExists<EmployeesContext>(connStrMySql);
 
+            services.AddTransient<EmployeesDataSeeder>();
+
             services.AddScoped<IRepository<DeptManager>, DeptManagerRepository>();
             services.AddScoped<IRepository<VwDeptManagerDetail>, DeptManagerDetailRepository>();
             services.AddScoped<IRepository<Departments>, DepartmentsRepository>();
