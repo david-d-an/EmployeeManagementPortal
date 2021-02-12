@@ -44,7 +44,9 @@ namespace EMP.Api
                     // .AllowAnyOrigin()
                     .WithOrigins(
                         "http://localhos:5000",
-                        "https://localhost:5001"
+                        "https://localhost:5001",
+                        "http://ipv4.fiddler:5000",
+                        "https://ipv4.fiddler:5001"
                     )
                     // .AllowAnyMethod()
                     .WithMethods("GET", "PUT", "POST", "DELETE");
