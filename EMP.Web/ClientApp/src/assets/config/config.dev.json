@@ -7,6 +7,6 @@
     "appInsights": false
   },
   "apiServer": {
-    "employees": "https://localhost:15001"
+    "employees": "https://ipv4.fiddler:15001"
   }
 }
