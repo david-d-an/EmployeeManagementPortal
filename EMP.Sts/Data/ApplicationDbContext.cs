@@ -4,12 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SecuringAngularApps.STS.Models;
+using EMP.Sts.Models;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace SecuringAngularApps.STS.Data
+namespace EMP.Sts.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

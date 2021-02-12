@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace SecuringAngularApps.STS.Migrations
+namespace EMP.Sts.Migrations
 {
     public partial class Initial : Migration
     {

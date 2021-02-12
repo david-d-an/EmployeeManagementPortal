@@ -7,9 +7,9 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Identity;
-using SecuringAngularApps.STS.Models;
+using EMP.Sts.Models;
 
-namespace SecuringAngularApps.STS.Quickstart.Account
+namespace EMP.Sts.Quickstart.Account
 {
     public class CustomProfileService : IProfileService
     {

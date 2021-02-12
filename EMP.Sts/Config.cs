@@ -2,7 +2,7 @@
 using IdentityServer4;
 using IdentityServer4.Models;
 
-namespace SecuringAngularApps.STS
+namespace EMP.Sts
 {
     public class Config
     {

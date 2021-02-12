@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "SecuringAngularApps.STS": {
+    "EMP.Sts": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5500",

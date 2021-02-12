@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SecuringAngularApps.STS.Data;
-using SecuringAngularApps.STS.Models;
-using SecuringAngularApps.STS.Quickstart.Account;
+using EMP.Sts.Data;
+using EMP.Sts.Models;
+using EMP.Sts.Quickstart.Account;
 
-namespace SecuringAngularApps.STS
+namespace EMP.Sts
 {
     public class Startup
     {

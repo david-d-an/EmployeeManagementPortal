@@ -11,7 +11,7 @@ using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
 
-namespace SecuringAngularApps.STS
+namespace EMP.Sts
 {
     public class Program
     {

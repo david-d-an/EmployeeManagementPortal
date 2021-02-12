@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SecuringAngularApps.STS.Models;
+using EMP.Sts.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -109,6 +109,7 @@ namespace IdentityServer4.Quickstart.UI
                 {
                     ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.ClientId));
+                    var roles = await _userManager.GetRolesAsync(user);
 
                     if (context != null)
                     {
