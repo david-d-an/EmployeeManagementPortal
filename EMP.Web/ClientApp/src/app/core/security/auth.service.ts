@@ -42,7 +42,12 @@ export class AuthService {
     this._userManager.events.addAccessTokenExpired(_ => {
       this._loginChangedSubject.next(false);
     });
+
+    console.log('addUserLoaded');
     this._userManager.events.addUserLoaded(user => {
+      console.log(`this._user: ${this._user}`);
+      console.log(`user: ${user}`);
+
       if (this._user !== user) {
         this._user = user;
         this.loadSecurityContext();
@@ -88,7 +93,7 @@ export class AuthService {
     return this._userManager.signoutRedirectCallback();
   }
 
-  getAccessToken() {
+  getAccessToken(): Promise<string | null> {
     return this._userManager.getUser().then(user => {
       if (!!user && !user.expired) {
         return user.access_token;
@@ -100,15 +105,15 @@ export class AuthService {
 
   loadSecurityContext() {
     this._httpClient
-        .get<AuthContext>(`${Constants.apiRoot}Projects/AuthContext`)
-        .subscribe(
-          context => {
-            this.authContext = new AuthContext();
-            this.authContext.claims = context.claims;
-            this.authContext.userProfile = context.userProfile;
-          },
-          error => console.error(error)
-        );
+      .get<AuthContext>(`${Constants.apiRoot}Projects/AuthContext`)
+      .subscribe(
+        context => {
+          this.authContext = new AuthContext();
+          this.authContext.claims = context.claims;
+          this.authContext.userProfile = context.userProfile;
+        },
+        error => console.error(error)
+      );
   }
 
 }

@@ -39,7 +39,7 @@
 
       <div class="navbar-nav navbar-text"
         *ngIf="!isLoggedIn">
-          <a class="nav-link" [routerLink]="['/login']" >Log In</a>
+          <a class="nav-link" (click)="login()" >Log In</a>
       </div>
       <div class="navbar-nav navbar-text"
         *ngIf="isLoggedIn">

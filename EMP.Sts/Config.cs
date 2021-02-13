@@ -20,18 +20,27 @@ namespace EMP.Sts
             {
                 new Client
                 {
-                    ClientId = "spa-client",
-                    ClientName = "Projects SPA",
+                    ClientId = "emp-web-client",
+                    ClientName = "emp-web-client",
                     RequireClientSecret = false,
                     AllowedGrantTypes = GrantTypes.Code,
                     RequirePkce = true,
                     AllowAccessTokensViaBrowser = true,
                     RequireConsent = false,
 
-
-                    RedirectUris =           { "http://localhost:4200/signin-callback", "http://localhost:4200/assets/silent-callback.html" },
-                    PostLogoutRedirectUris = { "http://localhost:4200/signout-callback" },
-                    AllowedCorsOrigins =     { "http://localhost:4200" },
+                    RedirectUris = { 
+                        "http://localhost:5000/signin-callback", 
+                        "http://localhost:5000/assets/silent-callback.html" 
+                    },
+                    PostLogoutRedirectUris = { 
+                        "http://localhost:5000/signout-callback" 
+                    },
+                    AllowedCorsOrigins = { 
+                        "http://localhost:5000",
+                        "https://localhost:5001",
+                        "http://ipv4.fiddler:5000",
+                        "https://ipv4.fiddler:5001"
+                    },
 
                     AllowedScopes =
                     {
@@ -41,28 +50,28 @@ namespace EMP.Sts
                     },
                     AccessTokenLifetime = 600
                 },
-                new Client
-                {
-                    ClientId = "mvc",
-                    ClientName = "MVC Client",
-                    AllowedGrantTypes = GrantTypes.Hybrid,
+                // new Client
+                // {
+                //     ClientId = "mvc",
+                //     ClientName = "MVC Client",
+                //     AllowedGrantTypes = GrantTypes.Hybrid,
 
-                    ClientSecrets =
-                    {
-                        new Secret("secret".Sha256())
-                    },
+                //     ClientSecrets =
+                //     {
+                //         new Secret("secret".Sha256())
+                //     },
 
-                    RedirectUris           = { "http://localhost:4201/signin-oidc" },
-                    PostLogoutRedirectUris = { "http://localhost:4201/signout-callback-oidc" },
+                //     RedirectUris           = { "http://localhost:4201/signin-oidc" },
+                //     PostLogoutRedirectUris = { "http://localhost:4201/signout-callback-oidc" },
 
-                    AllowedScopes =
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
-                    },
-                    AllowOfflineAccess = true
+                //     AllowedScopes =
+                //     {
+                //         IdentityServerConstants.StandardScopes.OpenId,
+                //         IdentityServerConstants.StandardScopes.Profile
+                //     },
+                //     AllowOfflineAccess = true
 
-                }
+                // }
             };
 
         }

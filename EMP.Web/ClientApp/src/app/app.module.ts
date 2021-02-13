@@ -13,7 +13,7 @@ import { AboutComponent } from './about/about.component';
 
 import { AppConfig } from './app.config';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AuthInterceptorsService } from './shared/security/auth-interceptors.service';
+import { AuthInterceptorsService } from './core/security/auth-interceptors.service';
 
 // import { RouterModule } from '@angular/router';
 // import { FormsModule } from '@angular/forms';

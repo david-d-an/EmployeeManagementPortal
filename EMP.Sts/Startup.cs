@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 using EMP.Sts.Data;
 using EMP.Sts.Models;
 using EMP.Sts.Quickstart.Account;
@@ -17,6 +18,7 @@ namespace EMP.Sts
     {
         public IConfiguration Configuration { get; }
         public IHostingEnvironment Environment { get; }
+        private readonly string EmpWebOrigins = "EMP.Web";
 
         public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
@@ -35,11 +37,20 @@ namespace EMP.Sts
 
             services.AddCors(options =>
             {
-                options.AddPolicy("CorsPolicy", corsBuilder =>
+                options.AddPolicy(EmpWebOrigins, corsBuilder =>
                 {
-                    corsBuilder.AllowAnyHeader()
+                    corsBuilder
+                    .AllowAnyHeader()
+                    // .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type")
+                    // .AllowAnyOrigin()
+                    .WithOrigins(
+                        "http://localhost:5000",
+                        "https://localhost:5001",
+                        "http://ipv4.fiddler:5000",
+                        "https://ipv4.fiddler:5001"
+                    )
                     .AllowAnyMethod()
-                    .SetIsOriginAllowed(origin => origin == "http://localhost:4200")
+                    // .WithMethods("GET", "PUT", "POST", "DELETE")
                     .AllowCredentials();
                 });
             });
@@ -86,7 +97,7 @@ namespace EMP.Sts
             }
 
             app.UseStaticFiles();
-            app.UseCors("CorsPolicy");
+            app.UseCors(EmpWebOrigins);
 
             app.UseIdentityServer();
             app.UseMvcWithDefaultRoute();
