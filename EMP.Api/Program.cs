@@ -17,7 +17,7 @@ namespace EMP.Api
         public static void Main(string[] args)
         {
             IHost host = CreateHostBuilder(args).Build();
-            SeedEmployeeDatabase(host);
+            // SeedEmployeeDatabase(host);
             host.Run();
         }
 

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using EMP.Common.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EMP.Api.Controllers
 {
@@ -41,6 +42,7 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles="System Admin")]
         public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get(
             [FromQuery] int? pageNum,
             [FromQuery] int? pageSize,
@@ -67,6 +69,7 @@ namespace EMP.Api.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles="System Admin")]
         public async Task<ActionResult<VwEmpDetails>> Get(int id)
         {
             return await _employeeDetailRepository.GetAsync(id.ToString());

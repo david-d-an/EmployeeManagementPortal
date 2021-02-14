@@ -17,6 +17,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using EMP.Data.Models;
 using Microsoft.Net.Http.Headers;
+using IdentityServer4.AccessTokenValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace EMP.Api
 {
@@ -36,21 +39,35 @@ namespace EMP.Api
         {
             services.AddCors(options =>
             {
-                options.AddPolicy(name: EmpWebOrigins, builder =>
-                {
+                options.AddPolicy(name: EmpWebOrigins, builder => {
                     builder
-                    // .AllowAnyHeader()
-                    .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type")
+                    .AllowAnyHeader()
+                    // .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type")
                     // .AllowAnyOrigin()
                     .WithOrigins(
-                        "http://localhos:5000",
+                        "http://localhost:5000",
                         "https://localhost:5001",
                         "http://ipv4.fiddler:5000",
                         "https://ipv4.fiddler:5001"
                     )
-                    // .AllowAnyMethod()
-                    .WithMethods("GET", "PUT", "POST", "DELETE");
+                    .AllowAnyMethod();
+                    // .WithMethods("GET", "PUT", "POST", "DELETE");
                 });
+            });
+
+            services
+            .AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            .AddIdentityServerAuthentication(options => {
+                options.Authority = "http://localhost:5500";
+                options.ApiName = "projects-api";
+                options.RequireHttpsMetadata = false;
+            });
+
+            services.AddMvc(options => {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
             });
 
             services.AddControllers();
@@ -117,6 +134,8 @@ namespace EMP.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
