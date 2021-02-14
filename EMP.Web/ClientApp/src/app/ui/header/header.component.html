@@ -3,7 +3,9 @@
     <img width="25" alt="Angular Logo" src="../../../assets/images/logo_small.jpg">
   </a>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse"
+          data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -15,7 +17,10 @@
       </li>
 
       <li ngbDropdown class="nav-item dropdown">
-        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Pages</a>
+        <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenu"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Pages
+        </a>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
           <a class="dropdown-item" href="employees">Employees List</a>
           <div class="dropdown-divider"></div>
@@ -26,26 +31,21 @@
       <li class="nav-item">
         <a class="nav-link" href="about">About</a>
       </li>
+
       <li class="nav-item">
         <a class="nav-link" href="contact">Contact</a>
       </li>
     </ul>
 
     <div class="navbar-expand ml-auto navbar-nav">
-      <!-- <div class="navbar-nav navbar-text">
-        <i class="fa fa-user"></i>
-        Anonymous User
-      </div> -->
-
       <div class="navbar-nav navbar-text"
         *ngIf="!isLoggedIn">
           <a class="nav-link" (click)="login()" >Log In</a>
       </div>
-      <div class="navbar-nav navbar-text"
+      <div class="navbar-nav nav-item"
         *ngIf="isLoggedIn">
           <a class="nav-link" (click)="logOut()">Log Out</a>
       </div>
-
     </div>
   </div>
 </nav>
