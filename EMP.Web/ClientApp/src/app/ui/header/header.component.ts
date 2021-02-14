@@ -1,5 +1,5 @@
 import { AuthService } from 'src/app/core/security/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -11,13 +11,16 @@ export class HeaderComponent implements OnInit {
 
   constructor(private authService: AuthService) {
     this.isLoggedIn = false;
-    // this.authService.loginChanged.subscribe(loggedIn => {
-    //   this.isLoggedIn = loggedIn;
-    // });
   }
 
   ngOnInit() {
+    this.authService.isLoggedIn().then(loggedIn => {
+      console.log(`set by promise: ${loggedIn}`);
+      this.isLoggedIn = loggedIn;
+    });
+
     this.authService.loginChanged.subscribe(loggedIn => {
+      console.log(`set by obs: ${loggedIn}`);
       this.isLoggedIn = loggedIn;
     });
   }

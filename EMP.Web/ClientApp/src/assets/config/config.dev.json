@@ -7,6 +7,13 @@
     "appInsights": false
   },
   "apiServer": {
-    "employees": "http://localhost:15000"
+    "employees": "https://localhost:15001"
+  },
+  "oid": {
+    "clientRoot": "http://localhost:5000/",
+    "apiRoot": "http://localhost:15000/api/",
+    "stsAuthority": "http://localhost:5500/",
+    "clientId": "emp-web-client",
+    "apiId": "projects-api"
   }
 }

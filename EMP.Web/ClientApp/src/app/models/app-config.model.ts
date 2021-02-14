@@ -19,4 +19,11 @@ export interface IAppConfig {
     metadata: string;
     rules: string;
   };
+  oid: {
+    clientRoot: string;
+    apiRoot: string;
+    stsAuthority: string;
+    clientId: string;
+    apiId: string;
+  };
 }

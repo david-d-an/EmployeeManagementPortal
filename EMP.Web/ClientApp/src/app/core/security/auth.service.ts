@@ -1,82 +1,97 @@
 import { Injectable } from '@angular/core';
-import { UserManager, User } from 'oidc-client';
-import { Constants } from './constants';
-import { Subject } from 'rxjs';
-// import { CoreModule } from './core.module';
 import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { UserManager, User } from 'oidc-client';
 import { AuthContext } from './model/auth-context';
+import { AppConfig } from 'src/app/app.config';
+// import { Constants } from './constants';
+// import { CoreModule } from './core.module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private _userManager: UserManager;
+  get userManager() {
+    // Make sure to load UserManager only once only after page is all rendered
+    if (!this._userManager) {
+      this.loadConfig();
+    }
+    return this._userManager;
+  }
   private _user: User;
   private _loginChangedSubject = new Subject<boolean>();
 
   loginChanged = this._loginChangedSubject.asObservable();
   authContext: AuthContext;
 
-  constructor(private _httpClient: HttpClient) {
+  constructor(private _httpClient: HttpClient) { }
+
+  loadConfig(): void {
+    const oidcConfig = AppConfig.settings.oid;
     const stsSettings = {
-      authority: Constants.stsAuthority,
-      client_id: Constants.clientId,
-      redirect_uri: `${Constants.clientRoot}signin-callback`,
-      scope: 'openid profile projects-api',
+      authority: oidcConfig.stsAuthority,
+      client_id: oidcConfig.clientId,
+      redirect_uri: `${oidcConfig.clientRoot}signin-callback`,
+      scope: `openid profile ${oidcConfig.apiId}`,
       response_type: 'code',
       // response_type: for auth code flow with PKCE: 'code', for implicit flow: 'id_token token'
-      post_logout_redirect_uri: `${Constants.clientRoot}signout-callback`,
+      post_logout_redirect_uri: `${oidcConfig.clientRoot}signout-callback`,
       automaticSilentRenew: true,
-      silent_redirect_uri: `${Constants.clientRoot}assets/silent-callback.html`
-      // metadata: {
-      //   issuer: `${Constants.stsAuthority}`,
-      //   authorization_endpoint: `${Constants.stsAuthority}authorize?audience=projects-api`,
-      //   jwks_uri: `${Constants.stsAuthority}.well-known/jwks.json`,
-      //   token_endpoint: `${Constants.stsAuthority}oauth/token`,
-      //   userinfo_endpoint: `${Constants.stsAuthority}userinfo`,
-      //   end_session_endpoint: `${Constants.stsAuthority}v2/logout?client_id=${Constants.clientId}\
-      //                           &returnTo=${encodeURI(Constants.clientRoot)}signout-callback`
-      // }
+      silent_redirect_uri: `${oidcConfig.clientRoot}assets/silent-callback.html`
+
+      // authority: Constants.stsAuthority,
+      // client_id: Constants.clientId,
+      // redirect_uri: `${Constants.clientRoot}signin-callback`,
+      // scope: 'openid profile projects-api',
+      // response_type: 'code',
+      // // response_type: for auth code flow with PKCE: 'code', for implicit flow: 'id_token token'
+      // post_logout_redirect_uri: `${Constants.clientRoot}signout-callback`,
+      // automaticSilentRenew: true,
+      // silent_redirect_uri: `${Constants.clientRoot}assets/silent-callback.html`
     };
+
     this._userManager = new UserManager(stsSettings);
     this._userManager.events.addAccessTokenExpired(_ => {
       this._loginChangedSubject.next(false);
     });
 
-    console.log('addUserLoaded');
+    // console.log('addUserLoaded initiated');
     this._userManager.events.addUserLoaded(user => {
-      console.log(`this._user: ${this._user}`);
-      console.log(`user: ${user}`);
-
-      if (this._user !== user) {
+      if (!!this._user !== !!user) {
         this._user = user;
         this.loadSecurityContext();
         this._loginChangedSubject.next(!!user && !user.expired);
       }
     });
-
   }
 
   login() {
-    return this._userManager.signinRedirect();
+    return this.userManager.signinRedirect();
   }
 
   isLoggedIn(): Promise<boolean> {
-    return this._userManager.getUser().then(user => {
+    return this.userManager.getUser().then(user => {
       const userCurrent = !!user && !user.expired;
-      if (this._user !== user) {
+      console.log(`user: ${JSON.stringify(user)}`);
+      console.log(`this._user: ${JSON.stringify(this._user)}`);
+      console.log(`userCurrent: ${userCurrent}`);
+      if (!!(this._user) !== !!user) {
+        console.log(`next(userCurrent)`);
         this._loginChangedSubject.next(userCurrent);
       }
       if (userCurrent && !this.authContext) {
+        console.log(`loadSecurityContext()`);
         this.loadSecurityContext();
       }
+      console.log('this._user = user;');
       this._user = user;
       return userCurrent;
     });
   }
 
   completeLogin() {
-    return this._userManager.signinRedirectCallback().then(user => {
+    return this.userManager.signinRedirectCallback().then(user => {
       this._user = user;
       this._loginChangedSubject.next(!!user && !user.expired);
       return user;
@@ -84,17 +99,17 @@ export class AuthService {
   }
 
   logout() {
-    this._userManager.signoutRedirect();
+    this.userManager.signoutRedirect();
   }
 
   completeLogout() {
     this._user = null;
     this._loginChangedSubject.next(false);
-    return this._userManager.signoutRedirectCallback();
+    return this.userManager.signoutRedirectCallback();
   }
 
   getAccessToken(): Promise<string | null> {
-    return this._userManager.getUser().then(user => {
+    return this.userManager.getUser().then(user => {
       if (!!user && !user.expired) {
         return user.access_token;
       } else {
@@ -104,16 +119,16 @@ export class AuthService {
   }
 
   loadSecurityContext() {
-    this._httpClient
-      .get<AuthContext>(`${Constants.apiRoot}Projects/AuthContext`)
-      .subscribe(
-        context => {
-          this.authContext = new AuthContext();
-          this.authContext.claims = context.claims;
-          this.authContext.userProfile = context.userProfile;
-        },
-        error => console.error(error)
-      );
+    // this._httpClient
+    //   .get<AuthContext>(`${Constants.apiRoot}Projects/AuthContext`)
+    //   .subscribe(
+    //     context => {
+    //       this.authContext = new AuthContext();
+    //       this.authContext.claims = context.claims;
+    //       this.authContext.userProfile = context.userProfile;
+    //     },
+    //     error => console.error(error)
+    //   );
   }
 
 }

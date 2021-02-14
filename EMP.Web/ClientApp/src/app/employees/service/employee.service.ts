@@ -1,6 +1,7 @@
+import { AuthService } from 'src/app/core/security/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
 import { AppConfig } from 'src/app/app.config';
 import { EmployeeDetail, EmployeeEditDetail, EmployeeFilter } from 'src/app/models/EmployeeDetail';
@@ -21,7 +22,9 @@ export class EmployeeService {
     return `${AppConfig.settings.apiServer.employees}/api/EmployeeDetail`;
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService) { }
 
   getSvcUrlForAll(filter: EmployeeFilter) {
     return this.urlForAll +
@@ -38,19 +41,31 @@ export class EmployeeService {
   }
 
   getEmployeeDetails(filter: EmployeeFilter): Observable<EmployeeDetail[]> {
-    return this.http.get<EmployeeDetail[]>(this.getSvcUrlForAll(filter))
-      .pipe(
-        // tap(data => console.log(JSON.stringify(data))),
-        catchError(this.handleError)
-      );
+    // return this.http.get<EmployeeDetail[]>(this.getSvcUrlForAll(filter))
+    //   .pipe(
+    //     // tap(data => console.log(JSON.stringify(data))),
+    //     catchError(this.handleError)
+    //   );
+    return from(this.authService.getAccessToken().then(token => {
+      return this.http
+        .get<EmployeeDetail[]>(this.getSvcUrlForAll(filter))
+        .pipe(
+          // tap(data => console.log(JSON.stringify(data))),
+          catchError(this.handleError)
+        )
+        .toPromise();
+    }));
   }
 
   getOneEmployeeDetails(empNo: string): Observable<EmployeeDetail[]> {
-    return this.http.get<EmployeeDetail[]>(this.getSvcUrlForOne(empNo))
+    return from(this.authService.getAccessToken().then(token => {
+      return this.http.get<EmployeeDetail[]>(this.getSvcUrlForOne(empNo))
       .pipe(
         // tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
-      );
+      )
+      .toPromise();
+    }));
   }
 
   putOneEmployeeDetails(empNo: string, updatedEmployeeData: any): Observable<any> {
