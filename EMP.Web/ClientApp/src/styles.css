@@ -48,3 +48,7 @@ body {
 .modal-title {
   font-size: 1.25rem;
 }
+
+a.nav-link {
+  cursor: pointer;
+}
