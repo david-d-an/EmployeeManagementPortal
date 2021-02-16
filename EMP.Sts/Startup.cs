@@ -7,12 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Net.Http.Headers;
+using Microsoft.Extensions.Logging;
 using EMP.Sts.Data;
 using EMP.Sts.Models;
 using EMP.Sts.Quickstart.Account;
-using Microsoft.Extensions.Logging;
 using EMP.Sts.Security;
+// using Microsoft.Net.Http.Headers;
 
 namespace EMP.Sts
 {
@@ -37,8 +37,11 @@ namespace EMP.Sts
             var clientConfig = Config.GetClients(Configuration, _logger);
             var publicOrigin = Config.GetPublicOrigin(Configuration, _logger);
 
+            var encConnStrMySql = Configuration.GetConnectionString("MySqlConnection(Azure)");
+            var connStrMySql = AesCryptoUtil.Decrypt(encConnStrMySql);
+
             services.AddDbContext<ApplicationDbContext>(option =>
-                option.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
+                option.UseMySQL(connStrMySql));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
