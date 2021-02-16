@@ -7,7 +7,7 @@
     "appInsights": true
   },
   "apiServer": {
-    "employees": "https://#{employeeApiUrlRoot}"
+    "employees": "http://localhost:23000"
   },
   "oid": {
     "clientRoot": "http://localhost:21000/",

@@ -11,23 +11,32 @@ using Microsoft.Net.Http.Headers;
 using EMP.Sts.Data;
 using EMP.Sts.Models;
 using EMP.Sts.Quickstart.Account;
+using Microsoft.Extensions.Logging;
+using EMP.Sts.Security;
 
 namespace EMP.Sts
 {
     public class Startup
     {
+        private readonly ILogger<Startup> _logger;
         public IConfiguration Configuration { get; }
         public IHostingEnvironment Environment { get; }
         private readonly string EmpWebOrigins = "EMP.Web";
 
-        public Startup(IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(ILogger<Startup> logger, IConfiguration configuration, IHostingEnvironment environment)
         {
+            _logger = logger;
             Configuration = configuration;
             Environment = environment;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var identityConfig = Config.GetIdentityResources();
+            var apiConfig = Config.GetApiResources(Configuration, _logger);
+            var clientConfig = Config.GetClients(Configuration, _logger);
+            var publicOrigin = Config.GetPublicOrigin(Configuration, _logger);
+
             services.AddDbContext<ApplicationDbContext>(option =>
                 option.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -44,10 +53,7 @@ namespace EMP.Sts
                     // .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type")
                     // .AllowAnyOrigin()
                     .WithOrigins(
-                        "http://localhost:5000",
-                        "https://localhost:5001",
-                        "http://ipv4.fiddler:5000",
-                        "https://ipv4.fiddler:5001"
+                        clientConfig.First().AllowedCorsOrigins.ToArray()
                     )
                     .AllowAnyMethod()
                     // .WithMethods("GET", "PUT", "POST", "DELETE")
@@ -58,7 +64,6 @@ namespace EMP.Sts
             services.AddMvc();
             services.AddTransient<IProfileService, CustomProfileService>();
 
-
             var builder = services.AddIdentityServer(options =>
                 {
                     options.Events.RaiseErrorEvents = true;
@@ -66,21 +71,25 @@ namespace EMP.Sts
                     options.Events.RaiseFailureEvents = true;
                     options.Events.RaiseSuccessEvents = true;
                     options.Authentication.CookieLifetime = TimeSpan.FromMinutes(15);
+                    // PublicOrigin is reqruied to stand behind Reverse Proxy
+                    options.PublicOrigin = publicOrigin;
                 })
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryIdentityResources(identityConfig)
+                .AddInMemoryApiResources(apiConfig)
+                .AddInMemoryClients(clientConfig)
                 .AddAspNetIdentity<ApplicationUser>()
                 .AddProfileService<CustomProfileService>();
 
+            var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30));
+            services.AddSingleton<RsaKeyService>(provider => rsa);
 
-            if (Environment.IsDevelopment())
-            {
+            if (Environment.IsDevelopment()) {
                 builder.AddDeveloperSigningCredential();
             }
-            else
-            {
-                throw new Exception("need to configure key material");
+            else {
+                // To Do: Figure out why Regualar signing doesn't work
+                builder.AddDeveloperSigningCredential();
+                // builder.AddSigningCredential(rsa.GetKey());
             }
         }
 

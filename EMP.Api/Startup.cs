@@ -20,15 +20,19 @@ using Microsoft.Net.Http.Headers;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using EMP.Api.Config;
 
 namespace EMP.Api
 {
     public class Startup
     {
+        // private readonly ILogger<Startup> _logger;
         private readonly string EmpWebOrigins = "EMP.Web";
 
-        public Startup(IConfiguration configuration)
+        // To Do: Figure out why ILogger causes runtine error for dependency
+        public Startup(IConfiguration configuration)//, ILogger<Startup> logger)
         {
+            // _logger = logger;
             Configuration = configuration;
         }
 
@@ -37,6 +41,8 @@ namespace EMP.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var securitySettings = ApiConfig.GetSecuritySettings(Configuration);//, _logger);
+
             services.AddCors(options =>
             {
                 options.AddPolicy(name: EmpWebOrigins, builder => {
@@ -45,10 +51,7 @@ namespace EMP.Api
                     // .WithHeaders(HeaderNames.AccessControlAllowHeaders, "Content-Type")
                     // .AllowAnyOrigin()
                     .WithOrigins(
-                        "http://localhost:5000",
-                        "https://localhost:5001",
-                        "http://ipv4.fiddler:5000",
-                        "https://ipv4.fiddler:5001"
+                        securitySettings.AllowedCorsOrigins.ToArray()
                     )
                     .AllowAnyMethod();
                     // .WithMethods("GET", "PUT", "POST", "DELETE");
@@ -58,8 +61,8 @@ namespace EMP.Api
             services
             .AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
             .AddIdentityServerAuthentication(options => {
-                options.Authority = "http://localhost:5500";
-                options.ApiName = "projects-api";
+                options.Authority = securitySettings.StsAuthority;
+                options.ApiName = securitySettings.ApiName;
                 options.RequireHttpsMetadata = false;
             });
 
