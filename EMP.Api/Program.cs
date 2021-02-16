@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-//
+
 namespace EMP.Api
 {
     public class Program
@@ -42,7 +42,7 @@ namespace EMP.Api
                 .ConfigureLogging(logging => {
                     logging.ClearProviders();
                     logging.AddConsole();
-                    logging.AddDebug();
+                    // logging.AddDebug();
                 })
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
@@ -58,7 +58,7 @@ namespace EMP.Api
         {
             // builder.Sources.Clear();
             builder
-                .AddJsonFile("config.json", false, true)
+                .AddJsonFile("Config/config.json", false, true)
                 .AddEnvironmentVariables();
         }
     }
