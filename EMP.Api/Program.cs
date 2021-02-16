@@ -42,7 +42,7 @@ namespace EMP.Api
                 .ConfigureLogging(logging => {
                     logging.ClearProviders();
                     logging.AddConsole();
-                    // logging.AddDebug();
+                    logging.AddDebug();
                 })
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();

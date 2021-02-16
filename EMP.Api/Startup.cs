@@ -27,12 +27,12 @@ namespace EMP.Api
     public class Startup
     {
         // private readonly ILogger<Startup> _logger;
+        private SecuritySettings securitySettings;
         private readonly string EmpWebOrigins = "EMP.Web";
 
-        // To Do: Figure out why ILogger causes runtine error for dependency
-        public Startup(IConfiguration configuration)//, ILogger<Startup> logger)
+        // To Do: Figure out why Logger causes runtine error for dependency
+        public Startup(IConfiguration configuration)
         {
-            // _logger = logger;
             Configuration = configuration;
         }
 
@@ -41,10 +41,9 @@ namespace EMP.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var securitySettings = ApiConfig.GetSecuritySettings(Configuration);//, _logger);
+            this.securitySettings = ApiConfig.GetSecuritySettings(Configuration);
 
-            services.AddCors(options =>
-            {
+            services.AddCors(options => {
                 options.AddPolicy(name: EmpWebOrigins, builder => {
                     builder
                     .AllowAnyHeader()
@@ -125,8 +124,14 @@ namespace EMP.Api
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            foreach (var s in securitySettings.AllowedCorsOrigins) {
+                logger.LogInformation(string.Format("{0}: {1}", "AllowedCorsOrigins", s));
+            }
+            logger.LogInformation(string.Format("{0}: {1}", "StsAuthority", securitySettings.StsAuthority));
+            logger.LogInformation(string.Format("{0}: {1}", "ApiName", securitySettings.ApiName));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
