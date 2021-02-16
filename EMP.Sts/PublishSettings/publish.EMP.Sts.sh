@@ -14,7 +14,8 @@ dotnet publish -c Release
 # Copy to Nginx target folder
 echo Pushing code to app folder..........
 echo
-cp -r /Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Sts/bin/Release/netcoreapp2.2/publish/* /usr/local/var/www/EMP.Sts
+cp -r ~/Development/Dotnet/EmployeeManagementPortal/EMP.Sts/bin/Release/netcoreapp2.2/publish/* \
+/usr/local/var/www/EMP.Sts
 
 # Start server
 echo Starting server..........
