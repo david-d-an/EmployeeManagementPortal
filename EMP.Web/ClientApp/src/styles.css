@@ -52,3 +52,7 @@ body {
 a.nav-link {
   cursor: pointer;
 }
+
+div.company-logo {
+  padding-top: 80px;
+}
