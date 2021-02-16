@@ -54,7 +54,7 @@ namespace IdentityServer4.Quickstart.UI
         public async Task<IActionResult> Login(string returnUrl)
         {
             var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-            var actionType = context.Parameters["actionType"];
+            var actionType = context?.Parameters["actionType"];
             if (actionType == "precheck") {
                 var redirect_uri = GetReturnUri(context.Parameters["redirect_uri"]);
                 return Redirect(redirect_uri);
