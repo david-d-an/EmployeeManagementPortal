@@ -1,3 +1,4 @@
+import { AuthRouteGuard } from './core/security/auth.routeguard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -16,6 +17,7 @@ import { ContactComponent } from './contact/contact.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
+  // { path: 'home', component: HomeComponent, canActivate: [AuthRouteGuard] },
   { path: 'signin-callback', component: SigninRedirectCallbackComponent },
   { path: 'signout-callback', component: SignoutRedirectCallbackComponent },
   { path: 'welcome', redirectTo: 'home', pathMatch: 'full' },

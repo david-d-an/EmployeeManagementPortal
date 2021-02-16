@@ -27,6 +27,23 @@ export class AuthService {
 
   constructor(private _httpClient: HttpClient) { }
 
+  initAuthSession(): Promise<any> {
+    return this.userManager.getUser().then((user) => {
+      this._user = user;
+      if (!user || user.expired) {
+        return this.userManager.signinRedirect();
+      }
+    });
+  }
+
+  preCheckAuthSession() {
+    this.userManager.signinRedirect({
+      extraQueryParams: {
+        actionType: 'precheck'
+      }
+    });
+  }
+
   loadConfig(): void {
     const oidcConfig = AppConfig.settings.oid;
     const stsSettings = {

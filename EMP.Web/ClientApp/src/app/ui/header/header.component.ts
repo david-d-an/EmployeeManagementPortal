@@ -17,11 +17,21 @@ export class HeaderComponent implements OnInit {
     this.authService.isLoggedIn().then(loggedIn => {
       console.log(`set by promise: ${loggedIn}`);
       this.isLoggedIn = loggedIn;
+
+      if (!sessionStorage['authChecked'] && !loggedIn) {
+        sessionStorage['authChecked'] = true;
+        this.authService.preCheckAuthSession();
+      }
     });
 
     this.authService.loginChanged.subscribe(loggedIn => {
       console.log(`set by obs: ${loggedIn}`);
       this.isLoggedIn = loggedIn;
+
+      if (!sessionStorage['authChecked'] && !loggedIn) {
+        sessionStorage['authChecked'] = true;
+        this.authService.preCheckAuthSession();
+      }
     });
   }
 
