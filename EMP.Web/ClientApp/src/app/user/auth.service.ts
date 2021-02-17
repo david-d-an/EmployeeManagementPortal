@@ -1,80 +1,156 @@
-// import { Injectable } from '@angular/core';
-// import { User } from './user';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { UserManager, User } from 'oidc-client';
+import { AuthContext } from './model/auth-context';
+import { AppConfig } from 'src/app/app.config';
+// import { Constants } from './constants';
+// import { CoreModule } from './core.module';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthService {
-//   currentUser: User;
-//   private _redirectUrl: string;
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  private _userManager: UserManager;
+  get userManager() {
+    // Make sure to load UserManager only once only after page is all rendered
+    if (!this._userManager) {
+      this.loadConfig();
+    }
+    return this._userManager;
+  }
+  private _user: User;
+  private _loginChangedSubject = new Subject<boolean>();
 
-//   get redirectUrl(): string {
-//     return this._redirectUrl;
-//   }
-//   set redirectUrl(value: string) {
-//     this._redirectUrl = value ? value.trim() : value;
-//   }
+  loginChanged = this._loginChangedSubject.asObservable();
+  authContext: AuthContext;
 
-//   get isLoggedIn(): boolean {
-//     return !!this.currentUser;
-//   }
+  constructor(private _httpClient: HttpClient) { }
 
-//   constructor() {
-//     const localUserName: string = localStorage.getItem('currentUserName').trim();
-//     const localId: number = localStorage.getItem('currentUserId').trim() ? +localStorage.getItem('currentUserId') : null;
-//     const localIsAdmin: boolean = localStorage.getItem('currentUserIsAdmin').trim() ?
-//                                   localStorage.getItem('currentUserIsAdmin').trim() === 'true' :
-//                                   false;
-//     if (localUserName && localId) {
-//       this.currentUser = {
-//         id: localId,
-//         userName: localUserName,
-//         isAdmin: localIsAdmin
-//       };
-//     } else {
-//       this.currentUser = null;
-//     }
-//   }
+  initAuthSession(): Promise<any> {
+    return this.userManager.getUser().then((user) => {
+      this._user = user;
+      if (!user || user.expired) {
+        return this.userManager.signinRedirect();
+      }
+    });
+  }
 
-//   login(userName: string, password: string): void {
-//     if (!userName || !password) {
-//       alert('Please enter your userName and password');
-//       return;
-//     }
-//     if (userName === 'admin') {
-//       this.currentUser = {
-//         id: 1,
-//         userName,
-//         isAdmin: true
-//       };
-//       alert('Admin login');
-//     } else {
-//       this.currentUser = {
-//         id: 2,
-//         userName,
-//         isAdmin: false
-//       };
-//       alert(`User: ${this.currentUser.userName} logged in`);
-//     }
+  preCheckAuthSession() {
+    this.userManager.signinRedirect({
+      extraQueryParams: {
+        actionType: 'precheck'
+      }
+    });
+  }
 
-//     // localStorage.setItem('currentUserName', this.currentUser.userName);
-//     // localStorage.setItem('currentUserId', this.currentUser.id.toString());
-//     // localStorage.setItem('currentUserIsAdmin', this.currentUser.isAdmin.toString());
-//     this.setLocalUserStorate(this.currentUser.userName,
-//                              this.currentUser.id.toString(),
-//                              this.currentUser.isAdmin.toString());
-//   }
+  loadConfig(): void {
+    const oidcConfig = AppConfig.settings.oid;
+    const stsSettings = {
+      authority: oidcConfig.stsAuthority,
+      client_id: oidcConfig.clientId,
+      redirect_uri: `${oidcConfig.clientRoot}signin-callback`,
+      scope: `openid profile ${oidcConfig.apiId}`,
+      response_type: 'code',
+      // response_type: for auth code flow with PKCE: 'code', for implicit flow: 'id_token token'
+      post_logout_redirect_uri: `${oidcConfig.clientRoot}signout-callback`,
+      automaticSilentRenew: true,
+      silent_redirect_uri: `${oidcConfig.clientRoot}assets/silent-callback.html`
 
-//   logout(): void {
-//     this.currentUser = null;
-//     this.setLocalUserStorate(null, null, null);
-//   }
+      // authority: Constants.stsAuthority,
+      // client_id: Constants.clientId,
+      // redirect_uri: `${Constants.clientRoot}signin-callback`,
+      // scope: 'openid profile projects-api',
+      // response_type: 'code',
+      // // response_type: for auth code flow with PKCE: 'code', for implicit flow: 'id_token token'
+      // post_logout_redirect_uri: `${Constants.clientRoot}signout-callback`,
+      // automaticSilentRenew: true,
+      // silent_redirect_uri: `${Constants.clientRoot}assets/silent-callback.html`
+    };
 
-//   setLocalUserStorate(userName: string,
-//                       userId: string,
-//                       isAdmin: string) : void {
-//     localStorage.setItem('currentUserName', userName);
-//     localStorage.setItem('currentUserId', userId);
-//     localStorage.setItem('currentUserIsAdmin', isAdmin);
-//   }
-// }
+    this._userManager = new UserManager(stsSettings);
+    this._userManager.events.addAccessTokenExpired(_ => {
+      this._loginChangedSubject.next(false);
+    });
+
+    // console.log('addUserLoaded initiated');
+    this._userManager.events.addUserLoaded(user => {
+      if (!!this._user !== !!user) {
+        this._user = user;
+        this.loadSecurityContext();
+        this._loginChangedSubject.next(!!user && !user.expired);
+      }
+    });
+  }
+
+  login() {
+    return this.userManager.signinRedirect();
+  }
+
+  isLoggedIn(): Promise<boolean> {
+    return this.userManager.getUser().then(user => {
+      const userCurrent = !!user && !user.expired;
+      // console.log(`user: ${JSON.stringify(user)}`);
+      // console.log(`this._user: ${JSON.stringify(this._user)}`);
+      // console.log(`userCurrent: ${userCurrent}`);
+      if (!!(this._user) !== !!user) {
+        // console.log(`next(userCurrent)`);
+        this._loginChangedSubject.next(userCurrent);
+      }
+      if (userCurrent && !this.authContext) {
+        // console.log(`loadSecurityContext()`);
+        this.loadSecurityContext();
+      }
+      // console.log('this._user = user;');
+      this._user = user;
+      return userCurrent;
+    });
+  }
+
+  completeLogin() {
+    return this.userManager.signinRedirectCallback().then(user => {
+      console.log(`user: ${JSON.stringify(user)}`);
+      console.log(`user.profile: ${JSON.stringify(user.profile)}`);
+      console.log(`user.profile.name: ${JSON.stringify(user?.profile?.name)}`);
+      console.log(`user.profile.role: ${JSON.stringify(user?.profile?.role)}`);
+
+      this._user = user;
+      this._loginChangedSubject.next(!!user && !user.expired);
+      return user;
+    });
+  }
+
+  logout() {
+    this.userManager.signoutRedirect();
+  }
+
+  completeLogout() {
+    this._user = null;
+    this._loginChangedSubject.next(false);
+    return this.userManager.signoutRedirectCallback();
+  }
+
+  getAccessToken(): Promise<string | null> {
+    return this.userManager.getUser().then(user => {
+      if (!!user && !user.expired) {
+        return user.access_token;
+      } else {
+        return null;
+      }
+    });
+  }
+
+  loadSecurityContext() {
+    // this._httpClient
+    //   .get<AuthContext>(`${Constants.apiRoot}Projects/AuthContext`)
+    //   .subscribe(
+    //     context => {
+    //       this.authContext = new AuthContext();
+    //       this.authContext.claims = context.claims;
+    //       this.authContext.userProfile = context.userProfile;
+    //     },
+    //     error => console.error(error)
+    //   );
+  }
+
+}

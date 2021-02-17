@@ -1,4 +1,4 @@
-import { AuthService } from 'src/app/core/security/auth.service';
+import { AuthService } from 'src/app/user/auth.service';
 import { AfterViewChecked, Component, OnInit, AfterViewInit } from '@angular/core';
 
 @Component({
@@ -18,7 +18,11 @@ export class HeaderComponent implements OnInit {
       console.log(`set by promise: ${loggedIn}`);
       this.isLoggedIn = loggedIn;
 
-      if (!sessionStorage['authChecked'] && !loggedIn) {
+      if (loggedIn) {
+        sessionStorage.removeItem('authChecked');
+        // To Do:
+        // authService.
+      } else if (!sessionStorage['authChecked'] && !loggedIn) {
         sessionStorage['authChecked'] = true;
         this.authService.preCheckAuthSession();
       }
@@ -28,7 +32,9 @@ export class HeaderComponent implements OnInit {
       console.log(`set by obs: ${loggedIn}`);
       this.isLoggedIn = loggedIn;
 
-      if (!sessionStorage['authChecked'] && !loggedIn) {
+      if (loggedIn) {
+        sessionStorage.removeItem('authChecked');
+      } else if (!sessionStorage['authChecked'] && !loggedIn) {
         sessionStorage['authChecked'] = true;
         this.authService.preCheckAuthSession();
       }
