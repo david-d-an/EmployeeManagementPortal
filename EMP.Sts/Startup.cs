@@ -90,9 +90,7 @@ namespace EMP.Sts
                 builder.AddDeveloperSigningCredential();
             }
             else {
-                // To Do: Figure out why Regualar signing doesn't work
-                builder.AddDeveloperSigningCredential();
-                // builder.AddSigningCredential(rsa.GetKey());
+                builder.AddSigningCredential(rsa.GetKey());
             }
         }
 

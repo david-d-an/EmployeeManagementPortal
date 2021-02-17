@@ -8,6 +8,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
+/* 
+    RSACryptoServiceProvider couldn't be used to make X.509 cert works on OSX.
+    For deails,
+    https://stackoverflow.com/questions/54180171/cspkeycontainerinfo-requires-windows-cryptographic-api-capi-which-is-not-av
+*/
+
+
 namespace EMP.Sts.Security
 {
     public class RsaKeyService
@@ -48,7 +55,9 @@ namespace EMP.Sts.Security
 
         public RSAParameters GetRandomKey()
         {
-            using (var rsa = new RSACryptoServiceProvider(2048))
+            // RSACryptoServiceProvider couldn't be used to make X.509 cert works on OSX 
+            // using (var rsa = new RSACryptoServiceProvider(2048))
+            using (var rsa = RSA.Create(2048))
             {
                 try
                 {
@@ -56,7 +65,8 @@ namespace EMP.Sts.Security
                 }
                 finally
                 {
-                    rsa.PersistKeyInCsp = false;
+                    // RSACryptoServiceProvider couldn't be used to make X.509 cert works on OSX 
+                    // rsa.PersistKeyInCsp = false;
                 }
             }
         }
@@ -87,7 +97,11 @@ namespace EMP.Sts.Security
 
         public RsaSecurityKey GetKey() {
             if (NeedsUpdate()) GenerateKeyAndSave();
-            var provider = new System.Security.Cryptography.RSACryptoServiceProvider();
+
+            // RSACryptoServiceProvider couldn't be used to make X.509 cert works on OSX 
+            // var provider = new System.Security.Cryptography.RSACryptoServiceProvider();
+            var provider = RSA.Create(2048);
+
             provider.ImportParameters(GetKeyParameters());
             return new RsaSecurityKey(provider);
         }
