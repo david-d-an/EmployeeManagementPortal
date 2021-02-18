@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EMP.Data.Models
+namespace EMP.Data.Models.Employees
 {
-    public partial class DeptEmpCurrent
+    public partial class VwDeptManagerCurrent
     {
         public int EmpNo { get; set; }
         public string DeptNo { get; set; }

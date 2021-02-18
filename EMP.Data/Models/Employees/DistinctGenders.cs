@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EMP.Data.Models
+namespace EMP.Data.Models.Employees
 {
     public partial class DistinctGenders
     {

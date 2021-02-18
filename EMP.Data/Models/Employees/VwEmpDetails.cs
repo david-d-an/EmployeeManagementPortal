@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EMP.Data.Models
+namespace EMP.Data.Models.Employees
 {
     public partial class VwEmpDetails
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EMP.Data.Models
+namespace EMP.Data.Models.Employees
 {
-    public partial class SalariesCurrent
+    public partial class DeptEmpCurrent
     {
         public int EmpNo { get; set; }
-        public int Salary { get; set; }
+        public string DeptNo { get; set; }
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
     }

@@ -1,6 +1,6 @@
 using EMP.Data.Models;
 
-namespace EMP.Data.Models
+namespace EMP.Data.Models.Employees
 {
     public class EmployeeDetail : Employees
     {

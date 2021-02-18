@@ -1,6 +1,6 @@
 using System;
 
-namespace EMP.Data.Models.Mapped
+namespace EMP.Data.Models.Employees.Mapped
 {
     public class DepartmentManagerDetail
     {
