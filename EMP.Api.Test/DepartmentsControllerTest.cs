@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Moq;
 using Xunit;
 using Microsoft.Extensions.Logging;

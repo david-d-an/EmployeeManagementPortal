@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Moq;
 using Xunit;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using EMP.Data.Models.Mapped;
+using EMP.Data.Models.Employees.Mapped;
 using System;
 
 namespace EMP.Api.Controllers
