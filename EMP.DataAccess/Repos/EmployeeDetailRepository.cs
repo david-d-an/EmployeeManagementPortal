@@ -1,5 +1,5 @@
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

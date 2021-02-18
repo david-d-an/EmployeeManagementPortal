@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;

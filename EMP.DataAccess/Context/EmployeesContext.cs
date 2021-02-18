@@ -1,5 +1,5 @@
 ﻿using System;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
