@@ -2,14 +2,16 @@
 using EMP.DbScaffold.Models.Sts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EMP.DbScaffold.Migrations.Sts
 {
     [DbContext(typeof(stsContext))]
-    partial class stsContextModelSnapshot : ModelSnapshot
+    [Migration("20210217145423_InitialDb")]
+    partial class InitialDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

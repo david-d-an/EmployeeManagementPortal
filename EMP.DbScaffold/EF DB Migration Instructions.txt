@@ -1,16 +1,17 @@
 Steps to Migrate Employees Database
 
 1. Get current models
-> dotnet ef dbcontext scaffold "server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=employees;" MySql.Data.EntityFrameworkCore -o Models/Employees -f
+> dotnet ef dbcontext scaffold "server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password={password};port=3306;database=employees;" MySql.Data.EntityFrameworkCore -o Models/Employees -f
 
 2. Update connection string in Scaffold project
-"server=migrationtest6921.mysql.database.azure.com;uid=appuser@migrationtest6921;password=Soil9303;port=3306;database=employees;"
+"server=migrationtest6921.mysql.database.azure.com;uid=appuser@migrationtest6921;password={password};port=3306;database=employees;"
 
 3. Run db update
 > dotnet ef database update --context employeesContext
 
 4. Run db migration
 > dotnet ef migrations add {migrationname} -o Migrations/Employees --context employeesContext
+# migrationname example: InitDb for first run, UpdateDb_1 for subsequent runs, etc
 
 5. Adjust migration code
 Comment out anything realted to __efmigrationshistory as this causes Table already exists exception.
@@ -23,16 +24,17 @@ Comment out anything realted to __efmigrationshistory as this causes Table alrea
 Steps to Migrate STS Database
 
 1. Get current models
-> dotnet ef dbcontext scaffold "server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;" MySql.Data.EntityFrameworkCore -o Models/STS -f
+> dotnet ef dbcontext scaffold "server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password={password};port=3306;database=sts;" MySql.Data.EntityFrameworkCore -o Models/STS -f
 
 2. Update connection string in Scaffold project
-"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;"
+"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password={password};port=3306;database=sts;"
 
 3. Run db update
 > dotnet ef database update --context stsContext
 
 4. Run db migration
-> dotnet ef migrations add {migrationname} -o Migrations/STS --context stsContext
+> dotnet ef migrations add {migrationname} -o Migrations/Sts --context stsContext
+# migrationname example: InitDb for first run, UpdateDb_1 for subsequent runs, etc
 
 5. Adjust migration code
 Comment out anything realted to __efmigrationshistory as this causes Table already exists exception.
