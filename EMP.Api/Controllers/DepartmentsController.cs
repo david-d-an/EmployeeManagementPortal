@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

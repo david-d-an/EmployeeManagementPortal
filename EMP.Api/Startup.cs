@@ -11,11 +11,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using EMP.Api.Config;
+using EMP.Data.Models.Sts;
 // using System.Collections.Generic;
 // using System.Threading.Tasks;
 // using Microsoft.AspNetCore.HttpsPolicy;
@@ -79,15 +80,21 @@ namespace EMP.Api
             // After Hash: 6D2450AD484CF4C9F99007D0C4D0E2D694F110BB580D74062E3A3A79F33E432C
 
             // Make MySql Connection Service
-            var encConnStrMySql = Configuration.GetConnectionString("MySqlConnection(Azure)");
-            var connStrMySql = AesCryptoUtil.Decrypt(encConnStrMySql);
-
+            var encConnStrMySqlEmployees = Configuration.GetConnectionString("MySqlEmployees(Azure)");
+            var connStrMySqlEmployees = AesCryptoUtil.Decrypt(encConnStrMySqlEmployees);
             services.AddDbContext<EmployeesContext>(builder =>                   
-                builder.UseMySQL(connStrMySql)
+                builder.UseMySQL(connStrMySqlEmployees)
             );
-            EnsureDatabaseExists<EmployeesContext>(connStrMySql);
+            EnsureDatabaseExists<EmployeesContext>(connStrMySqlEmployees);
 
             services.AddTransient<EmployeesDataSeeder>();
+
+            var encConnStrMySqlSts = Configuration.GetConnectionString("MySqlSts(Azure)");
+            var connStrMySqlSts = AesCryptoUtil.Decrypt(encConnStrMySqlSts);
+            services.AddDbContext<stsContext>(builder =>                   
+                builder.UseMySQL(connStrMySqlSts)
+            );
+            EnsureDatabaseExists<stsContext>(connStrMySqlSts);
 
             services.AddScoped<IRepository<DeptManager>, DeptManagerRepository>();
             services.AddScoped<IRepository<VwDeptManagerDetail>, DeptManagerDetailRepository>();
@@ -101,6 +108,7 @@ namespace EMP.Api
             services.AddScoped<IRepository<DistinctTitles>, DistinctTitleRepository>();
             services.AddScoped<IRepository<DistinctGenders>, DistinctGenderRepository>();
             services.AddScoped<IRepository<VwSalariesCurrent>, SalaryRepository>();
+            services.AddScoped<IRepository<Aspnetusers>, AspNetUsersRepository>();
         }
 
         private static void EnsureDatabaseExists<T>(string connectionString) 
@@ -108,6 +116,9 @@ namespace EMP.Api
         {
             var builder = new DbContextOptionsBuilder<T>();
             if (typeof(T) == typeof(EmployeesContext)) {
+                builder.UseMySQL(connectionString);
+            }
+            else if (typeof(T) == typeof(stsContext)) {
                 builder.UseMySQL(connectionString);
             }
             // else if (typeof(T) == typeof(SQLiteContext)) {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using EMP.Data.Repos;
-using EMP.Data.Models;
-using EMP.Data.Models.Mapped;
+using EMP.Data.Models.Employees;
+using EMP.Data.Models.Employees.Mapped;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
