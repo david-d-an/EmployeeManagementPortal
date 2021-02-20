@@ -84,7 +84,19 @@ export class AuthService {
   }
 
   login() {
-    return this.userManager.signinRedirect();
+    const currentUrl: string = window.location.href;
+    const url: URL = new URL(currentUrl);
+    // console.log(`url.href: ${url.href}`);
+    // console.log(`url.protocol: ${url.protocol}`);
+    // console.log(`url.hostname: ${url.hostname}`);
+    // console.log(`url.port: ${url.port}`);
+    // console.log(`url.pathname: ${url.pathname}`);
+
+    return this.userManager.signinRedirect({
+      extraQueryParams: {
+        urlSuffix: url.pathname
+      }
+    });
   }
 
   isLoggedIn(): Promise<boolean> {
@@ -153,4 +165,7 @@ export class AuthService {
     //   );
   }
 
+  getUser(): Promise<User> {
+    return this.userManager.getUser();
+  }
 }
