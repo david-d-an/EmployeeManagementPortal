@@ -14,53 +14,77 @@ export class HeaderComponent implements OnInit {
     this.isLoggedIn = false;
   }
 
-  ngOnInit() {
+  setLoggedIn(loggedIn: boolean|null) {
+    this.isLoggedIn = loggedIn;
 
-    // localStorage event listner to support multi tab sign out
+    // console.log(`loggedIn: ${loggedIn}`);
+    // console.log(`!loggedIn: ${!loggedIn}`);
+    // console.log(`!sessionStorage['authPreChecked']: ${!sessionStorage['authPreChecked']}`);
+    // console.log(`sessionStorage['forceLogin_EMP.Web']: ${sessionStorage['forceLogin_EMP.Web']}`);
+    // console.log(`sessionStorage['forceLogout_EMP.Web']: ${sessionStorage['forceLogout_EMP.Web']}`);
+    // if (loggedIn) {
+    //   if (sessionStorage['forceLogout_EMP.Web']) {
+    //     this.logOutThisTabOnly();
+    //   }
+    // } else if (!loggedIn && sessionStorage['forceLogin_EMP.Web']) {
+    //   sessionStorage.removeItem('forceLogin_EMP.Web');
+    //   sessionStorage['authPreChecked'] = true;
+    //   this.authService.preCheckAuthSession();
+    // } else if (!loggedIn && !sessionStorage['authPreChecked']) {
+    //   sessionStorage['authPreChecked'] = true;
+    //   this.authService.preCheckAuthSession();
+    // }
+    if (loggedIn) {
+      if (sessionStorage['forceLogout_EMP.Web']) {
+        this.logOutThisTabOnly();
+      }
+    } else if (!loggedIn) {
+      if (sessionStorage['forceLogin_EMP.Web']) {
+        sessionStorage.removeItem('forceLogin_EMP.Web');
+        sessionStorage['authPreChecked'] = true;
+        this.authService.preCheckAuthSession();
+      } else if (!sessionStorage['authPreChecked']) {
+        sessionStorage['authPreChecked'] = true;
+        this.authService.preCheckAuthSession();
+      }
+    }
+  }
+
+  ngOnInit() {
+    this.refreshCookie();
+
     window.addEventListener('storage', (event) => {
       if (event.key === 'forceLogout_EMP.Web_Shared' && !!event.newValue) {
         sessionStorage['forceLogout_EMP.Web'] = true;
-      }
-    });
-
-    this.authService.isLoggedIn().then(loggedIn => {
-      console.log(`set by promise: ${loggedIn}`);
-      this.isLoggedIn = loggedIn;
-
-      // console.log(`loggedIn: ${loggedIn}`);
-      // console.log(`!loggedIn: ${!loggedIn}`);
-      // console.log(`!sessionStorage['authPreChecked']: ${!sessionStorage['authPreChecked']}`);
-      if (loggedIn) {
-        if (sessionStorage['forceLogout_EMP.Web']) {
-          this.logOutThisTabOnly();
-        }
-      } else if (!loggedIn && !sessionStorage['authPreChecked']) {
-        sessionStorage['authPreChecked'] = true;
-        this.authService.preCheckAuthSession();
+      } else if (event.key === 'forceLogin_EMP.Web_Shared' && !!event.newValue) {
+        sessionStorage['forceLogin_EMP.Web'] = true;
       }
     });
 
     this.authService.loginChanged.subscribe(loggedIn => {
-      console.log(`set by obs: ${loggedIn}`);
-      this.isLoggedIn = loggedIn;
+      console.log(`loggedIn set by obs: ${loggedIn}`);
+      this.setLoggedIn(loggedIn);
+    });
 
-      // console.log(`loggedIn: ${loggedIn}`);
-      // console.log(`!loggedIn: ${!loggedIn}`);
-      // console.log(`!sessionStorage['authPreChecked']: ${!sessionStorage['authPreChecked']}`);
-      if (loggedIn) {
-        console.log(`sessionStorage['forceLogout_EMP.Web']: ${sessionStorage['forceLogout_EMP.Web']}`);
-        if (sessionStorage['forceLogout_EMP.Web']) {
-          this.logOutThisTabOnly();
-        }
-      } else if (!loggedIn && !sessionStorage['authPreChecked']) {
-        sessionStorage['authPreChecked'] = true;
-        this.authService.preCheckAuthSession();
-      }
+    if (!this.isLoggedIn) {
+      this.authService.isLoggedIn().then(loggedIn => {
+        console.log(`loggedIn set by promise: ${loggedIn}`);
+        this.setLoggedIn(loggedIn);
+      });
+    }
+  }
+
+  refreshCookie() {
+    this.authService.getUser().then(data => {
+      console.log('Cookie refreshed');
+      console.log(JSON.stringify(data));
     });
   }
 
   login(): void {
+    localStorage['forceLogin_EMP.Web_Shared'] = true;
     this.authService.login();
+    localStorage.removeItem('forceLogin_EMP.Web_Shared');
   }
 
   logOut(): void {
@@ -71,8 +95,9 @@ export class HeaderComponent implements OnInit {
   }
 
   logOutThisTabOnly(): void {
+    console.log('logOutThisTabOnly');
     this.authService.logout();
-    sessionStorage.removeItem('authPreChecked');
+    // sessionStorage.removeItem('authPreChecked');
     sessionStorage.removeItem('forceLogout_EMP.Web');
   }
 }
