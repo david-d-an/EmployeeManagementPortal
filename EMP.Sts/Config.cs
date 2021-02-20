@@ -27,11 +27,19 @@ namespace EMP.Sts
             return section;
         }
 
+        public static int GetCookieExpirationByMinute(IConfiguration cfg)
+        {
+            int cookieExpiration = 0;
+            int.TryParse(cfg["CookieExpirationByMinute"], out cookieExpiration);
+            return cookieExpiration;
+        }
+
         public static IEnumerable<Client> GetClients(IConfiguration cfg, ILogger<Startup> logger)
         {
             var RedirectUris = GetConfigSection(cfg, "RedirectUris");
             var PostLogoutRedirectUris = GetConfigSection(cfg, "PostLogoutRedirectUris");
             var AllowedCorsOrigins = GetConfigSection(cfg, "AllowedCorsOrigins");
+            var cookieExpiration = GetCookieExpirationByMinute(cfg);
 
             var client = new Client {
                 #region
@@ -79,7 +87,16 @@ namespace EMP.Sts
                     IdentityServerConstants.StandardScopes.Profile,
                     cfg["ApiId"]
                 },
-                AccessTokenLifetime = 600
+                
+                RefreshTokenUsage = TokenUsage.OneTimeOnly,
+
+                AbsoluteRefreshTokenLifetime = 60 * 60 * 24,  //60 * 60 *24, // 24 hours
+                SlidingRefreshTokenLifetime = 60 * 60 * 1, // 15 mins
+                RefreshTokenExpiration = TokenExpiration.Sliding,
+
+                // Token refreshes 60 seconds earlier than AccessTokenLifetime
+                // To prevent Access Token from overriding Cookie refresh, add extra 10 seconds as safety. 
+                AccessTokenLifetime = 60 * cookieExpiration + 10,
             };
 
             logger.LogInformation(string.Format("{0}: {1}", "ClientId", client.ClientId));

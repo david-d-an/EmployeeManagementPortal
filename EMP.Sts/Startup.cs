@@ -12,6 +12,7 @@ using EMP.Sts.Data;
 using EMP.Sts.Models;
 using EMP.Sts.Quickstart.Account;
 using EMP.Sts.Security;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 // using Microsoft.Net.Http.Headers;
 
 namespace EMP.Sts
@@ -67,21 +68,31 @@ namespace EMP.Sts
             services.AddMvc();
             services.AddTransient<IProfileService, CustomProfileService>();
 
-            var builder = services.AddIdentityServer(options =>
-                {
-                    options.Events.RaiseErrorEvents = true;
-                    options.Events.RaiseInformationEvents = true;
-                    options.Events.RaiseFailureEvents = true;
-                    options.Events.RaiseSuccessEvents = true;
-                    options.Authentication.CookieLifetime = TimeSpan.FromMinutes(15);
-                    // PublicOrigin is reqruied to stand behind Reverse Proxy
-                    options.PublicOrigin = publicOrigin;
-                })
-                .AddInMemoryIdentityResources(identityConfig)
-                .AddInMemoryApiResources(apiConfig)
-                .AddInMemoryClients(clientConfig)
-                .AddAspNetIdentity<ApplicationUser>()
-                .AddProfileService<CustomProfileService>();
+            var builder = services.AddIdentityServer(options => {
+                options.Events.RaiseErrorEvents = true;
+                options.Events.RaiseInformationEvents = true;
+                options.Events.RaiseFailureEvents = true;
+                options.Events.RaiseSuccessEvents = true;
+                options.Authentication.CheckSessionCookieName = "IDS4_EMP.Sts";
+                // options.Authentication.CookieLifetime = TimeSpan.FromMinutes(2);
+                // options.Authentication.CookieSlidingExpiration = false;
+                // PublicOrigin is reqruied to stand behind Reverse Proxy
+                options.PublicOrigin = publicOrigin;
+            })
+            .AddInMemoryIdentityResources(identityConfig)
+            .AddInMemoryApiResources(apiConfig)
+            .AddInMemoryClients(clientConfig)
+            .AddAspNetIdentity<ApplicationUser>()
+            .AddProfileService<CustomProfileService>();
+
+            services.ConfigureApplicationCookie(options => {
+                // To prevent Refresh Access Token overriding cookie refreshe, subtract 1 minute
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(
+                    Config.GetCookieExpirationByMinute(Configuration) - 1
+                );
+                options.SlidingExpiration = true;
+                options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+            });
 
             var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30));
             services.AddSingleton<RsaKeyService>(provider => rsa);
