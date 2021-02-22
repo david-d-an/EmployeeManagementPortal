@@ -1,3 +1,4 @@
+import { MessageModalModule } from './../message-modal/message-modal.module';
 import { NgModule } from '@angular/core';
 import { EmpCommonModule } from '../shared/emp-common.module';
 import { EmpStyleModule } from './../shared/emp-style.module';
@@ -26,7 +27,8 @@ import { EmployeeEditModalComponent } from './list/forms/employee-edit-modal.com
     EmployeesRoutingModule,
     EmpStyleModule,
     NgxDatatableModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MessageModalModule
   ]
 })
 export class EmployeesModule { }
