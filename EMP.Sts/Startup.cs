@@ -13,6 +13,7 @@ using EMP.Sts.Models;
 using EMP.Sts.Quickstart.Account;
 using EMP.Sts.Security;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Serilog;
 // using Microsoft.Net.Http.Headers;
 
 namespace EMP.Sts
@@ -29,6 +30,9 @@ namespace EMP.Sts
             _logger = logger;
             Configuration = configuration;
             Environment = environment;
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
         }
 
         public void ConfigureServices(IServiceCollection services)
