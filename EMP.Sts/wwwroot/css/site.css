@@ -1,6 +1,21 @@
 ﻿body {
   margin-top: 65px;
 }
+
+.bg-dark {
+  background-color: #343a40;
+}
+
+.header-logo {
+  margin-right: 1.5rem;
+}
+.header-text {
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: normal;
+}
+.navbar-dark {
+  color: rgba(255,255,255,.5);
+}
 .navbar-header {
   position: relative;
   top: -4px;
