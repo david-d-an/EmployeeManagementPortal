@@ -8,6 +8,15 @@ import { AfterViewChecked, Component, OnInit, AfterViewInit } from '@angular/cor
 })
 export class HeaderComponent implements OnInit {
   isLoggedIn: boolean;
+  // userName: string;
+  // userRoles: string;
+
+  get userName() {
+    return this.authService.userName;
+  }
+  get userRole() {
+    return this.authService.userRole;
+  }
 
   constructor(
     private authService: AuthService) {

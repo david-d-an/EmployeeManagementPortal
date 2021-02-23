@@ -22,6 +22,15 @@ export class AuthService {
   private _user: User;
   private _loginChangedSubject = new Subject<boolean>();
 
+  get userName() {
+    console.log(this._user['profile']['name']);
+    return this._user['profile']['name'];
+  }
+  get userRole() {
+    console.log(this._user['profile']['role']);
+    return this._user['profile']['role'];
+  }
+
   loginChanged = this._loginChangedSubject.asObservable();
   authContext: AuthContext;
 
