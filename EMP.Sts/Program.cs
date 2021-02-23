@@ -19,27 +19,29 @@ namespace EMP.Sts
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-            .MinimumLevel.Override("System", LogEventLevel.Warning)
-            .MinimumLevel.Override("Microsoft.AspNetCore.Authentication", LogEventLevel.Information)
-            .Enrich.FromLogContext()
-            .WriteTo.Console()
-            // .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", theme: AnsiConsoleTheme.Literate)
-            .WriteTo.File(new RenderedCompactJsonFormatter(), "logs/log-.ndjson", rollingInterval: RollingInterval.Day)
-            .CreateLogger();
+                .MinimumLevel.Debug()
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+                .MinimumLevel.Override("System", LogEventLevel.Warning)
+                .MinimumLevel.Override(
+                    "Microsoft.AspNetCore.Authentication", 
+                    LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                // .WriteTo.Console(
+                //     outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
+                //     theme: AnsiConsoleTheme.Literate)
+                .WriteTo.File(
+                    new RenderedCompactJsonFormatter(), 
+                    "logs/log-.ndjson", 
+                    rollingInterval: RollingInterval.Day)
+                .CreateLogger();
 
-            try
-            {
+            try {
                 Log.Information("Starting up");
                 BuildWebHost(args).Run();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.Fatal(ex, "Application start-up failed");
-            }
-            finally
-            {
+            } finally {
                 Log.CloseAndFlush();
             }
         }
@@ -47,10 +49,9 @@ namespace EMP.Sts
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 // .UseUrls("http://localhost:14242/")
-                .ConfigureLogging(builder =>
-                {
+                .ConfigureLogging(builder => {
                     builder.ClearProviders();
-                    builder.AddSerilog();
+                    // builder.AddSerilog();
                 })
                 .UseStartup<Startup>()
                 .Build();
