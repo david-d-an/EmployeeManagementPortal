@@ -1,11 +1,7 @@
 import { EmployeeFilter, EmployeeFilterAnnotation } from 'src/app/models/EmployeeDetail';
 import { AfterViewChecked, Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ModalManager } from 'ngb-modal';
-import { tap } from 'rxjs/operators';
 
-import { EmployeeService } from './../../service/employee.service';
-import { SpinnerService } from './../../../shared/spinner.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { positiveNumber, salaryMinLessThanSalaryMax } from 'src/app/Validators/Validators';
 import { Subject } from 'rxjs';

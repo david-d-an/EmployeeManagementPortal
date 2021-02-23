@@ -31,7 +31,6 @@ namespace EMP.Api
         private SecuritySettings securitySettings;
         private readonly string EmpWebOrigins = "EMP.Web";
 
-        // To Do: Figure out why Logger causes runtine error for dependency
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -143,10 +142,10 @@ namespace EMP.Api
             logger.LogInformation(string.Format("{0}: {1}", "StsAuthority", securitySettings.StsAuthority));
             logger.LogInformation(string.Format("{0}: {1}", "ApiName", securitySettings.ApiName));
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            // }
 
             app.UseCors(EmpWebOrigins);
 
