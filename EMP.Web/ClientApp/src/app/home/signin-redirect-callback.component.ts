@@ -13,11 +13,12 @@ export class SigninRedirectCallbackComponent implements OnInit {
 
   ngOnInit() {
     this.authService.completeLogin().then(user => {
-      // this.router.navigate(['/'], { replaceUrl: true });
       if (sessionStorage['originalUrl']) {
         const url = new URL(sessionStorage['originalUrl']);
         sessionStorage.removeItem('originalUrl');
         this.router.navigateByUrl(url.pathname + url.search + url.hash);
+      } else {
+        this.router.navigate(['/'], { replaceUrl: true });
       }
     });
   }
