@@ -23,11 +23,11 @@ export class AuthService {
   private _loginChangedSubject = new Subject<boolean>();
 
   get userName() {
-    console.log(this._user['profile']['name']);
+    // console.log(`(this._user['profile']['name']: ${this._user['profile']['name']}`);
     return this._user['profile']['name'];
   }
   get userRole() {
-    console.log(this._user['profile']['role']);
+    // console.log(`this._user['profile']['role']: ${this._user['profile']['role']}`);
     return this._user['profile']['role'];
   }
 
@@ -93,19 +93,8 @@ export class AuthService {
   }
 
   login() {
-    const currentUrl: string = window.location.href;
-    const url: URL = new URL(currentUrl);
-    // console.log(`url.href: ${url.href}`);
-    // console.log(`url.protocol: ${url.protocol}`);
-    // console.log(`url.hostname: ${url.hostname}`);
-    // console.log(`url.port: ${url.port}`);
-    // console.log(`url.pathname: ${url.pathname}`);
-
-    return this.userManager.signinRedirect({
-      extraQueryParams: {
-        urlSuffix: url.pathname
-      }
-    });
+    sessionStorage['originalUrl'] = window.location.href;
+    return this.userManager.signinRedirect();
   }
 
   isLoggedIn(): Promise<boolean> {

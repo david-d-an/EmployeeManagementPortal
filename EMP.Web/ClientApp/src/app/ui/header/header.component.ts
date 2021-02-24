@@ -1,5 +1,5 @@
 import { AuthService } from 'src/app/user/auth.service';
-import { AfterViewChecked, Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -31,18 +31,7 @@ export class HeaderComponent implements OnInit {
     // console.log(`!sessionStorage['authPreChecked']: ${!sessionStorage['authPreChecked']}`);
     // console.log(`sessionStorage['forceLogin_EMP.Web']: ${sessionStorage['forceLogin_EMP.Web']}`);
     // console.log(`sessionStorage['forceLogout_EMP.Web']: ${sessionStorage['forceLogout_EMP.Web']}`);
-    // if (loggedIn) {
-    //   if (sessionStorage['forceLogout_EMP.Web']) {
-    //     this.logOutThisTabOnly();
-    //   }
-    // } else if (!loggedIn && sessionStorage['forceLogin_EMP.Web']) {
-    //   sessionStorage.removeItem('forceLogin_EMP.Web');
-    //   sessionStorage['authPreChecked'] = true;
-    //   this.authService.preCheckAuthSession();
-    // } else if (!loggedIn && !sessionStorage['authPreChecked']) {
-    //   sessionStorage['authPreChecked'] = true;
-    //   this.authService.preCheckAuthSession();
-    // }
+    // console.log(`sessionStorage['originalUrl']: ${sessionStorage['originalUrl']}`);
     if (loggedIn) {
       if (sessionStorage['forceLogout_EMP.Web']) {
         this.logOutThisTabOnly();
