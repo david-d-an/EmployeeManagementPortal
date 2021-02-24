@@ -45,10 +45,11 @@ export class AuthService {
     });
   }
 
-  preCheckAuthSession() {
+  preCheckAuthSession(originalUri: string): void {
     this.userManager.signinRedirect({
       extraQueryParams: {
-        actionType: 'precheck'
+        actionType: 'precheck',
+        originalUri: originalUri
       }
     });
   }
@@ -93,7 +94,6 @@ export class AuthService {
   }
 
   login() {
-    sessionStorage['originalUrl'] = window.location.href;
     return this.userManager.signinRedirect();
   }
 

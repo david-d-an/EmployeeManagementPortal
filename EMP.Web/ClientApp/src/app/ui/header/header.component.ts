@@ -40,10 +40,10 @@ export class HeaderComponent implements OnInit {
       if (sessionStorage['forceLogin_EMP.Web']) {
         sessionStorage.removeItem('forceLogin_EMP.Web');
         sessionStorage['authPreChecked'] = true;
-        this.authService.preCheckAuthSession();
+        this.authService.preCheckAuthSession(window.location.href);
       } else if (!sessionStorage['authPreChecked']) {
         sessionStorage['authPreChecked'] = true;
-        this.authService.preCheckAuthSession();
+        this.authService.preCheckAuthSession(window.location.href);
       }
     }
   }
@@ -81,6 +81,7 @@ export class HeaderComponent implements OnInit {
 
   login(): void {
     localStorage['forceLogin_EMP.Web_Shared'] = true;
+    sessionStorage['originalUrl'] = window.location.href;
     this.authService.login();
     localStorage.removeItem('forceLogin_EMP.Web_Shared');
   }
