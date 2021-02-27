@@ -60,3 +60,8 @@ a.nav-link {
 div.company-logo {
   padding-top: 80px;
 }
+
+img.company-logo {
+  max-height:300px;
+  padding-bottom:10px
+}
