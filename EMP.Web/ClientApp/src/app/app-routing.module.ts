@@ -26,16 +26,16 @@ const routes: Routes = [
   { path: 'employees',
     loadChildren: () =>
       import('./employees/employees.module').then(m => m.EmployeesModule),
-    // canActivate: [AuthGuard],
-    // canLoad: [AuthGuard],
+    canActivate: [AuthRouteGuard],
+    canLoad: [AuthRouteGuard],
     data: { preload: true, delay: 1000 }
   },
   // { path: 'departments', component: DepartmentListComponent },
   { path: 'departments',
     loadChildren: () =>
       import('./departments/departments.module').then(m => m.DepartmentsModule),
-    // canActivate: [AuthGuard],
-    // canLoad: [AuthGuard],
+    canActivate: [AuthRouteGuard],
+    canLoad: [AuthRouteGuard],
     data: { preload: true, delay: 1000 }
   },
   { path: 'contact', component: ContactComponent },
