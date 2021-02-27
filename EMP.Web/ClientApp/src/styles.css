@@ -53,6 +53,10 @@ a.nav-link {
   cursor: pointer;
 }
 
+.navbar-nav a.dropdown-item {
+  cursor: pointer
+}
+
 div.company-logo {
   padding-top: 80px;
 }
