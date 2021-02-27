@@ -9,15 +9,17 @@ export class AuthRouteGuard implements CanActivate, CanLoad {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      console.log('canActivate check');
       sessionStorage['originalUrl'] = window.location.href;
-      return this.authService.initAuthSession(window.location.href).then(_ => true);
+      return this.authService.initAuthSession().then(s => {
+        return s;
+      });
   }
 
   canLoad(route: Route, segments: UrlSegment[]):
     Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      console.log('canLoad check');
       sessionStorage['originalUrl'] = window.location.href;
-      return this.authService.initAuthSession(window.location.href).then(_ => true);
+      return this.authService.initAuthSession().then(s => {
+        return s;
+      });
   }
 }

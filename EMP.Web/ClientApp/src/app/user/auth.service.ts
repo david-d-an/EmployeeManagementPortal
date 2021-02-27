@@ -36,28 +36,20 @@ export class AuthService {
 
   constructor(private _httpClient: HttpClient) { }
 
-  initAuthSession(originalUri: string): Promise<any> {
+  initAuthSession(): Promise<any> {
     return this.userManager.getUser().then((user) => {
       this._user = user;
-      console.log(`!user || user.expired: ${!user || user.expired}`);
       if (!user || user.expired) {
-        return this.userManager.signinRedirect({
-          extraQueryParams: {
-            // actionType: 'precheck',
-            originalUri: originalUri
-          }
-        });
+        this.userManager.signinRedirect();
+        return false;
+      } else {
+        return true;
       }
     });
   }
 
   preCheckAuthSession(originalUri: string): void {
-    this.userManager.signinRedirect({
-      extraQueryParams: {
-        actionType: 'precheck',
-        originalUri: originalUri
-      }
-    });
+    this.userManager.signinRedirect();
   }
 
   loadConfig(): void {
