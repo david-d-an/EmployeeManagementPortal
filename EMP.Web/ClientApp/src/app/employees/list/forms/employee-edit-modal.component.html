@@ -1,0 +1,201 @@
+<div class="row">
+  <modal #editModal>
+    <modal-header>
+      <span class="modal-title">Edit Employee (ID: {{empNo}})</span>
+    </modal-header>
+
+    <modal-content>
+      <form novalidate [formGroup]="editFormGroup" (ngSubmit)="saveEdit()">
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="empNo">Employee ID</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="empNo"
+                  name="empNo"
+                  formControlName="empNo"
+                  type="text"
+                  readonly/>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="firstName">First Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="firstName"
+                  name="firstName"
+                  formControlName="firstName"
+                  type="text"
+                  placeholder="First Name"
+                  [ngClass]="{'is-invalid': isControlInvalid('firstName')}" />
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('firstName')?.required">
+              First name is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="lastName">Last Name</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="lastName"
+                  name="lastName"
+                  formControlName="lastName"
+                  type="text"
+                  placeholder="Last Name"
+                  [ngClass]="{'is-invalid': isControlInvalid('lastName')}" />
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('lastName')?.required">
+              Last name is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="title">Title</label>
+        <div class="col-md-8">
+          <select class="form-control"
+                  id="title"
+                  name="title"
+                  formControlName="title"
+                  type="text"
+                  [ngClass]="{'is-invalid': isControlInvalid('title')}" >
+            <option disabled value="">Select Title</option>
+            <option *ngFor="let t of titles"
+              value="{{t['title']}}" >{{t['title']}}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('title')?.required">
+              Title is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="birthDate">Birth Date</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="birthDate"
+                  name="birthDate"
+                  formControlName="birthDate"
+                  type="date"
+                  [ngClass]="{'is-invalid': isControlInvalid('birthDate')}" S/>
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('birthDate')?.required">
+              Birth date is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="hireDate">Hire Date</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="hireDate"
+                  name="hireDate"
+                  formControlName="hireDate"
+                  type="date"
+                  [ngClass]="{'is-invalid': isControlInvalid('hireDate')}" />
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('hireDate')?.required">
+              Hire date is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="deptNo">Department</label>
+        <div class="col-md-8">
+          <select class="form-control"
+                  id="deptNo"
+                  name="deptNo"
+                  formControlName="deptNo"
+                  type="text"
+                  [ngClass]="{'is-invalid': isControlInvalid('deptNo')}" >
+            <option disabled value="">Select Department</option>
+            <option *ngFor="let d of departments"
+              value="{{d.deptNo}}" >{{d.deptName}}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('deptNo')?.required">
+              Department is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="gender">Gender</label>
+        <div class="col-md-8">
+          <select class="form-control"
+                  id="gender"
+                  name="gender"
+                  formControlName="gender"
+                  type="text"
+                  [ngClass]="{'is-invalid': isControlInvalid('gender')}" >
+            <option disabled value="">Select Gender</option>
+            <option *ngFor="let g of genders"
+              value="{{g.gender}}">{{getFulllGenderName(g.gender)}}</option>
+          </select>
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('gender')?.required">
+              Gender is required.
+            </span>
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <label class="col-md-3 col-form-label"
+                for="salary">Salary</label>
+        <div class="col-md-8">
+          <input class="form-control"
+                  id="salary"
+                  name="salary"
+                  formControlName="salary"
+                  type="number"
+                  required
+                  placeholder="Salary"
+                  [ngClass]="{'is-invalid': isControlInvalid('salary')}" />
+          <span class="invalid-feedback">
+            <span *ngIf="controlErrors('salary')?.required">
+              Salary is required.
+            </span>
+            <span *ngIf="controlErrors('salary')?.negativeNumberError">
+              Salary value must be a positive number.
+            </span>
+          </span>
+        </div>
+      </div>
+      </form>
+    </modal-content>
+
+    <modal-footer>
+      <div class="row col-md-11">
+        <div class="col-md-6">
+          <button class="btn btn-primary" (click)="saveEdit()"
+                  [disabled]='!editFormGroup.valid'>
+            Save
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-secondary" (click)="closeModal()">Cancel</button>
+        </div>
+      </div>
+    </modal-footer>
+  </modal>
+</div>

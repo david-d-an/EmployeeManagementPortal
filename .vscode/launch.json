@@ -5,10 +5,10 @@
    "version": "0.2.0",
    "configurations": [
         {
-            "name": ".NET Core Launch (web)",
+            "name": ".NET Core Launch (Web)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build.EMP.Web",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/EMP.Web/bin/Debug/netcoreapp3.1/EMP.Web.dll",
             "args": [],
@@ -27,14 +27,36 @@
             }
         },
         {
-            "name": ".NET Core Launch (api)",
+            "name": ".NET Core Launch (API)",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build.EMP.Api",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/EMP.Api/bin/Debug/netcoreapp3.1/EMP.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/EMP.Api",
+            "stopAtEntry": false,
+            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": ".NET Core Launch (STS)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build.EMP.Sts",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/EMP.Sts/bin/Debug/netcoreapp2.2/EMP.Sts.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/EMP.Sts",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

@@ -1,16 +1,17 @@
 using System.Collections.Generic;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using EMP.Data.Repos;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System;
 using EMP.Common.Tasks;
+using System.Data;
+using EMP.DataAccess.Repos.Extension;
 
 namespace EMP.DataAccess.Repos
 {
-    public class DepartmentsRepository : IDepartmentsRepository
+    public class DepartmentsRepository : IRepository<Departments>
     {
         private EmployeesContext _context;
 
@@ -19,72 +20,56 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        // public Departments Get(string deptNo)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
+        public IEnumerable<Departments> GetAsync(
+            object parameters = null, 
+            int? pageNum = null, 
+            int? pageSize = null)
+        {
+            DbSet<Departments> dbSet =  _context.Departments;
 
-        public async Task<Departments> GetAsync(string deptNo)
+            IQueryable<Departments> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
+        }
+
+        public async Task<Departments> GetAsync(string id)
         {
             IQueryable<Departments> result = 
                 from d in this._context.Departments
-                where d.DeptNo == deptNo
+                where d.DeptNo == id
                 select d;
 
             return await result.FirstOrDefaultAsync();
         }
 
-        // public IEnumerable<Departments> Get()
-        // {
-        //     IQueryable<Departments> result = 
-        //         from d in this._context.Departments
-        //         // join de in this._context.DeptEmp
-        //         // on d.DeptNo equals de.DeptNo
-        //         // join e in this._context.Employees
-        //         // on de.EmpNo equals e.EmpNo
-        //         select d;
-
-        //     return result.ToList();
-        // }
-
-
-        public async Task<IEnumerable<Departments>> GetAsync()
+        public async Task<Departments> PutAsync(string id, Departments updateRequest)
         {
             IQueryable<Departments> result = 
                 from d in this._context.Departments
-                select d;
-
-            return await result.ToListAsync();
-        }
-
-        // public Departments Put(string deptNo, Departments departmentUpdateRequest)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
-        public async Task<Departments> PutAsync(string deptNo, Departments departmentUpdateRequest)
-        {
-            IQueryable<Departments> result = 
-                from d in this._context.Departments
-                where d.DeptNo == deptNo
+                where d.DeptNo == id
                 select d;
 
             var dept = await result.FirstAsync();
-            dept.DeptName = departmentUpdateRequest.DeptName;
+            dept.DeptName = updateRequest.DeptName;
 
             _context.Entry(dept).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return dept;
         }
 
-        // public Departments Post(Departments departmentCreateRequest)
-        // {
-        //     throw new System.NotImplementedException();
-        // }
-        public async Task<Departments> PostAsync(Departments departmentCreateRequest)
+        public async Task<Departments> PostAsync(Departments createRequest)
         {
-            // throw new NotImplementedException();
             return await TaskConstants<Departments>.NotImplemented;
         }
 
+        public async Task<Departments> DeleteAsync(string id)
+        {
+            return await TaskConstants<Departments>.NotImplemented;
+        }
     }
 }

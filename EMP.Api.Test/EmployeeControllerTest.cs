@@ -2,7 +2,7 @@ using Moq;
 using Xunit;
 using EMP.Api.Controllers;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +20,7 @@ namespace EMP.Api.Controllers
         private int invalidEmpNo;
         private Employees employee;
         private Mock<ILogger<EmployeeController>> mockLogger;
-        private Mock<IEmployeeRepository> mockEmployeeRepository;
+        private Mock<IRepository<Employees>> mockEmployeeRepository;
         private EmployeeController _controller;
 
         public EmployeeControllerTest()
@@ -40,10 +40,10 @@ namespace EMP.Api.Controllers
 
             mockLogger = new Mock<ILogger<EmployeeController>>();
 
-            mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            mockEmployeeRepository.Setup(x => x.GetAsync(It.Is<int>(x => x == empNo)))
+            mockEmployeeRepository = new Mock<IRepository<Employees>>();
+            mockEmployeeRepository.Setup(x => x.GetAsync(It.Is<string>(x => x == empNo.ToString())))
                                   .ReturnsAsync(employee);
-            mockEmployeeRepository.Setup(x => x.DeleteAsync(invalidEmpNo))
+            mockEmployeeRepository.Setup(x => x.DeleteAsync(invalidEmpNo.ToString()))
                                   .ReturnsAsync((Employees)null);
 
             _controller = new EmployeeController(
@@ -58,7 +58,7 @@ namespace EMP.Api.Controllers
                 employee
             };
 
-            mockEmployeeRepository.Setup(x => x.GetAsync()).ReturnsAsync(employees);
+            mockEmployeeRepository.Setup(x => x.GetAsync(null, null, null)).Returns(employees);
 
             // Act
             ActionResult<IEnumerable<Employees>> searchResult = await _controller.Get();
@@ -109,7 +109,7 @@ namespace EMP.Api.Controllers
                     HireDate = DateTime.Now.AddDays(-1000)
                 };
 
-            mockEmployeeRepository.Setup(x => x.PutAsync(empNo, employeeUpdateRequest))
+            mockEmployeeRepository.Setup(x => x.PutAsync(empNo.ToString(), employeeUpdateRequest))
                                   .ReturnsAsync(employeeUpdateRequest);
 
             // // Pre Assert
@@ -162,7 +162,7 @@ namespace EMP.Api.Controllers
 
             // Pre Assert
             ActionResult<Employees> existingEmployee = _controller.Get(newEmpNo).Result;
-            Assert.Null(existingEmployee);
+            Assert.Null(existingEmployee.Value);
 
             // Act
             ActionResult<Employees> postResult = await _controller.Post(employeeCreateRequest);
@@ -184,7 +184,7 @@ namespace EMP.Api.Controllers
         public async void ShouldDeleteEmployee()
         {
             // Arrange
-            mockEmployeeRepository.Setup(x => x.DeleteAsync(empNo))
+            mockEmployeeRepository.Setup(x => x.DeleteAsync(empNo.ToString()))
                                   .ReturnsAsync((Employees)null);
 
             // Act

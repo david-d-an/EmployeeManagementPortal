@@ -1,13 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using EMP.Data.Repos;
-using EMP.DataDataAccess.Context;
+using EMP.DataAccess.Context;
+using EMP.DataAccess.EFCore;
+using EMP.DataAccess.Repos.Extension;
+using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
 {
-    public class TitleRepository : ITitleRepository
+    public class TitleRepository : IRepository<VwTitlesCurrent>
     {
         private EmployeesContext _context;
 
@@ -16,28 +20,73 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
         
-        public async Task<IEnumerable<VwTitlesCurrent>> GetAsync()
+        public IEnumerable<VwTitlesCurrent> GetAsync(
+            object parameters = null, 
+            int? pageNum = null, 
+            int? pageSize = null)
         {
-            return await TaskConstants<IEnumerable<VwTitlesCurrent>>.NotImplemented;
+            DbSet<VwTitlesCurrent> dbSet =  _context.VwTitlesCurrent;
+
+            IQueryable<VwTitlesCurrent> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
         }
 
-        public async Task<VwTitlesCurrent> GetAsync(int empNo)
+        public async Task<VwTitlesCurrent> GetAsync(string id)
         {
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwTitlesCurrent>(null);
+
+            IQueryable<VwTitlesCurrent> query = _context.VwTitlesCurrent
+                .Where(i => i.EmpNo == empNo);
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<VwTitlesCurrent> PutAsync(string id, VwTitlesCurrent updateRequest)
+        {
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwTitlesCurrent>(null);
+
             return await TaskConstants<VwTitlesCurrent>.NotImplemented;
         }
 
-        public async Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent titleCreateRequest)
+        public async Task<VwTitlesCurrent> PostAsync(VwTitlesCurrent createRequest)
         {
-            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
+            string storedProcName = "sp_insert_title";
+            // DbParameter outputParam;
+            VwTitlesCurrent spResults = null;
+            await _context
+                .LoadStoredProc(storedProcName)
+                .WithSqlParam("empNo", createRequest.EmpNo)
+                .WithSqlParam("title", createRequest.Title)
+                // .WithSqlParam("result", (dbParam) =>
+                // {
+                //     dbParam.Direction = System.Data.ParameterDirection.Output;
+                //     dbParam.DbType = System.Data.DbType.String;
+                //     outputParam = dbParam;
+                // })
+                .ExecuteStoredProcAsync(_context, (handler) => {
+                    bool nr = handler.NextResult();
+                    spResults = handler.ReadToList<VwTitlesCurrent>().FirstOrDefault();
+                });
+
+            return spResults;
         }
 
-        public async Task<VwTitlesCurrent> PutAsync(int empNo, VwTitlesCurrent titleUpdateRequest)
+        public async Task<VwTitlesCurrent> DeleteAsync(string id)
         {
-            return await TaskConstants<VwTitlesCurrent>.NotImplemented;
-        }
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwTitlesCurrent>(null);
 
-        public async Task<VwTitlesCurrent> DeleteAsync(int empNo)
-        {
             return await TaskConstants<VwTitlesCurrent>.NotImplemented;
         }
 

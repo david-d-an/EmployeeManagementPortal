@@ -147,6 +147,7 @@ DocProject/Help/html
 
 # Click-Once directory
 publish/
+dist/
 
 # Publish Web Output
 *.[Pp]ublish.xml
@@ -464,6 +465,9 @@ ServiceFabricBackup/
 
 # SQL Server files
 *.ndf
+
+# MySql dump files
+dump-*.sql
 
 # Business Intelligence projects
 *.rptproj.rsuser

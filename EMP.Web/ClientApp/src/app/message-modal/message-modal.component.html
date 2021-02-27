@@ -1,0 +1,24 @@
+<div class="row">
+  <modal #messageModal>
+    <modal-header>
+      <span class="modal-title">{{messageTitle}}</span>
+    </modal-header>
+
+    <modal-content>
+      {{messageText}}
+    </modal-content>
+
+    <modal-footer>
+      <div class="row col-md-11">
+        <div class="col-md-6">
+          <button class="btn btn-primary" [hidden]="true" >
+            Ok
+          </button>
+        </div>
+        <div class="col-md-6">
+          <button class="btn btn-primary" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </modal-footer>
+  </modal>
+</div>

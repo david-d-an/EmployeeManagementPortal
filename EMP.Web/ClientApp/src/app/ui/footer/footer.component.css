@@ -1,0 +1,9 @@
+.fa-bug {
+  color: red;
+}
+
+.center-footer {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}

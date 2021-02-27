@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Moq;
 using Xunit;
 using Microsoft.Extensions.Logging;
@@ -14,7 +14,7 @@ namespace EMP.Api.Controllers
     {
         private Departments department;
         private Mock<ILogger<DepartmentsController>> mockLogger;
-        private Mock<IDepartmentsRepository> mockDepartmentsRepository;
+        private Mock<IRepository<Departments>> mockDepartmentsRepository;
         private string deptNo;
         private string invalidDeptNo;
         private DepartmentsController _controller;
@@ -32,7 +32,7 @@ namespace EMP.Api.Controllers
 
             mockLogger = new Mock<ILogger<DepartmentsController>>();
 
-            mockDepartmentsRepository = new Mock<IDepartmentsRepository>();
+            mockDepartmentsRepository = new Mock<IRepository<Departments>>();
             mockDepartmentsRepository.Setup(x => x.GetAsync(deptNo)).ReturnsAsync(department);
             mockDepartmentsRepository.Setup(x => x.GetAsync(invalidDeptNo)).ReturnsAsync((Departments)null);
 
@@ -48,7 +48,7 @@ namespace EMP.Api.Controllers
                 department
             };
 
-            mockDepartmentsRepository.Setup(x => x.GetAsync()).ReturnsAsync(departments);
+            mockDepartmentsRepository.Setup(x => x.GetAsync(null, null, null)).Returns(departments);
 
             // Act
             ActionResult<IEnumerable<Departments>> searchResult = await _controller.Get();
@@ -108,8 +108,8 @@ namespace EMP.Api.Controllers
 
             // Assert
             Assert.Null(notFoundResult);
-            Assert.Equal(updateResult.Value.DeptNo, departmentUpdateRequest.DeptNo);
-            Assert.Equal(updateResult.Value.DeptName, departmentUpdateRequest.DeptName);
+            Assert.Equal(departmentUpdateRequest.DeptNo, updateResult.Value.DeptNo);
+            Assert.Equal(departmentUpdateRequest.DeptName, updateResult.Value.DeptName);
         }
  
          [Fact]

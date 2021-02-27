@@ -2,7 +2,7 @@ using Moq;
 using Xunit;
 using EMP.Api.Controllers;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +19,21 @@ namespace EMP.Api.Controllers
         private int managerEmpNo;
         private string deptNo;
         private int salary;
+        private string title;
+        private DateTime timeNow;
+        private string gender;
+        private string managerFirstName;
+        private string managerLastName;
+        private VwEmpDetailsShort vwEmpDetailsShort;
         private VwEmpDetails vwEmpDetails;
         private Mock<ILogger<EmployeeDetailController>> mockLogger;
         private int invalidEmpNo;
-        private Mock<IEmployeeDetailRepository> mockEmployeeDetailRepository;
-        private Mock<IEmployeeRepository> mockEmployeeRepository;
-        private Mock<IDeptEmpRepository> mockDeptEmpRepository;
-        private Mock<ISalaryRepository> mockSalaryRepository;
-        private Mock<ITitleRepository> mockTitleRepository;
+        private Mock<IRepository<VwEmpDetails>> mockEmployeeDetailRepository;
+        private Mock<IRepository<VwEmpDetailsShort>> mockEmployeeDetailShortRepository;
+        private Mock<IRepository<Employees>> mockEmployeeRepository;
+        private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpCurrentRepository;
+        private Mock<IRepository<VwSalariesCurrent>> mockSalaryRepository;
+        private Mock<IRepository<VwTitlesCurrent>> mockTitleRepository;
         private EmployeeDetailController _controller;
         private int newEmpNo;
 
@@ -38,42 +45,59 @@ namespace EMP.Api.Controllers
             managerEmpNo = 99;
             deptNo = "0";
             salary = 10000;
+            title = "Test Title";
+            timeNow = DateTime.Now;
+            gender = "M";
+            managerFirstName = "John";
+            managerLastName = "Smith";
 
-            vwEmpDetails = 
-                new VwEmpDetails {
-                    EmpNo = empNo,
-                    FirstName = string.Empty,
-                    LastName = string.Empty,
-                    BirthDate = DateTime.Now,
-                    HireDate = DateTime.Now,
-                    Gender = string.Empty,
-                    Salary = salary,
-                    Title = string.Empty,
-                    DeptNo = deptNo,
-                    DeptName = string.Empty,
-                    ManagerFirstName = string.Empty,
-                    ManagerLastName = string.Empty,
-                    ManagerEmpNo =  managerEmpNo
-                };
+            vwEmpDetails = new VwEmpDetails {
+                EmpNo = empNo,
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                BirthDate = timeNow,
+                HireDate = timeNow,
+                Gender = gender,
+                Salary = salary,
+                Title = title,
+                DeptNo = deptNo,
+                DeptName = string.Empty,
+                ManagerEmpNo =  managerEmpNo,
+                ManagerFirstName = managerFirstName,
+                ManagerLastName = managerLastName
+            };
+
+            vwEmpDetailsShort = new VwEmpDetailsShort {
+                EmpNo = empNo,
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                Title = string.Empty,
+                Salary = salary,
+                DeptNo = deptNo,
+                DeptName = string.Empty,
+                // ManagerEmpNo =  managerEmpNo
+            };
 
 
             mockLogger = new Mock<ILogger<EmployeeDetailController>>();
 
-            mockEmployeeDetailRepository = new Mock<IEmployeeDetailRepository>();
-            mockEmployeeRepository = new Mock<IEmployeeRepository>();
-            mockDeptEmpRepository = new Mock<IDeptEmpRepository>();
-            mockSalaryRepository = new Mock<ISalaryRepository>();
-            mockTitleRepository = new Mock<ITitleRepository>();
+            mockEmployeeDetailRepository = new Mock<IRepository<VwEmpDetails>>();
+            mockEmployeeDetailShortRepository = new Mock<IRepository<VwEmpDetailsShort>>();
+            mockEmployeeRepository = new Mock<IRepository<Employees>>();
+            mockDeptEmpCurrentRepository = new Mock<IRepository<VwDeptEmpCurrent>>();
+            mockSalaryRepository = new Mock<IRepository<VwSalariesCurrent>>();
+            mockTitleRepository = new Mock<IRepository<VwTitlesCurrent>>();
 
             mockEmployeeDetailRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNo)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNo.ToString())))
                 .ReturnsAsync(vwEmpDetails);
 
             _controller = new EmployeeDetailController(
                 mockLogger.Object,
                 mockEmployeeRepository.Object,
                 mockEmployeeDetailRepository.Object,
-                mockDeptEmpRepository.Object,
+                mockEmployeeDetailShortRepository.Object,
+                mockDeptEmpCurrentRepository.Object,
                 mockSalaryRepository.Object,
                 mockTitleRepository.Object);
         }
@@ -81,20 +105,22 @@ namespace EMP.Api.Controllers
         [Fact]
         public async void ShouldReturnAllEmployees() {
             // Arrange
-            var listEmployeeDetails = new List<VwEmpDetails> {
-                vwEmpDetails
+            var listEmployeeDetails = new List<VwEmpDetailsShort> {
+                vwEmpDetailsShort
             };
 
-            mockEmployeeDetailRepository.Setup(x => x.GetAsync())
-                                        .ReturnsAsync(listEmployeeDetails);
+            mockEmployeeDetailShortRepository
+                .Setup(x => x.GetAsync(null, null, null))
+                .Returns(listEmployeeDetails);
 
             // Act
-            ActionResult<IEnumerable<VwEmpDetails>> searchResult = await _controller.Get();
+            ActionResult<IEnumerable<VwEmpDetails>> searchResult = 
+                (await _controller.Get(null, null, null, null, null, null, null, null)).Result;
             OkObjectResult listResult = searchResult.Result as OkObjectResult;
 
             // Assert
             Assert.Equal(200, listResult.StatusCode);
-            IEnumerable<VwEmpDetails> list = listResult.Value as IEnumerable<VwEmpDetails>;
+            IEnumerable<VwEmpDetailsShort> list = listResult.Value as IEnumerable<VwEmpDetailsShort>;
             Assert.Single(list);
             Assert.NotNull(list.FirstOrDefault());
             Assert.Equal(empNo, list.FirstOrDefault().EmpNo);
@@ -102,14 +128,30 @@ namespace EMP.Api.Controllers
 
         [Fact]
         public async void ShouldReturnEmployeeDetailByEmpNo() {
+
             // Arrange
+            mockEmployeeDetailRepository
+                .Setup(x => x.GetAsync(It.Is<string>(i => i == vwEmpDetails.EmpNo.ToString())))
+                .ReturnsAsync(vwEmpDetails);
 
             // Act
             ActionResult<VwEmpDetails> searchResult = await _controller.Get(empNo);
 
             // Assert
             Assert.NotNull(searchResult.Value);
-            Assert.Equal(empNo, searchResult.Value.EmpNo);
+            Assert.Equal(vwEmpDetails.EmpNo, searchResult.Value.EmpNo);
+            Assert.Equal(vwEmpDetails.FirstName, searchResult.Value.FirstName);
+            Assert.Equal(vwEmpDetails.LastName, searchResult.Value.LastName);
+            Assert.Equal(vwEmpDetails.BirthDate, searchResult.Value.BirthDate);
+            Assert.Equal(vwEmpDetails.HireDate, searchResult.Value.HireDate);
+            Assert.Equal(vwEmpDetails.Gender, searchResult.Value.Gender);
+            Assert.Equal(vwEmpDetails.Salary, searchResult.Value.Salary);
+            Assert.Equal(vwEmpDetails.Title, searchResult.Value.Title);
+            Assert.Equal(vwEmpDetails.DeptNo, searchResult.Value.DeptNo);
+            Assert.Equal(vwEmpDetails.DeptName, searchResult.Value.DeptName);
+            Assert.Equal(vwEmpDetails.ManagerEmpNo, searchResult.Value.ManagerEmpNo);
+            Assert.Equal(vwEmpDetails.ManagerFirstName, searchResult.Value.ManagerFirstName);
+            Assert.Equal(vwEmpDetails.ManagerLastName, searchResult.Value.ManagerLastName);
         }
 
         [Fact]
@@ -162,23 +204,23 @@ namespace EMP.Api.Controllers
                 };
 
             mockEmployeeDetailRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(employeeUpdateRequest);
 
             mockEmployeeRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(employee);
 
             mockSalaryRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwSalariesCurrent { EmpNo = empNoUpdate, Salary = newSalary });
 
             mockTitleRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwTitlesCurrent { EmpNo = empNoUpdate, Title = newTitle });
 
-            mockDeptEmpRepository
-                .Setup(x => x.GetAsync(It.Is<int>(x => x == empNoUpdate)))
+            mockDeptEmpCurrentRepository
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == empNoUpdate.ToString())))
                 .ReturnsAsync(new VwDeptEmpCurrent { EmpNo = empNoUpdate, DeptNo = newDeptNo });
 
             // mockEmployeeDetailRepository
@@ -229,7 +271,7 @@ namespace EMP.Api.Controllers
                 };
 
             mockEmployeeDetailRepository
-                .Setup(x => x.PutAsync(invalidEmpNo, invalidEmployeeUpdateRequest))
+                .Setup(x => x.PutAsync(invalidEmpNo.ToString(), invalidEmployeeUpdateRequest))
                 .ReturnsAsync(null as VwEmpDetails);
 
             // Act
@@ -248,7 +290,7 @@ namespace EMP.Api.Controllers
         {
             DateTime mockDate = DateTime.Now.AddDays(-1000);
             // Arrange
-            VwEmpDetails employeeCreateRequest = 
+            VwEmpDetails employeeDetailCreateRequest = 
                 new VwEmpDetails {
                     EmpNo = -1,
                     FirstName = "Jane",
@@ -265,29 +307,53 @@ namespace EMP.Api.Controllers
                     ManagerEmpNo =  managerEmpNo
                 };
 
-            VwEmpDetails newEmployee = 
+            VwEmpDetails employeeDetailCreateResult = 
                 new VwEmpDetails {
                     EmpNo = newEmpNo,
-                    FirstName = "Jane",
-                    LastName = "Doe",
-                    BirthDate = mockDate,
-                    HireDate = mockDate,
-                    Gender = "Female",
-                    Salary = 99999,
-                    Title = "New Title",
-                    DeptNo = "d999",
-                    DeptName = "New Department",
-                    ManagerFirstName = string.Empty,
-                    ManagerLastName = string.Empty,
-                    ManagerEmpNo =  managerEmpNo
+                    FirstName = employeeDetailCreateRequest.FirstName,
+                    LastName = employeeDetailCreateRequest.LastName,
+                    BirthDate = employeeDetailCreateRequest.BirthDate,
+                    HireDate = employeeDetailCreateRequest.HireDate,
+                    Gender = employeeDetailCreateRequest.Gender,
+                    Salary = employeeDetailCreateRequest.Salary,
+                    Title = employeeDetailCreateRequest.Title,
+                    DeptNo = employeeDetailCreateRequest.DeptNo,
+                    DeptName = employeeDetailCreateRequest.DeptName,
+                    ManagerFirstName = employeeDetailCreateRequest.ManagerFirstName,
+                    ManagerLastName = employeeDetailCreateRequest.ManagerLastName,
+                    ManagerEmpNo =  employeeDetailCreateRequest.ManagerEmpNo
                 };
 
+            Employees newEmployee = 
+                new Employees {
+                    EmpNo = -1,
+                    FirstName = employeeDetailCreateRequest.FirstName,
+                    LastName = employeeDetailCreateRequest.LastName,
+                    BirthDate = employeeDetailCreateRequest.BirthDate,
+                    HireDate = employeeDetailCreateRequest.HireDate,
+                    Gender = employeeDetailCreateRequest.Gender,
+                };
+
+            Employees employeeCreateResult = 
+                new Employees {
+                    EmpNo = newEmpNo,
+                    FirstName = newEmployee.FirstName,
+                    LastName = newEmployee.LastName,
+                    BirthDate = newEmployee.BirthDate,
+                    HireDate = newEmployee.HireDate,
+                    Gender = newEmployee.Gender,
+                };
+
+
+            mockEmployeeRepository
+                .Setup(x => x.PostAsync(It.IsAny<Employees>()))
+                .ReturnsAsync(employeeCreateResult);
             mockEmployeeDetailRepository
-                .Setup(x => x.PostAsync(It.Is<VwEmpDetails>(x => x == employeeCreateRequest)))
-                .ReturnsAsync(newEmployee);
+                .Setup(x => x.GetAsync(It.Is<string>(x => x == employeeCreateResult.EmpNo.ToString())))
+                .ReturnsAsync(employeeDetailCreateResult);
 
             // Act
-            ActionResult<VwEmpDetails> postResult = await _controller.Post(employeeCreateRequest);
+            ActionResult<VwEmpDetails> postResult = await _controller.Post(employeeDetailCreateRequest);
             CreatedAtActionResult createdResult = postResult.Result as CreatedAtActionResult;
             VwEmpDetails createdEmployee = createdResult.Value as VwEmpDetails;
             
@@ -295,11 +361,11 @@ namespace EMP.Api.Controllers
             Assert.NotNull(createdResult);
             Assert.Equal(201, createdResult.StatusCode);
             // Assert.NotEqual(createResult.EmpNo, employeeCreateRequest.EmpNo);
-            Assert.Equal(employeeCreateRequest.BirthDate, createdEmployee.BirthDate);
-            Assert.Equal(employeeCreateRequest.FirstName, createdEmployee.FirstName);
-            Assert.Equal(employeeCreateRequest.LastName, createdEmployee.LastName);
-            Assert.Equal(employeeCreateRequest.Gender, createdEmployee.Gender);
-            Assert.Equal(employeeCreateRequest.HireDate, createdEmployee.HireDate);
+            Assert.Equal(employeeDetailCreateRequest.BirthDate, createdEmployee.BirthDate);
+            Assert.Equal(employeeDetailCreateRequest.FirstName, createdEmployee.FirstName);
+            Assert.Equal(employeeDetailCreateRequest.LastName, createdEmployee.LastName);
+            Assert.Equal(employeeDetailCreateRequest.Gender, createdEmployee.Gender);
+            Assert.Equal(employeeDetailCreateRequest.HireDate, createdEmployee.HireDate);
         }
 
         // [Fact]

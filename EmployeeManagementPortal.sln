@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Data", "EMP.Data\EMP.Da
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Common", "EMP.Common\EMP.Common.csproj", "{22EB9950-8833-4D98-8A65-5A009C4716A9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Sts", "EMP.Sts\EMP.Sts.csproj", "{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,5 +130,17 @@ Global
 		{22EB9950-8833-4D98-8A65-5A009C4716A9}.Release|x64.Build.0 = Release|Any CPU
 		{22EB9950-8833-4D98-8A65-5A009C4716A9}.Release|x86.ActiveCfg = Release|Any CPU
 		{22EB9950-8833-4D98-8A65-5A009C4716A9}.Release|x86.Build.0 = Release|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Debug|x64.Build.0 = Debug|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Debug|x86.Build.0 = Debug|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x64.ActiveCfg = Release|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x64.Build.0 = Release|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x86.ActiveCfg = Release|Any CPU
+		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

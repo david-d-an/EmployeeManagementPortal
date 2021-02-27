@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 using EMP.Common.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace EMP.Api.Controllers
 {
@@ -15,76 +16,179 @@ namespace EMP.Api.Controllers
     public class EmployeeDetailController : ControllerBase
     {
         private ILogger<EmployeeDetailController> _logger;
-        private IEmployeeDetailRepository _employeeDetailRepository;
-        private IEmployeeRepository _employeeRepository;
-        private IDeptEmpRepository _deptEmpRepository;
-        private ISalaryRepository _salaryRepository;
-        private ITitleRepository _titleRepository;
+        private IRepository<Employees> _employeeRepository;
+        private IRepository<VwEmpDetails> _employeeDetailRepository;
+        private IRepository<VwEmpDetailsShort> _employeeDetailShortRepository;
+        private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
+        private IRepository<VwSalariesCurrent> _salaryRepository;
+        private IRepository<VwTitlesCurrent> _titleRepository;
 
         public EmployeeDetailController(
             ILogger<EmployeeDetailController> logger,
-            IEmployeeRepository employeeRepository,
-            IEmployeeDetailRepository employeeDetailRepository,
-            IDeptEmpRepository deptEmpRepository,
-            ISalaryRepository salaryRepository,
-            ITitleRepository titleRepository)
+            IRepository<Employees> employeeRepository,
+            IRepository<VwEmpDetails> employeeDetailRepository,
+            IRepository<VwEmpDetailsShort> employeeDetailShortRepository,
+            IRepository<VwDeptEmpCurrent> deptEmpRepository,
+            IRepository<VwSalariesCurrent> salaryRepository,
+            IRepository<VwTitlesCurrent> titleRepository)
         {
             this._logger = logger;
-            this._employeeDetailRepository = employeeDetailRepository;
             this._employeeRepository = employeeRepository;
+            this._employeeDetailRepository = employeeDetailRepository;
+            this._employeeDetailShortRepository = employeeDetailShortRepository;
             this._deptEmpRepository = deptEmpRepository;
             this._salaryRepository = salaryRepository;
             this._titleRepository = titleRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<VwEmpDetails>>> Get()
+        [Authorize(Roles="System Admin")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get(
+            [FromQuery] int? pageNum,
+            [FromQuery] int? pageSize,
+            [FromQuery] string firstName,
+            [FromQuery] string lastName,
+            [FromQuery] string salaryMin,
+            [FromQuery] string salaryMax,
+            [FromQuery] string title,
+            [FromQuery] string deptName)
         {
-            // IEnumerable<VwEmpDetails> r = await _employeeDetailRepository.GetAsync();
-            // List<VwEmpDetails> l = r.ToList();
-            // long c = l.Count();
+            // api/EmployeeDetail?firstName=john&lastName=smith&salaryMin=4&salaryMax=100&title=admin&deptName=marketing
 
-            return Ok(await _employeeDetailRepository.GetAsync());
+            object parameters = new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string> ("firstName", firstName ),
+                new KeyValuePair<string, string> ("lastName", lastName ),
+                new KeyValuePair<string, string> ("salaryMin", salaryMin ),
+                new KeyValuePair<string, string> ("salaryMax", salaryMax ),
+                new KeyValuePair<string, string> ("title", title ),
+                new KeyValuePair<string, string> ("deptName", deptName ),
+            };
+
+            await Task.Delay(0);
+            return Ok(_employeeDetailShortRepository.GetAsync(parameters, pageNum, pageSize));
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
+        [Authorize(Roles="System Admin")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult<VwEmpDetails>> Get(int id)
         {
-            return await _employeeDetailRepository.GetAsync(id);
+            return await _employeeDetailRepository.GetAsync(id.ToString());
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<VwEmpDetails>> Put(int id, VwEmpDetails employeeDetailUpdateRequest)
         {
-            Employees employee = await _employeeRepository.GetAsync(id);
-            VwSalariesCurrent salary = await _salaryRepository.GetAsync(id);
-            VwTitlesCurrent title = await _titleRepository.GetAsync(id);
-            VwDeptEmpCurrent deptEmp = await _deptEmpRepository.GetAsync(id);
+            Employees employee = await _employeeRepository.GetAsync(id.ToString());
+            VwSalariesCurrent salary = await _salaryRepository.GetAsync(id.ToString());
+            VwTitlesCurrent title = await _titleRepository.GetAsync(id.ToString());
+            VwDeptEmpCurrent deptEmp = await _deptEmpRepository.GetAsync(id.ToString());
 
-            if (employee == null)
-            {
+            if (employee == null) {
                 return NotFound();
             }
 
-            if (title.Title != employeeDetailUpdateRequest.Title) {
-                throw new NotImplementedException();
-            }
-
-            if (salary.Salary != employeeDetailUpdateRequest.Salary) {
-                throw new NotImplementedException();
-            }
-
-            if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
-                throw new NotImplementedException();
-            }
-
             if (employeeBasicInfoChanged(employee, employeeDetailUpdateRequest)) {
-                throw new NotImplementedException();
+                Employees employeeUpdateRequest = new Employees {
+                    EmpNo = id,
+                    BirthDate = employeeDetailUpdateRequest.BirthDate,
+                    FirstName = employeeDetailUpdateRequest.FirstName,
+                    LastName = employeeDetailUpdateRequest .LastName,
+                    Gender = employeeDetailUpdateRequest .Gender,
+                    HireDate = employeeDetailUpdateRequest.HireDate
+                };
+                Employees employeeUpdateResult = await 
+                    _employeeRepository
+                    .PutAsync(id.ToString(), employeeUpdateRequest);
             }
 
-            VwEmpDetails result = await _employeeDetailRepository.GetAsync(id);
+            if (deptEmp?.DeptNo != employeeDetailUpdateRequest.DeptNo) {
+                VwDeptEmpCurrent deptEmpCreateRequest = new VwDeptEmpCurrent {
+                    EmpNo = employeeDetailUpdateRequest.EmpNo,
+                    DeptNo = employeeDetailUpdateRequest.DeptNo
+                };
+                VwDeptEmpCurrent deptEmpCreateResult = await 
+                    _deptEmpRepository
+                    .PostAsync(deptEmpCreateRequest);
+            }
+
+            if (salary?.Salary != employeeDetailUpdateRequest.Salary) {
+                VwSalariesCurrent salaryCreateRequest = new VwSalariesCurrent {
+                    EmpNo = employeeDetailUpdateRequest.EmpNo,
+                    Salary = employeeDetailUpdateRequest.Salary
+                };
+                VwSalariesCurrent salaryCreateResult = await 
+                    _salaryRepository
+                    .PostAsync(salaryCreateRequest);
+            }
+
+            if (title?.Title != employeeDetailUpdateRequest.Title) {
+                VwTitlesCurrent titleCreateRequest = new VwTitlesCurrent {
+                    EmpNo = employeeDetailUpdateRequest.EmpNo,
+                    Title = employeeDetailUpdateRequest.Title
+                };
+                VwTitlesCurrent titleCreateResult = await 
+                    _titleRepository
+                    .PostAsync(titleCreateRequest);
+            }
+
+            VwEmpDetails result = await 
+                _employeeDetailRepository
+                .GetAsync(id.ToString());
 
             return result;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<VwEmpDetails>> Post(VwEmpDetails employeeDetailCreateRequest) 
+        {
+            Employees employeeCreateRequest = new Employees {
+                EmpNo = -1,
+                BirthDate = employeeDetailCreateRequest.BirthDate,
+                FirstName = employeeDetailCreateRequest.FirstName,
+                LastName = employeeDetailCreateRequest .LastName,
+                Gender = employeeDetailCreateRequest .Gender,
+                HireDate = employeeDetailCreateRequest.HireDate
+            };
+
+            Employees employeeCreateResult = await _employeeRepository.PostAsync(employeeCreateRequest);
+            int? empNo = employeeCreateResult?.EmpNo;
+
+            if (empNo == null)
+                return BadRequest();
+
+            VwDeptEmpCurrent deptEmpCreateRequest = new VwDeptEmpCurrent {
+                EmpNo = empNo.Value,
+                DeptNo = employeeDetailCreateRequest.DeptNo
+            };
+            VwDeptEmpCurrent deptEmpCreateResult = await _deptEmpRepository.PostAsync(deptEmpCreateRequest);
+
+            VwSalariesCurrent salaryCreateRequest = new VwSalariesCurrent {
+                EmpNo = empNo.Value,
+                Salary = employeeDetailCreateRequest.Salary
+            };
+            VwSalariesCurrent salaryCreateResult = await _salaryRepository.PostAsync(salaryCreateRequest);
+
+            VwTitlesCurrent titleCreateRequest = new VwTitlesCurrent {
+                EmpNo = empNo.Value,
+                Title = employeeDetailCreateRequest.Title
+            };
+            VwTitlesCurrent titleCreateResult = await _titleRepository.PostAsync(titleCreateRequest);
+
+            VwEmpDetails result = await _employeeDetailRepository.GetAsync(empNo.Value.ToString());
+
+            return CreatedAtAction(
+                nameof(Post), 
+                nameof(EmployeeDetailController), 
+                new { id = result.EmpNo }, 
+                result);
+        }
+        
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<VwEmpDetails>> Delete(long id) 
+        {
+            return await TaskConstants<ActionResult<VwEmpDetails>>.NotImplemented;
         }
 
         private bool employeeBasicInfoChanged(Employees employee, VwEmpDetails employeeDetailUpdateRequest)
@@ -95,25 +199,6 @@ namespace EMP.Api.Controllers
                 employee.LastName != employeeDetailUpdateRequest.LastName ||
                 employee.Gender != employeeDetailUpdateRequest.Gender ||
                 employee.HireDate != employeeDetailUpdateRequest.HireDate;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<VwEmpDetails>> Post(VwEmpDetails employeeDetailCreateRequest) 
-        {
-            // return await TaskConstants<ActionResult<EmployeeDetail>>.NotImplemented; 
-            VwEmpDetails result = await _employeeDetailRepository.PostAsync(employeeDetailCreateRequest);
-            return CreatedAtAction(
-                nameof(Post), 
-                nameof(EmployeeDetailController), 
-                new { id = result.EmpNo }, 
-                result);
-           
-        }
-        
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<EmployeeDetail>> Delete(long id) 
-        {
-            return await TaskConstants<ActionResult<EmployeeDetail>>.NotImplemented;
         }
     }
 }

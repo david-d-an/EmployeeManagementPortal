@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -13,11 +13,11 @@ namespace EMP.Api.Controllers
     public class EmployeeController : ControllerBase
     {
         private ILogger<EmployeeController> _logger;
-        private IEmployeeRepository _employeeRepository;
+        private IRepository<Employees> _employeeRepository;
 
         public EmployeeController(
             ILogger<EmployeeController> logger,
-            IEmployeeRepository employeeRepository)
+            IRepository<Employees> employeeRepository)
         {
             this._logger = logger;
             this._employeeRepository = employeeRepository;
@@ -26,26 +26,27 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Employees>>> Get()
         {
-            IEnumerable<Employees> result = await _employeeRepository.GetAsync();
+            await Task.Delay(0);
+            IEnumerable<Employees> result = _employeeRepository.GetAsync();
             return Ok(result);
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Employees>> Get(int id)
         {
-            return await _employeeRepository.GetAsync(id);
+            return await _employeeRepository.GetAsync(id.ToString());
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult<Employees>> Put(int id, Employees employeeUpdateRequest)
         {
-            Employees employee = await _employeeRepository.GetAsync(id);
+            Employees employee = await _employeeRepository.GetAsync(id.ToString());
             if (employee == null)
             {
                 return NotFound();
             }
 
-            Employees result = await _employeeRepository.PutAsync(id, employeeUpdateRequest);
+            Employees result = await _employeeRepository.PutAsync(id.ToString(), employeeUpdateRequest);
             return result;
         }
 
@@ -53,7 +54,6 @@ namespace EMP.Api.Controllers
         public async Task<ActionResult<Employees>> Post(Employees employeeCreateRequest) 
         {
             Employees result = await _employeeRepository.PostAsync(employeeCreateRequest);
-            // return result;
             return CreatedAtAction(
                 nameof(Post), 
                 nameof(EmployeeController), 
@@ -64,16 +64,23 @@ namespace EMP.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Employees>> Delete(int id) 
         {
-            Employees employee = await _employeeRepository.GetAsync(id);
+            Employees employee = await _employeeRepository.GetAsync(id.ToString());
             if (employee == null)
             {
                 return NotFound();
             }
 
-            Employees deletedEmployee = await _employeeRepository.DeleteAsync(id);
+            Employees deletedEmployee = await _employeeRepository.DeleteAsync(id.ToString());
             return deletedEmployee;
         }
 
+        // [HttpGet]
+        // public async Task<ActionResult<IEnumerable<Employees>>> GetLarge()
+        // {
+        //     await Task.Delay(0);
+        //     IEnumerable<Employees> result = _employeeRepository.GetAsync();
+        //     return Ok(result);
+        // }
     }
 }
 

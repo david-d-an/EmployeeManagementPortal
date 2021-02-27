@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EMP.Common.Tasks;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using EMP.Data.Repos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,23 +13,27 @@ namespace EMP.Api.Controllers
     public class TitleController : ControllerBase
     {
         private ILogger<TitleController> _logger;
-        private ITitleRepository _titleRepository;
+        // private IRepository<VwTitlesCurrent> _titleRepository;
+        private IRepository<DistinctTitles> _distinctTitleRepository;
 
         public TitleController(
             ILogger<TitleController> logger,
-            ITitleRepository titleRepository)
+            // IRepository<VwTitlesCurrent> titleRepository,
+            IRepository<DistinctTitles> distinctTitleRepository)
         {
             this._logger = logger;
-            this._titleRepository = titleRepository;
+            // this._titleRepository = titleRepository;
+            this._distinctTitleRepository = distinctTitleRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<string>>> Get()
         {
-            return await TaskConstants<ActionResult<IEnumerable<string>>>.NotImplemented;
+            await Task.Delay(0);
+            return Ok(_distinctTitleRepository.GetAsync());            
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<string>> Get(string id)
         {
             return await TaskConstants<ActionResult<string>>.NotImplemented;

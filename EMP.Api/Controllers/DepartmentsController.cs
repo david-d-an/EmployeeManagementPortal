@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using EMP.Data.Repos;
-using EMP.Data.Models;
+using EMP.Data.Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,11 +13,11 @@ namespace EMP.Api.Controllers
     public class DepartmentsController : ControllerBase
     {
         private readonly ILogger<DepartmentsController> _logger;
-        private readonly IDepartmentsRepository _departmentsRepository;
+        private readonly IRepository<Departments> _departmentsRepository;
 
         public DepartmentsController(
             ILogger<DepartmentsController> logger,
-            IDepartmentsRepository departmentsRepository)
+            IRepository<Departments> departmentsRepository)
         {
             this._logger = logger;
             this._departmentsRepository = departmentsRepository;
@@ -26,10 +26,11 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Departments>>> Get()
         {
-            return Ok(await _departmentsRepository.GetAsync());
+            await Task.Delay(0);
+            return Ok(_departmentsRepository.GetAsync());
         }
 
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Departments>> Get(string id)
         {
             return await _departmentsRepository.GetAsync(id);

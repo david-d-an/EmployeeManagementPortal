@@ -1,16 +1,17 @@
 using EMP.Data.Repos;
-using EMP.Data.Models;
-using EMP.DataDataAccess.Context;
+using EMP.Data.Models.Employees;
+using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
 using EMP.Common.Tasks;
+using EMP.DataAccess.Repos.Extension;
 
 namespace EMP.DataAccess.Repos
 {
-    public class EmployeeDetailRepository : IEmployeeDetailRepository
+    public class EmployeeDetailRepository : IRepository<VwEmpDetails>
     {
         private EmployeesContext _context;
 
@@ -19,96 +20,52 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public async Task<IEnumerable<VwEmpDetails>> GetAsync()
+        public IEnumerable<VwEmpDetails> GetAsync(
+            object parameters = null, 
+            int? pageNum = null, 
+            int? pageSize = null)
         {
-            IQueryable<VwEmpDetails> query = _context.VwEmpDetails;
-            return await query.ToListAsync();
+            DbSet<VwEmpDetails> dbSet =  _context.VwEmpDetails;
+
+            IQueryable<VwEmpDetails> query = dbSet.AsNoTracking();
+            if ((pageNum??0) >  0 && (pageSize??0) > 0) {
+                query = query
+                    .Skip((pageNum.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+
+            return query.ToEnumerable();
+
+            // query = query
+            //     .Where(i => i.DeptName == "Production")
+            //     .Where(i => i.LastName.ToLower().StartsWith("c"));
+
+            // query = from r in query
+            //         select 
+            //         new VwEmpDetails {                        
+            //             EmpNo = r.EmpNo,
+            //             FirstName = r.FirstName,
+            //             LastName = r.LastName,
+            //             BirthDate = r.BirthDate,
+            //             HireDate = r.HireDate,
+            //             Gender = r.Gender,
+            //             Salary = r.Salary,
+            //             Title = r.Title,
+            //             DeptName = r.DeptName,
+            //             DeptNo = r.DeptNo,
+            //             ManagerFirstName = r.ManagerFirstName,
+            //             ManagerLastName = r.ManagerLastName,
+            //             ManagerEmpNo = r.ManagerEmpNo
+            //         };
+
+            // return await query.ToListAsync();
         }
 
-        public async Task<VwEmpDetails> GetAsync(int empNo)
+        public async Task<VwEmpDetails> GetAsync(string id)
         {
-            // IQueryable<EmployeeDetail> query =
-            //     from e in _context.Employees
-            //         .Where(i => i.EmpNo == empNo)
-            //     from de in _context.DeptEmp
-            //         .Where(i => i.EmpNo == e.EmpNo)
-            //         .OrderByDescending(i => i.ToDate).Take(1)
-            //     join d in _context.Departments
-            //     on de.DeptNo equals d.DeptNo
-            //     from dm in _context.DeptManager
-            //         .Where(i => i.DeptNo == d.DeptNo)
-            //         .OrderByDescending(i => i.ToDate).Take(1)
-            //     join emd in _context.Employees
-            //     on dm.EmpNo equals emd.EmpNo
-            //     from t in _context.Titles
-            //         .Where(i => i.EmpNo == e.EmpNo)
-            //         .OrderByDescending(i => i.ToDate).Take(1)
-            //     from s in _context.Salaries
-            //         .Where(i => i.EmpNo == e.EmpNo)
-            //         .OrderByDescending(i => i.ToDate).Take(1)
-            //     select new EmployeeDetail {
-            //         EmpNo = e.EmpNo,
-            //         BirthDate = e.BirthDate,
-            //         FirstName = e.FirstName,
-            //         LastName = e.LastName,
-            //         Gender = e.Gender,
-            //         HireDate = e.HireDate,
-            //         DeptNo = d.DeptNo,
-            //         DeptName = d.DeptName,
-            //         ManagerEmpNo = emd.EmpNo,
-            //         ManagerFirstName = emd.FirstName, 
-            //         ManagerLastName = emd.LastName,
-            //         Salary = s.Salary,
-            //         Title = t.Title
-            //     };
-
-
-            // Employees employee = await _context.Employees
-            //     .Where(i => i.EmpNo == empNo)
-            //     .FirstOrDefaultAsync();
-            
-            // DeptEmp deptEmp = await _context.DeptEmp
-            //         .Where(i => i.EmpNo == empNo)
-            //         .OrderByDescending(i => i.ToDate)
-            //         .FirstOrDefaultAsync();
-
-            // Salaries salary = await _context.Salaries
-            //         .Where(i => i.EmpNo == empNo)
-            //         .OrderByDescending(i => i.ToDate)
-            //         .FirstOrDefaultAsync();
-
-            // Titles title = await _context.Titles
-            //         .Where(i => i.EmpNo == empNo)
-            //         .OrderByDescending(i => i.ToDate)
-            //         .FirstOrDefaultAsync();
-
-            // Departments department = await _context.Departments
-            //         .Where(i => i.DeptNo == deptEmp.DeptNo)
-            //         .FirstOrDefaultAsync();
-
-            // DeptManager deptManager = await _context.DeptManager
-            //     .Where(i => i.DeptNo == department.DeptNo)
-            //     .FirstOrDefaultAsync();
-
-            // Employees manager = await _context.Employees
-            //     .Where(i => i.EmpNo == deptManager.EmpNo)
-            //     .FirstOrDefaultAsync();
-
-            // EmployeeDetail employeeDetail = new EmployeeDetail {
-            //     EmpNo = employee.EmpNo,
-            //     BirthDate = employee.BirthDate,
-            //     FirstName = employee.FirstName,
-            //     LastName = employee.LastName,
-            //     Gender = employee.Gender,
-            //     HireDate = employee.HireDate,
-            //     DeptNo = department.DeptNo,
-            //     DeptName = department.DeptName,
-            //     ManagerEmpNo = manager.EmpNo,
-            //     ManagerFirstName = manager.FirstName,
-            //     ManagerLastName = manager.LastName,
-            //     Salary = salary.Salary,
-            //     Title = title.Title
-            // };
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwEmpDetails>(null);
 
             IQueryable<VwEmpDetails> query = _context.VwEmpDetails
                 .Where(i => i.EmpNo == empNo);
@@ -116,43 +73,50 @@ namespace EMP.DataAccess.Repos
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<VwEmpDetails> PostAsync(VwEmpDetails employeeDetailCreateRequest)
+        public async Task<VwEmpDetails> PutAsync(string id, VwEmpDetails updateRequest)
+        {
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwEmpDetails>(null);
+
+            Employees employee = await _context.Employees.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            VwSalariesCurrent salary = await _context.VwSalariesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            VwTitlesCurrent title = await _context.VwTitlesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            VwDeptEmpCurrent deptEmp = await _context.VwDeptEmpCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+
+            if (title.Title != updateRequest.Title) {
+                throw new NotImplementedException();
+            }
+
+            if (salary.Salary != updateRequest.Salary) {
+                throw new NotImplementedException();
+            }
+
+            if (deptEmp.DeptNo != updateRequest.DeptNo) {
+                throw new NotImplementedException();
+            }
+
+            if (employeeBasicInfoChanged(employee, updateRequest)) {
+                employee.BirthDate = updateRequest.BirthDate;
+                employee.FirstName = updateRequest.FirstName;
+                employee.LastName = updateRequest.LastName;
+                employee.Gender = updateRequest.Gender;
+                employee.HireDate = updateRequest.HireDate;
+
+                _context.Entry(employee).State = EntityState.Modified;
+            }
+
+            await _context.SaveChangesAsync();
+            return updateRequest;
+        }
+
+        public async Task<VwEmpDetails> PostAsync(VwEmpDetails createRequest)
         {
             return await TaskConstants<VwEmpDetails>.NotImplemented;
         }
 
-        public async Task<VwEmpDetails> PutAsync(int empNo, VwEmpDetails employeeDetailUpdateRequest)
+        public async Task<VwEmpDetails> DeleteAsync(string id)
         {
-            // Employees employee = await _context.Employees.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            // VwSalariesCurrent salary = await _context.VwSalariesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            // VwTitlesCurrent title = await _context.VwTitlesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            // VwDeptEmpCurrent deptEmp = await _context.VwDeptEmpCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-
-            // if (title.Title != employeeDetailUpdateRequest.Title) {
-            //     throw new NotImplementedException();
-            // }
-
-            // if (salary.Salary != employeeDetailUpdateRequest.Salary) {
-            //     throw new NotImplementedException();
-            // }
-
-            // if (deptEmp.DeptNo != employeeDetailUpdateRequest.DeptNo) {
-            //     throw new NotImplementedException();
-            // }
-
-            // if (employeeBasicInfoChanged(employee, employeeDetailUpdateRequest)) {
-            //     employee.BirthDate = employeeDetailUpdateRequest.BirthDate;
-            //     employee.FirstName = employeeDetailUpdateRequest.FirstName;
-            //     employee.LastName = employeeDetailUpdateRequest.LastName;
-            //     employee.Gender = employeeDetailUpdateRequest.Gender;
-            //     employee.HireDate = employeeDetailUpdateRequest.HireDate;
-
-            //     _context.Entry(employee).State = EntityState.Modified;
-            // }
-
-            // await _context.SaveChangesAsync();
-            // return employeeDetailUpdateRequest;
-
             return await TaskConstants<VwEmpDetails>.NotImplemented;
         }
 
@@ -167,5 +131,6 @@ namespace EMP.DataAccess.Repos
 
             return result;
         }
+
     }
 }

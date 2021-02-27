@@ -1,0 +1,19 @@
+{
+  "env": {
+    "name": "#{envName}"
+  },
+  "logging": {
+    "console": true,
+    "appInsights": true
+  },
+  "apiServer": {
+    "employees": "http://localhost:23000"
+  },
+  "oid": {
+    "clientRoot": "http://localhost:21000/",
+    "apiRoot": "http://localhost:23000/api/",
+    "stsAuthority": "http://localhost:22000/",
+    "clientId": "emp-web-client",
+    "apiId": "projects-api"
+  }
+}
