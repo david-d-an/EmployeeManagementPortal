@@ -14,7 +14,6 @@ using EMP.Sts.Quickstart.Account;
 using EMP.Sts.Security;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Serilog;
-// using Microsoft.Net.Http.Headers;
 
 namespace EMP.Sts
 {
@@ -98,16 +97,19 @@ namespace EMP.Sts
                 options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
             });
 
-            var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30));
-            services.AddSingleton<RsaKeyService>(provider => rsa);
-
             if (Environment.IsDevelopment()) {
-                builder.AddDeveloperSigningCredential();
+                // builder.AddDeveloperSigningCredential();
+                var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30), Configuration);
+                services.AddSingleton<RsaKeyService>(provider => rsa);
+                builder.AddSigningCredential(rsa.GetKey());
             }
             else {
-                // To Do: Figure out why Regualar signing doesn't work
-                // builder.AddSigningCredential(rsa.GetKey());
-                builder.AddDeveloperSigningCredential();
+                var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30), Configuration);
+                services.AddSingleton<RsaKeyService>(provider => rsa);
+                builder.AddSigningCredential(rsa.GetKey());
+
+                // services.AddIdentityServer(...).AddSigningCredential(new X509Certificate2(bytes, "password")
+                // builder.AddSigningCredential(new X509Certificate2(bytes, "password");
             }
         }
 
