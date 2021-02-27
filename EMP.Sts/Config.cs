@@ -9,6 +9,10 @@ namespace EMP.Sts
 {
     public class Config
     {
+        public static string GetRsaKeyLocation(IConfiguration cfg) {
+            return cfg["RsaKeyLocation"];
+        }
+
         public static IEnumerable<ApiResource> GetApiResources(IConfiguration cfg, ILogger<Startup> logger)
         {
             var apiResource = new ApiResource(cfg["ApiId"], cfg["ApiName"]);
@@ -27,15 +31,13 @@ namespace EMP.Sts
             return section;
         }
 
-        public static int GetCookieExpirationByMinute(IConfiguration cfg)
-        {
+        public static int GetCookieExpirationByMinute(IConfiguration cfg) {
             int cookieExpiration = 0;
             int.TryParse(cfg["CookieExpirationByMinute"], out cookieExpiration);
             return cookieExpiration;
         }
 
-        public static IEnumerable<Client> GetClients(IConfiguration cfg, ILogger<Startup> logger)
-        {
+        public static IEnumerable<Client> GetClients(IConfiguration cfg, ILogger<Startup> logger) {
             var RedirectUris = GetConfigSection(cfg, "RedirectUris");
             var PostLogoutRedirectUris = GetConfigSection(cfg, "PostLogoutRedirectUris");
             var AllowedCorsOrigins = GetConfigSection(cfg, "AllowedCorsOrigins");
@@ -116,15 +118,13 @@ namespace EMP.Sts
             return new List<Client> { client };
         }
 
-        public static string GetPublicOrigin(IConfiguration cfg, ILogger<Startup> logger)
-        {
+        public static string GetPublicOrigin(IConfiguration cfg, ILogger<Startup> logger) {
             var publicOrigin = cfg["PublicOrigin"];
             logger.LogInformation(string.Format("{0}: {1}", "PublicOrigin", publicOrigin));                    
             return publicOrigin;
         }
 
-        public static IEnumerable<IdentityResource> GetIdentityResources()
-        {
+        public static IEnumerable<IdentityResource> GetIdentityResources() {
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),

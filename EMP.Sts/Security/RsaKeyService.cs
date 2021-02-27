@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 
 /* 
     RSACryptoServiceProvider couldn't be used to make X.509 cert works on OSX.
@@ -34,15 +35,17 @@ namespace EMP.Sts.Security
         /// </summary>
         private string _file {
             get {
-                return Path.Combine(_environment.ContentRootPath, "rsakey.json");
+                return Path.Combine(_environment.ContentRootPath, Config.GetRsaKeyLocation(_cfg));
             }
         }
         private readonly IHostingEnvironment _environment;
         private readonly TimeSpan _timeSpan;
+        private readonly IConfiguration _cfg;
 
-        public RsaKeyService(IHostingEnvironment environment, TimeSpan timeSpan) {
+        public RsaKeyService(IHostingEnvironment environment, TimeSpan timeSpan, IConfiguration cfg) {
             _environment = environment;
             _timeSpan = timeSpan;
+            _cfg = cfg;
         }
 
         public bool NeedsUpdate() {
