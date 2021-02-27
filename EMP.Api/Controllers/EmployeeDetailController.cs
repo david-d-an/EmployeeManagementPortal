@@ -43,6 +43,7 @@ namespace EMP.Api.Controllers
 
         [HttpGet]
         [Authorize(Roles="System Admin")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get(
             [FromQuery] int? pageNum,
             [FromQuery] int? pageSize,
@@ -70,6 +71,7 @@ namespace EMP.Api.Controllers
 
         [HttpGet("{id}")]
         [Authorize(Roles="System Admin")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
         public async Task<ActionResult<VwEmpDetails>> Get(int id)
         {
             return await _employeeDetailRepository.GetAsync(id.ToString());

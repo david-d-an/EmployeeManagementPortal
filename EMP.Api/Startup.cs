@@ -65,6 +65,7 @@ namespace EMP.Api
                 options.RequireHttpsMetadata = false;
             });
 
+            services.AddResponseCaching();
             services.AddMvc(options => {
                 var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
@@ -157,6 +158,8 @@ namespace EMP.Api
 
             app.UseAuthorization();
 
+            app.UseResponseCaching();
+            
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
