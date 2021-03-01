@@ -1,10 +1,11 @@
-﻿// using System.Collections.Generic;
+﻿#region
+// using System.Collections.Generic;
 // using IdentityServer4;
 // using IdentityServer4.Models;
 
 // namespace EMP.Sts
 // {
-//     public class Config
+//     public class Config1
 //     {
 //         public static IEnumerable<ApiResource> GetApiResources()
 //         {
@@ -77,6 +78,7 @@
 //         }
 //     }
 // }
+#endregion
 
 
 using System.Collections.Generic;
@@ -125,35 +127,6 @@ namespace EMP.Sts
             var cookieExpiration = GetCookieExpirationByMinute(cfg);
 
             var client = new Client {
-                #region
-                // ClientId = "emp-web-client",
-                // ClientName = "emp-web-client",
-                // RequireClientSecret = false,
-                // AllowedGrantTypes = GrantTypes.Code,
-                // RequirePkce = true,
-                // AllowAccessTokensViaBrowser = true,
-                // RequireConsent = false,
-
-                // RedirectUris = { 
-                //     "http://localhost:5000/signin-callback", 
-                //     "http://localhost:5000/assets/silent-callback.html" 
-                // },
-                // PostLogoutRedirectUris = { 
-                //     "http://localhost:5000/signout-callback" 
-                // },
-                // AllowedCorsOrigins = { 
-                //     "http://localhost:5000",
-                //     "https://localhost:5001",
-                //     "http://ipv4.fiddler:5000",
-                //     "https://ipv4.fiddler:5001"
-                // },
-                // AllowedScopes =
-                // {
-                //     IdentityServerConstants.StandardScopes.OpenId,
-                //     IdentityServerConstants.StandardScopes.Profile,
-                //     "projects-api"
-                // },
-                #endregion
                 ClientId = cfg["ClientId"],
                 ClientName = cfg["ClientId"],
                 RequireClientSecret = false,
