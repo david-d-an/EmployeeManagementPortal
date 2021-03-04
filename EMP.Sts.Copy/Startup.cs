@@ -17,6 +17,7 @@ using EMP.Sts.Quickstart.Account;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Serilog;
 using EMP.Sts.Security;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace EMP.Sts
 {
@@ -81,7 +82,7 @@ namespace EMP.Sts
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
                 options.Authentication.CheckSessionCookieName = "IDS4_EMP.Sts";
-                // options.PublicOrigin = publicOrigin;
+                options.PublicOrigin = publicOrigin;
             })
             // .AddInMemoryIdentityResources(Config1.GetIdentityResources())
             // .AddInMemoryApiResources(Config1.GetApiResources())
@@ -131,9 +132,18 @@ namespace EMP.Sts
 
             app.UseStaticFiles();
 
-            app.UseIdentityServer();
-
             app.UseCors(EmpWebOrigins);
+
+            // var fordwardedHeaderOptions = new ForwardedHeadersOptions {
+            //     ForwardedHeaders = 
+            //         ForwardedHeaders.XForwardedFor | 
+            //         ForwardedHeaders.XForwardedProto
+            // };
+            // fordwardedHeaderOptions.KnownNetworks.Clear();
+            // fordwardedHeaderOptions.KnownProxies.Clear();
+            // app.UseForwardedHeaders(fordwardedHeaderOptions);
+
+            app.UseIdentityServer();
 
             app.UseHttpsRedirection();
             app.UseRouting();
