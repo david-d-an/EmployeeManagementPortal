@@ -7,12 +7,12 @@
     "appInsights": true
   },
   "apiServer": {
-    "employees": "http://localhost:23000"
+    "employees": "https://localhost:23000"
   },
   "oid": {
-    "clientRoot": "http://localhost:21000/",
-    "apiRoot": "http://localhost:23000/api/",
-    "stsAuthority": "http://localhost:22000/",
+    "clientRoot": "https://localhost:21000/",
+    "apiRoot": "https://localhost:23000/api/",
+    "stsAuthority": "https://localhost:22000/",
     "clientId": "emp-web-client",
     "apiId": "projects-api"
   }
