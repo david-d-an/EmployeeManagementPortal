@@ -4,14 +4,14 @@
 
 # Test publish version
 > cd bin/Release/netcoreapp3.1/publish/
-> dotnet EMP.Api.dll --urls=http://localhost:23001
+> dotnet EMP.Api.dll --urls=https://localhost:23001
 
 # Copy to Nginx target folder
 > cp -r /Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Api/bin/Release/netcoreapp3.1/publish/* /usr/local/var/www/EMP.Api
 
 # Start Dotnet service
 > cd /usr/local/var/www/EMP.Api
-> dotnet /usr/local/var/www/EMP.Api/EMP.Api.dll --urls=http://localhost:23001
+> dotnet /usr/local/var/www/EMP.Api/EMP.Api.dll --urls=https://localhost:23001
 # Better way to start Dotnet service
 > cd /Users/david.d.an/Library/LaunchAgents
 > launchctl unload /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Api.plist

@@ -25,7 +25,7 @@
     <array>
         <string>/usr/local/share/dotnet/dotnet</string>
         <string>EMP.Api.dll</string>
-        <string>--urls=http://localhost:23001</string>
+        <string>--urls=https://localhost:23001</string>
     </array>
 
   </dict>

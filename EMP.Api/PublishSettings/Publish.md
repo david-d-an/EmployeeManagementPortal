@@ -24,7 +24,7 @@
 #### Start Dotnet service
 ```sh
 > cd /usr/local/var/www/EMP.Api
-> dotnet /usr/local/var/www/EMP.Api/EMP.Api.dll --urls=http://localhost:23001
+> dotnet /usr/local/var/www/EMP.Api/EMP.Api.dll --urls=https://localhost:23001
 ```
 
 #### Better way to start Dotnet service
