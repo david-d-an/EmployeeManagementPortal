@@ -107,7 +107,6 @@ namespace EMP.Sts
                 var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30), Configuration);
                 services.AddSingleton<RsaKeyService>(provider => rsa);
                 builder.AddSigningCredential(rsa.GetKey());
-
                 // services.AddIdentityServer(...).AddSigningCredential(new X509Certificate2(bytes, "password")
                 // builder.AddSigningCredential(new X509Certificate2(bytes, "password");
             }
@@ -115,13 +114,10 @@ namespace EMP.Sts
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-            }
-            else
-            {
+            } else {
                 app.UseExceptionHandler("/Home/Error");
             }
 
