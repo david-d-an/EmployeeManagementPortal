@@ -96,13 +96,11 @@ namespace EMP.Sts
             return cfg["RsaKeyLocation"];
         }
 
-        public static IEnumerable<ApiResource> GetApiResources(IConfiguration cfg, ILogger<Startup> logger)
+        public static IEnumerable<ApiResource> GetApiResources(IConfiguration cfg)
         {
             var apiResource = new ApiResource(cfg["ApiId"], cfg["ApiName"]);
-            logger.LogInformation(string.Format("{0}: {1}", "API Name", apiResource.Name));
-            logger.LogInformation(string.Format("{0}: {1}", "API DisplayName", apiResource.DisplayName));
-
-            // new ApiResource("projects-api", "Projects API")
+            // logger.LogInformation(string.Format("{0}: {1}", "API Name", apiResource.Name));
+            // logger.LogInformation(string.Format("{0}: {1}", "API DisplayName", apiResource.DisplayName));
             return new List<ApiResource> { apiResource };
         }
 
@@ -120,7 +118,7 @@ namespace EMP.Sts
             return cookieExpiration;
         }
 
-        public static IEnumerable<Client> GetClients(IConfiguration cfg, ILogger<Startup> logger) {
+        public static IEnumerable<Client> GetClients(IConfiguration cfg) {
             var RedirectUris = GetConfigSection(cfg, "RedirectUris");
             var PostLogoutRedirectUris = GetConfigSection(cfg, "PostLogoutRedirectUris");
             var AllowedCorsOrigins = GetConfigSection(cfg, "AllowedCorsOrigins");
@@ -137,8 +135,7 @@ namespace EMP.Sts
                 RedirectUris = GetConfigSection(cfg, "RedirectUris"),
                 PostLogoutRedirectUris = GetConfigSection(cfg, "PostLogoutRedirectUris"),
                 AllowedCorsOrigins = GetConfigSection(cfg, "AllowedCorsOrigins"),
-                AllowedScopes =
-                {
+                AllowedScopes = {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     cfg["ApiId"]
@@ -155,32 +152,31 @@ namespace EMP.Sts
                 AccessTokenLifetime = 60 * cookieExpiration + 10,
             };
 
-            logger.LogInformation(string.Format("{0}: {1}", "ClientId", client.ClientId));
-            logger.LogInformation(string.Format("{0}: {1}", "ClientName", client.ClientName));
-            logger.LogInformation(string.Format("{0}: {1}", "RequirePkce", client.RequirePkce));
+            // logger.LogInformation(string.Format("{0}: {1}", "ClientId", client.ClientId));
+            // logger.LogInformation(string.Format("{0}: {1}", "ClientName", client.ClientName));
+            // logger.LogInformation(string.Format("{0}: {1}", "RequirePkce", client.RequirePkce));
 
-            foreach(var s in client.RedirectUris) {
-                logger.LogInformation(string.Format("{0}: {1}", "RedirectUris", s));
-            }
-            foreach(var s in client.PostLogoutRedirectUris) {
-                logger.LogInformation(string.Format("{0}: {1}", "PostLogoutRedirectUris", s));                
-            }
-            foreach(var s in client.AllowedCorsOrigins) {
-                logger.LogInformation(string.Format("{0}: {1}", "AllowedCorsOrigins", s));                    
-            }
+            // foreach(var s in client.RedirectUris) {
+            //     logger.LogInformation(string.Format("{0}: {1}", "RedirectUris", s));
+            // }
+            // foreach(var s in client.PostLogoutRedirectUris) {
+            //     logger.LogInformation(string.Format("{0}: {1}", "PostLogoutRedirectUris", s));                
+            // }
+            // foreach(var s in client.AllowedCorsOrigins) {
+            //     logger.LogInformation(string.Format("{0}: {1}", "AllowedCorsOrigins", s));                    
+            // }
 
             return new List<Client> { client };
         }
 
-        public static string GetPublicOrigin(IConfiguration cfg, ILogger<Startup> logger) {
+        public static string GetPublicOrigin(IConfiguration cfg) {
             var publicOrigin = cfg["PublicOrigin"];
-            logger.LogInformation(string.Format("{0}: {1}", "PublicOrigin", publicOrigin));                    
+            // logger.LogInformation(string.Format("{0}: {1}", "PublicOrigin", publicOrigin));                    
             return publicOrigin;
         }
 
         public static IEnumerable<IdentityResource> GetIdentityResources() {
-            return new List<IdentityResource>
-            {
+            return new List<IdentityResource> {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
             };
