@@ -11,13 +11,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using IdentityServer4.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
+using Serilog;
 using EMP.Sts.Data;
 using EMP.Sts.Models;
 using EMP.Sts.Quickstart.Account;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Serilog;
 using EMP.Sts.Security;
-using Microsoft.AspNetCore.HttpOverrides;
+using EMP.Common.Security;
 
 namespace EMP.Sts
 {
