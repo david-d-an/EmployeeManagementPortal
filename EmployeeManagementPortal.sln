@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Common", "EMP.Common\EM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Sts", "EMP.Sts\EMP.Sts.csproj", "{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EMP.Sts.copy", "EMP.Sts.Copy\EMP.Sts.copy.csproj", "{16796E0F-345E-4724-B9D7-318BB5B21449}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -142,5 +144,17 @@ Global
 		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x64.Build.0 = Release|Any CPU
 		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x86.ActiveCfg = Release|Any CPU
 		{D7519EB8-65EC-4B30-BCE9-23C50E3376DA}.Release|x86.Build.0 = Release|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Debug|x64.Build.0 = Debug|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Debug|x86.Build.0 = Debug|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Release|x64.ActiveCfg = Release|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Release|x64.Build.0 = Release|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Release|x86.ActiveCfg = Release|Any CPU
+		{16796E0F-345E-4724-B9D7-318BB5B21449}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
