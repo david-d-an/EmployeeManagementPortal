@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting ;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Net.Http.Headers;
 using IdentityServer4.Services;
 using Serilog;
 using EMP.Sts.Data;
@@ -26,9 +23,8 @@ namespace EMP.Sts
 {
     public class Startup
     {
-        private readonly ILogger<Startup> _logger;
+        private IWebHostEnvironment _env;
         public IConfiguration Configuration { get; }
-        public IHostingEnvironment Environment { get; }
         private readonly string EmpWebOrigins = "EMP.Web";
         private IEnumerable<IdentityResource> _identityConfig;
         private IEnumerable<ApiResource> _apiConfig;
@@ -36,11 +32,10 @@ namespace EMP.Sts
         private string _publicOrigin;
         private int _cookieExpiration;
 
-        public Startup(ILogger<Startup> logger, IConfiguration configuration, IHostingEnvironment environment)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
-            _logger = logger;
+            _env = env;
             Configuration = configuration;
-            Environment = environment;
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
@@ -106,14 +101,14 @@ namespace EMP.Sts
                 options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
             });
 
-            if (Environment.IsDevelopment()) {
+            if (_env.IsDevelopment()) {
                 // builder.AddDeveloperSigningCredential();
-                var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30), Configuration);
+                var rsa = new RsaKeyService(_env, TimeSpan.FromDays(30), Configuration);
                 services.AddSingleton<RsaKeyService>(provider => rsa);
                 builder.AddSigningCredential(rsa.GetKey());
             }
             else {
-                var rsa = new RsaKeyService(Environment, TimeSpan.FromDays(30), Configuration);
+                var rsa = new RsaKeyService(_env, TimeSpan.FromDays(30), Configuration);
                 services.AddSingleton<RsaKeyService>(provider => rsa);
                 builder.AddSigningCredential(rsa.GetKey());
 
@@ -122,8 +117,14 @@ namespace EMP.Sts
             }
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, ILogger<Startup> logger)
         {
+            // logger.LogInformation(string.Format("{0}: {1}", "Test Message for", "INFORMATION"));
+            // logger.LogDebug(string.Format("{0}: {1}", "Test Message for", "DEBUG"));
+            // logger.LogError(string.Format("{0}: {1}", "Test Message for", "ERROR"));
+            // logger.LogWarning(string.Format("{0}: {1}", "Test Message for", "WARNING"));
+            // logger.LogCritical(string.Format("{0}: {1}", "Test Message for", "CRITICAL"));
+            
             foreach (IdentityResource ic in _identityConfig) {
                 logger.LogInformation(string.Format("{0}: {1}", "Identity Resource Name", ic.Name));
                 logger.LogInformation(string.Format("{0}: {1}", "Identity Resource DisplayName", ic.DisplayName));
@@ -149,13 +150,10 @@ namespace EMP.Sts
                 }
             }
             
-            if (env.IsDevelopment())
-            {
+            if (_env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
-            }
-            else
-            {
+            } else {
                 app.UseExceptionHandler("/Home/Error");
             }
 
