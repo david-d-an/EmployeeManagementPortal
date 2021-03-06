@@ -1,6 +1,21 @@
 ﻿body {
   margin-top: 65px;
 }
+
+.bg-dark {
+  background-color: #343a40;
+}
+
+.header-logo {
+  margin-right: 0.5rem;
+}
+.header-text {
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+  letter-spacing: normal;
+}
+.navbar-dark {
+  color: rgba(255,255,255,.5);
+}
 .navbar-header {
   position: relative;
   top: -4px;
@@ -79,4 +94,18 @@
 }
 .grants .grant li:last-child:after {
   content: '';
+}
+
+div.navbar {
+  padding-top: 4px;
+  height: 52px;
+  border-width: 0px;
+}
+
+span.navbar-brand {
+  padding-top: 16px;
+}
+
+img.header-logo {
+  margin-left: 1px;
 }
