@@ -26,6 +26,7 @@
         <string>/usr/local/share/dotnet/dotnet</string>
         <string>EMP.Sts.dll</string>
         <string>--urls=https://localhost:22001</string>
+        <string>--environment "Staging"</string>
     </array>
 
   </dict>
