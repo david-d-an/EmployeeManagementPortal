@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using EMP.Common.Security;
 
 namespace EMP.DbScaffold.Models.Employees
 {
@@ -42,7 +43,7 @@ namespace EMP.DbScaffold.Models.Employees
             if (!optionsBuilder.IsConfigured)
             {
                 string mySqlEmployeesConnStr = 
-                    "0nmBbjjPY3PGbA6j+7Ul0Od1V+u8TMv8E1oQrIvrJTqG8JHkQaQ40CGThX5pKBsAVir1FefOpPPZpgsFZLA6eO8fRum5wnZkcxGWw9aq0ovHRM0OhKYf1GS0YK2slp1jMaKpA0HDylDsswiZ3CByr0cUGPwqSEn04hJAd3FXfbWPpGlUZ4zQz0MO4avuEA1Z",
+                    "0nmBbjjPY3PGbA6j+7Ul0Od1V+u8TMv8E1oQrIvrJTqG8JHkQaQ40CGThX5pKBsAVir1FefOpPPZpgsFZLA6eO8fRum5wnZkcxGWw9aq0ovHRM0OhKYf1GS0YK2slp1jMaKpA0HDylDsswiZ3CByr0cUGPwqSEn04hJAd3FXfbWPpGlUZ4zQz0MO4avuEA1Z";
                 string connStrMySql = AesCryptoUtil.Decrypt(mySqlEmployeesConnStr);
                 optionsBuilder.UseMySQL(connStrMySql);
             }
