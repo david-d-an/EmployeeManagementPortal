@@ -17,17 +17,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using EMP.Api.Config;
 using EMP.Data.Models.Sts;
-// using System.Collections.Generic;
-// using System.Threading.Tasks;
-// using Microsoft.AspNetCore.HttpsPolicy;
-// using Microsoft.AspNetCore.Mvc;
-// using Microsoft.Net.Http.Headers;
 
 namespace EMP.Api
 {
     public class Startup
     {
-        // private readonly ILogger<Startup> _logger;
         private SecuritySettings securitySettings;
         private readonly string EmpWebOrigins = "EMP.Web";
 
@@ -74,10 +68,6 @@ namespace EMP.Api
             });
 
             services.AddControllers();
-
-            // var a = AesCryptoUtil.GetStringSha256Hash("Soil9303");
-            // Before Hash: Soil9303
-            // After Hash: 6D2450AD484CF4C9F99007D0C4D0E2D694F110BB580D74062E3A3A79F33E432C
 
             // Make MySql Connection Service
             var encConnStrMySqlEmployees = Configuration.GetConnectionString("MySqlEmployees(Azure)");
