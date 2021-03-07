@@ -31,7 +31,7 @@ namespace EMP.DataAccess.Context
         //     if (!optionsBuilder.IsConfigured)
         //     {
         //         #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-        //         optionsBuilder.UseMySQL("server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;");
+        //         optionsBuilder.UseMySQL("server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password={password};port=3306;database=sts;");
         //     }
         // }
 

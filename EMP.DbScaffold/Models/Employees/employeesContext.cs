@@ -41,8 +41,10 @@ namespace EMP.DbScaffold.Models.Employees
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySQL(
-                    "server=migrationtest6921.mysql.database.azure.com;uid=appuser@migrationtest6921;password=Soil9303;port=3306;database=employees;");
+                string mySqlEmployeesConnStr = 
+                    "0nmBbjjPY3PGbA6j+7Ul0Od1V+u8TMv8E1oQrIvrJTqG8JHkQaQ40CGThX5pKBsAVir1FefOpPPZpgsFZLA6eO8fRum5wnZkcxGWw9aq0ovHRM0OhKYf1GS0YK2slp1jMaKpA0HDylDsswiZ3CByr0cUGPwqSEn04hJAd3FXfbWPpGlUZ4zQz0MO4avuEA1Z",
+                string connStrMySql = AesCryptoUtil.Decrypt(mySqlEmployeesConnStr);
+                optionsBuilder.UseMySQL(connStrMySql);
             }
         }
 
