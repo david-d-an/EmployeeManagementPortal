@@ -9,12 +9,12 @@ launchctl unload /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Web.plist
 echo Building release version..........
 echo
 cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Web
-dotnet publish -c Release
+dotnet publish -c Staging
 
 # Copy to Nginx target folder
 echo Pushing code to app folder..........
 echo
-cp -r ~/Development/Dotnet/EmployeeManagementPortal/EMP.Web/bin/Release/netcoreapp3.1/publish/* \
+cp -r ~/Development/Dotnet/EmployeeManagementPortal/EMP.Web/bin/Staging/netcoreapp3.1/publish/* \
 /usr/local/var/www/EMP.Web
 
 # Start server
