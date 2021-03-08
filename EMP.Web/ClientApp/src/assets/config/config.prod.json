@@ -1,18 +1,18 @@
 {
   "env": {
-    "name": "#{envName}"
+    "name": "PROD"
   },
   "logging": {
     "console": true,
     "appInsights": true
   },
   "apiServer": {
-    "employees": "https://localhost:23000"
+    "employees": "https://empapi6921.azurewebsites.net"
   },
   "oid": {
-    "clientRoot": "https://localhost:21000/",
-    "apiRoot": "https://localhost:23000/api/",
-    "stsAuthority": "https://localhost:22000/",
+    "clientRoot": "https://empweb6921.azurewebsites.net/",
+    "apiRoot": "https://empapi6921.azurewebsites.net/api/",
+    "stsAuthority": "https://empsts6921.azurewebsites.net/",
     "clientId": "emp-web-client",
     "apiId": "projects-api"
   }
