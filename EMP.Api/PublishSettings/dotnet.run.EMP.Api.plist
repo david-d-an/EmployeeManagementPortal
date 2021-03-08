@@ -25,8 +25,8 @@
     <array>
         <string>/usr/local/share/dotnet/dotnet</string>
         <string>EMP.Api.dll</string>
+        <string>--environment=Staging</string>
         <string>--urls=https://localhost:23001</string>
-        <string>--environment "Staging"</string>
     </array>
 
   </dict>
