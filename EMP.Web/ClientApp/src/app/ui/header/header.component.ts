@@ -1,5 +1,7 @@
 import { AuthService } from 'src/app/user/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +21,8 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(
+    private location: Location,
+    private router: Router,
     private authService: AuthService) {
     this.isLoggedIn = false;
   }
@@ -62,6 +66,11 @@ export class HeaderComponent implements OnInit {
     this.authService.loginChanged.subscribe(loggedIn => {
       console.log(`loggedIn set by obs: ${loggedIn}`);
       this.setLoggedIn(loggedIn);
+      if (!loggedIn) {
+        if (this.location.path() !== '/home') {
+          this.router.navigate(['/home']);
+        }
+      }
     });
 
     if (!this.isLoggedIn) {
@@ -98,5 +107,8 @@ export class HeaderComponent implements OnInit {
     this.authService.logout();
     // sessionStorage.removeItem('authPreChecked');
     sessionStorage.removeItem('forceLogout_EMP.Web');
+    if (this.location.path() !== '/home') {
+      this.router.navigate(['/home']);
+    }
   }
 }

@@ -70,6 +70,13 @@ namespace IdentityServer4.Quickstart.UI
         [HttpGet]
         public async Task<IActionResult> Login(string returnUrl)
         {
+            var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+            var actionType = context?.Parameters["actionType"];
+            if (actionType == "precheck") {
+                var redirect_uri = context.Parameters["originalUri"];
+                return Redirect(redirect_uri);
+           }
+
             // build a model so we know what to show on the login page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
