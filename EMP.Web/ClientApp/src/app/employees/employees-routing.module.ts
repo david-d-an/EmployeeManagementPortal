@@ -1,3 +1,4 @@
+import { EmployeeCreateComponent } from './create/employee-create.component';
 import { NgModule } from '@angular/core';
 // import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
@@ -11,6 +12,12 @@ const routes: Routes = [
     path: '',
     component: EmployeeListComponent,
     data: { pageTitle: 'Employees List' },
+    // canActivate: [AuthGuard]
+  },
+  {
+    path: 'create',
+    component: EmployeeCreateComponent,
+    // resolve: { productResolved: ProductResolver },
     // canActivate: [AuthGuard]
   },
   {

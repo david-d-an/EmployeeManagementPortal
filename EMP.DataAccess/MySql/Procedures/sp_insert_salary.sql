@@ -8,7 +8,7 @@ DELIMITER $$
 
 CREATE PROCEDURE employees.sp_insert_salary(
 	in empNo int, 
-	in salary int
+	in salary_new int
 )
 BEGIN
 -- 	10001	d005
@@ -37,7 +37,7 @@ BEGIN
 		)
 		VALUES(
 			empNo, 
-			salary, 
+			salary_new, 
 			CURDATE(), 
 			'9999-01-01'
 		);
@@ -50,7 +50,7 @@ BEGIN
 		)
 		VALUES(
 			empNo,
-			salary,
+			salary_new,
 			CURDATE(),
 			'9999-01-01'
 		);
@@ -64,7 +64,7 @@ BEGIN
         WHERE
 			s.emp_no = empNo;
 
-	ELSEIF salary != @salary THEN
+	ELSEIF salary_new != @salary THEN
 		UPDATE salaries s
 		SET
 			s.to_Date = CURDATE() 
@@ -82,14 +82,14 @@ BEGIN
 		)
 		VALUES(
 			empNo, 
-			salary, 
+			salary_new, 
 			CURDATE(), 
 			'9999-01-01'
 		);
 	
 		UPDATE salaries_current s
 		SET
-			s.salary = salary,
+			s.salary = salary_new,
 			s.from_date = CURDATE(),
 			s.to_date = '9999-01-01'
 		WHERE

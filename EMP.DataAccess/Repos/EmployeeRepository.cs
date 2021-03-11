@@ -79,7 +79,12 @@ namespace EMP.DataAccess.Repos
 
         public async Task<Employees> PostAsync(Employees createRequest)
         {
-            return await TaskConstants<Employees>.NotImplemented;
+            // TO DO: Need to finish this to complete EmployeeDetail/POST
+            // return await TaskConstants<Employees>.NotImplemented;
+
+            _context.Entry(createRequest).State = EntityState.Added;
+            await _context.SaveChangesAsync();
+            return createRequest;
         }
 
         public async Task<Employees> DeleteAsync(string id)

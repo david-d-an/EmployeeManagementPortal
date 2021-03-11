@@ -77,3 +77,7 @@ img.company-logo {
 li.app-title {
   margin-right: 2em;
 }
+
+div.card-container {
+  margin-bottom: 80px;
+}

@@ -8,6 +8,11 @@ import { AppConfig } from 'src/app/app.config';
   providedIn: 'root'
 })
 export class GenderService {
+  genders = {
+    'f': 'Female',
+    'm': 'Male'
+  };
+
   constructor(private http: HttpClient) { }
 
   getSvcUrlForAll() {
@@ -20,6 +25,14 @@ export class GenderService {
         // tap(data => console.log(JSON.stringify(data))),
         catchError(this.handleError)
       );
+  }
+
+  getFulllGenderName(g: string): string {
+    const gen = this.genders[g?.toLowerCase()];
+    if (!gen) {
+      return g;
+    }
+    return gen;
   }
 
   private handleError(err: any): Observable<never> {

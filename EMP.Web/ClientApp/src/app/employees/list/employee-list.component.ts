@@ -67,19 +67,24 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
     //   this.loadData();
     // }
 
-    loadData(): void {
+    refreshTable(): void {
+      this.loadData(true);
+      // this.filterModalComponent.updateFilterTags();
+    }
+
+    loadData(refresh?: boolean): void {
       this.spinnerService.startLoading();
-      this.employeeService.getEmployeeDetails(this.filterModalComponent.currentFilter)
+      this.employeeService.getEmployeeDetails(this.filterModalComponent.currentFilter, refresh)
         // .pipe(
         //   tap(data => console.log(data.length))
         // )
         .subscribe({
           next: data => {
             this.rows = data;
-              this.spinnerService.stopLoading();
+            this.spinnerService.stopLoading();
           },
           error: error => {
-              this.spinnerService.stopLoading();
+            this.spinnerService.stopLoading();
             console.log(error);
           }
         });

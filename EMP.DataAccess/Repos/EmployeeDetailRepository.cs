@@ -67,6 +67,11 @@ namespace EMP.DataAccess.Repos
             if (!int.TryParse(id, out empNo))
                 return await Task.FromResult<VwEmpDetails>(null);
 
+            IQueryable<VwEmpDetails> pquery = _context.VwEmpDetails
+                .Where(i => i.EmpNo == empNo);
+            var r = pquery.FirstOrDefault();
+
+
             IQueryable<VwEmpDetails> query = _context.VwEmpDetails
                 .Where(i => i.EmpNo == empNo);
 

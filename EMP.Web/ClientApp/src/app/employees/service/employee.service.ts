@@ -26,21 +26,25 @@ export class EmployeeService {
     private http: HttpClient,
     private authService: AuthService) { }
 
-  getSvcUrlForAll(filter: EmployeeFilter) {
+  getSvcUrlForAll(filter: EmployeeFilter, refresh?: boolean) {
     return this.urlForAll +
       `&firstName=${filter.firstName}` +
       `&lastName=${filter.lastName}` +
       `&deptName=${filter.deptName}` +
       `&title=${filter.title}` +
       `&salaryMin=${filter.salaryMin}` +
-      `&salaryMax=${filter.salaryMax}`;
+      `&salaryMax=${filter.salaryMax}` +
+      (refresh ? `&currTime=${Date.now()}` : '');
   }
 
-  getSvcUrlForOne(empNo: string) {
+  getSvcUrlForOne(empNo?: string) {
+    if (!empNo) {
+      return this.urlForOne ;
+    }
     return this.urlForOne + `/${empNo}`;
   }
 
-  getEmployeeDetails(filter: EmployeeFilter): Observable<EmployeeDetail[]> {
+  getEmployeeDetails(filter: EmployeeFilter, refresh?: boolean): Observable<EmployeeDetail[]> {
     // return this.http.get<EmployeeDetail[]>(this.getSvcUrlForAll(filter))
     //   .pipe(
     //     // tap(data => console.log(JSON.stringify(data))),
@@ -48,7 +52,7 @@ export class EmployeeService {
     //   );
     return from(this.authService.getAccessToken().then(token => {
       return this.http
-        .get<EmployeeDetail[]>(this.getSvcUrlForAll(filter))
+        .get<EmployeeDetail[]>(this.getSvcUrlForAll(filter, refresh))
         .pipe(
           // tap(data => console.log(JSON.stringify(data))),
           catchError(this.handleError)
@@ -72,11 +76,28 @@ export class EmployeeService {
     // console.log(`PUTing to Url: ${this.getSvcUrlForOne(empNo)}`);
     // console.log(JSON.stringify(updatedEmployeeData));
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    console.log(`PUTing in Service: ${JSON.stringify(updatedEmployeeData)}`);
     return this.http
       .put(this.getSvcUrlForOne(empNo),
-        JSON.stringify(updatedEmployeeData), { headers: headers} )
+        updatedEmployeeData, { headers: headers} )
       .pipe(
         tap(data => console.log(`updating: ${data}`)),
+        catchError(this.handleError)
+      );
+  }
+
+  postOneEmployeeDetails(empNo: string, employeeDataPayload: any): Observable<any> {
+    // console.log(`POSTing to Url: ${this.getSvcUrlForOne()}`);
+    // console.log(JSON.stringify(updatedEmployeeData));
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+    console.log(`POSTing in Service: ${JSON.stringify(employeeDataPayload)}`);
+    return this.http
+      .post(this.getSvcUrlForOne(),
+        employeeDataPayload, { headers: headers} )
+      .pipe(
+        tap(data => console.log(`creating: ${data}`)),
         catchError(this.handleError)
       );
   }
