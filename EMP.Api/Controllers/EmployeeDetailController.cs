@@ -41,7 +41,6 @@ namespace EMP.Api.Controllers
             this._titleRepository = titleRepository;
         }
 
-        [AllowAnonymous]
         [HttpGet]
         [Authorize(Roles="System Admin")]
         [ResponseCache(

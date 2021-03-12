@@ -58,8 +58,10 @@ export class HeaderComponent implements OnInit {
     window.addEventListener('storage', (event) => {
       if (event.key === 'forceLogout_EMP.Web_Shared' && !!event.newValue) {
         sessionStorage['forceLogout_EMP.Web'] = true;
+        sessionStorage.removeItem('forceLogin_EMP.Web');
       } else if (event.key === 'forceLogin_EMP.Web_Shared' && !!event.newValue) {
         sessionStorage['forceLogin_EMP.Web'] = true;
+        sessionStorage.removeItem('forceLogout_EMP.Web');
       }
     });
 
@@ -67,9 +69,14 @@ export class HeaderComponent implements OnInit {
       console.log(`loggedIn set by obs: ${loggedIn}`);
       this.setLoggedIn(loggedIn);
       if (!loggedIn) {
-        if (this.location.path() !== '/home') {
-          this.router.navigate(['/home']);
+        for (const key in sessionStorage) {
+          // 'oidc.user:https://localhost:5500/:emp-web-client'
+          if (key.indexOf('oidc.user:') !== -1
+          && key.indexOf(':emp-web-client') !== -1) {
+            sessionStorage.removeItem(key);
+          }
         }
+        this.router.navigate(['/home']);
       }
     });
 
@@ -104,9 +111,9 @@ export class HeaderComponent implements OnInit {
 
   logOutThisTabOnly(): void {
     console.log('logOutThisTabOnly');
-    this.authService.logout();
-    // sessionStorage.removeItem('authPreChecked');
     sessionStorage.removeItem('forceLogout_EMP.Web');
+    // sessionStorage.removeItem('authPreChecked');
+    this.authService.logout();
     if (this.location.path() !== '/home') {
       this.router.navigate(['/home']);
     }
