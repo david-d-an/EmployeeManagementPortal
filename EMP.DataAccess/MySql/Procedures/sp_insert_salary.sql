@@ -11,20 +11,21 @@ CREATE PROCEDURE employees.sp_insert_salary(
 	in salary_new int
 )
 BEGIN
--- 	10001	d005
 	
 	SELECT
+		@id := id,
 		@salary := salary, 
 		@from_Date := from_date, 
 		@to_Date := to_date 
-	FROM vw_salaries_current vsc
+	FROM salaries s
 	WHERE
-		vsc.emp_no = empNo;
+		s.emp_no = empNo	
+		AND s.to_date = '9999-01-01'
+	ORDER BY 
+		id desc 
+	LIMIT 1;
 
-
-	IF @salary IS NULL THEN
-		-- DELETE FROM salaries 
-        -- WHERE emp_no = empNo;
+	IF @id IS NULL THEN
 
 		DELETE FROM salaries_current 
         WHERE emp_no = empNo;

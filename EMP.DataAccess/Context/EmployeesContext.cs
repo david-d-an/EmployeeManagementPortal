@@ -60,7 +60,9 @@ namespace EMP.DataAccess.Context
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -95,7 +97,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptEmp>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_emp");
@@ -106,9 +108,16 @@ namespace EMP.DataAccess.Context
                 entity.HasIndex(e => new { e.EmpNo, e.ToDate })
                     .HasName("dept_emp_emp_no_IDX");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.DeptNo)
+                    .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
@@ -134,7 +143,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptEmpCurrent>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
+                entity.HasKey(e => e.EmpNo)
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_emp_current");
@@ -146,13 +155,15 @@ namespace EMP.DataAccess.Context
                     .HasName("dept_emp_current_emp_no_IDX")
                     .IsUnique();
 
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
+
                 entity.Property(e => e.DeptNo)
                     .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
-
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -169,7 +180,9 @@ namespace EMP.DataAccess.Context
 
                 entity.ToView("dept_emp_latest_date");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -182,17 +195,27 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<DeptManager>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_manager");
 
+                entity.HasIndex(e => e.EmpNo)
+                    .HasName("emp_no");
+
                 entity.HasIndex(e => new { e.DeptNo, e.ToDate })
                     .HasName("dept_manager_dept_no_IDX");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.DeptNo)
+                    .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
@@ -227,17 +250,14 @@ namespace EMP.DataAccess.Context
                     .HasName("dept_manager_current_dept_no_IDX")
                     .IsUnique();
 
-                entity.HasIndex(e => e.EmpNo)
-                    .HasName("dept_manager_current_emp_no_IDX")
-                    .IsUnique();
-
                 entity.Property(e => e.DeptNo)
-                    .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -255,7 +275,9 @@ namespace EMP.DataAccess.Context
 
                 entity.ToTable("employees");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.BirthDate)
                     .HasColumnName("birth_date")
@@ -283,7 +305,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<Salaries>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.Salary, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("salaries");
@@ -291,13 +313,21 @@ namespace EMP.DataAccess.Context
                 entity.HasIndex(e => new { e.EmpNo, e.ToDate })
                     .HasName("salaries_emp_no_IDX");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.Salary)
+                    .HasColumnName("salary")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
                     .HasColumnType("date");
-
-                entity.Property(e => e.Salary).HasColumnName("salary");
 
                 entity.Property(e => e.ToDate)
                     .HasColumnName("to_date")
@@ -311,7 +341,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<SalariesCurrent>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo })
+                entity.HasKey(e => e.EmpNo)
                     .HasName("PRIMARY");
 
                 entity.ToTable("salaries_current");
@@ -323,13 +353,17 @@ namespace EMP.DataAccess.Context
                 entity.HasIndex(e => e.Salary)
                     .HasName("salaries_current_salary_IDX");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Salary).HasColumnName("salary");
+                entity.Property(e => e.Salary)
+                    .HasColumnName("salary")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.ToDate)
                     .HasColumnName("to_date")
@@ -338,7 +372,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<Titles>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.Title, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("titles");
@@ -346,9 +380,16 @@ namespace EMP.DataAccess.Context
                 entity.HasIndex(e => new { e.EmpNo, e.ToDate })
                     .HasName("titles_emp_no_IDX");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.Title)
+                    .IsRequired()
                     .HasColumnName("title")
                     .HasMaxLength(50);
 
@@ -368,7 +409,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<TitlesCurrent>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo })
+                entity.HasKey(e => e.EmpNo)
                     .HasName("PRIMARY");
 
                 entity.ToTable("titles_current");
@@ -380,7 +421,9 @@ namespace EMP.DataAccess.Context
                 entity.HasIndex(e => e.Title)
                     .HasName("titles_current_title_IDX");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -408,7 +451,9 @@ namespace EMP.DataAccess.Context
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -431,7 +476,9 @@ namespace EMP.DataAccess.Context
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
@@ -448,35 +495,38 @@ namespace EMP.DataAccess.Context
 
                 entity.ToView("vw_dept_manager_detail");
 
+                entity.Property(e => e.DeptName)
+                    .IsRequired()
+                    .HasColumnName("dept_name")
+                    .HasMaxLength(40);
+
                 entity.Property(e => e.DeptNo)
                     .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.DeptName)
-                    .HasColumnName("dept_name")
-                    .HasMaxLength(40);
-
-                entity.Property(e => e.FromDate)
-                    .HasColumnName("from_date")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.ToDate)
-                    .HasColumnName("to_date")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_No")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FirstName)
                     .IsRequired()
                     .HasColumnName("first_name")
                     .HasMaxLength(14);
 
+                entity.Property(e => e.FromDate)
+                    .HasColumnName("from_date")
+                    .HasColumnType("date");
+
                 entity.Property(e => e.LastName)
                     .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(16);
+
+                entity.Property(e => e.ToDate)
+                    .HasColumnName("to_date")
+                    .HasColumnType("date");
             });
 
             modelBuilder.Entity<VwEmpDetails>(entity =>
@@ -490,25 +540,25 @@ namespace EMP.DataAccess.Context
                     .HasColumnType("date");
 
                 entity.Property(e => e.DeptName)
-                    //.IsRequired()
                     .HasColumnName("dept_name")
                     .HasMaxLength(40);
 
                 entity.Property(e => e.DeptNo)
-                    //.IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FirstName)
-                    // .IsRequired()
+                    .IsRequired()
                     .HasColumnName("first_name")
                     .HasMaxLength(14);
 
                 entity.Property(e => e.Gender)
-                    // .IsRequired()
+                    .IsRequired()
                     .HasColumnName("gender")
                     .HasColumnType("enum('M','F')");
 
@@ -517,26 +567,27 @@ namespace EMP.DataAccess.Context
                     .HasColumnType("date");
 
                 entity.Property(e => e.LastName)
-                    // .IsRequired()
+                    .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.ManagerEmpNo).HasColumnName("manager_emp_no");
+                entity.Property(e => e.ManagerEmpNo)
+                    .HasColumnName("manager_emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.ManagerFirstName)
-                    // .IsRequired()
                     .HasColumnName("manager_first_name")
                     .HasMaxLength(14);
 
                 entity.Property(e => e.ManagerLastName)
-                    // .IsRequired()
                     .HasColumnName("manager_last_name")
                     .HasMaxLength(16);
 
-                entity.Property(e => e.Salary).HasColumnName("salary");
+                entity.Property(e => e.Salary)
+                    .HasColumnName("salary")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.Title)
-                    // .IsRequired()
                     .HasColumnName("title")
                     .HasMaxLength(50);
             });
@@ -547,55 +598,32 @@ namespace EMP.DataAccess.Context
 
                 entity.ToView("vw_emp_details_short");
 
-                // entity.Property(e => e.BirthDate)
-                //     .HasColumnName("birth_date")
-                //     .HasColumnType("date");
-
                 entity.Property(e => e.DeptName)
-                    // .IsRequired()
                     .HasColumnName("dept_name")
                     .HasMaxLength(40);
 
                 entity.Property(e => e.DeptNo)
-                    //.IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FirstName)
-                    // .IsRequired()
+                    .IsRequired()
                     .HasColumnName("first_name")
                     .HasMaxLength(14);
 
-                // entity.Property(e => e.Gender)
-                //     .IsRequired()
-                //     .HasColumnName("gender")
-                //     .HasColumnType("enum('M','F')");
-
-                // entity.Property(e => e.HireDate)
-                //     .HasColumnName("hire_date")
-                //     .HasColumnType("date");
-
                 entity.Property(e => e.LastName)
-                    // .IsRequired()
+                    .IsRequired()
                     .HasColumnName("last_name")
                     .HasMaxLength(16);
 
-                // entity.Property(e => e.ManagerEmpNo).HasColumnName("manager_emp_no");
-
-                // entity.Property(e => e.ManagerFirstName)
-                //     .IsRequired()
-                //     .HasColumnName("manager_first_name")
-                //     .HasMaxLength(14);
-
-                // entity.Property(e => e.ManagerLastName)
-                //     .IsRequired()
-                //     .HasColumnName("manager_last_name")
-                //     .HasMaxLength(16);
-
-                entity.Property(e => e.Salary).HasColumnName("salary");
+                entity.Property(e => e.Salary)
+                    .HasColumnName("salary")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.Title)
                     .HasColumnName("title")
@@ -608,13 +636,17 @@ namespace EMP.DataAccess.Context
 
                 entity.ToView("vw_salaries_current");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")
                     .HasColumnType("date");
 
-                entity.Property(e => e.Salary).HasColumnName("salary");
+                entity.Property(e => e.Salary)
+                    .HasColumnName("salary")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.ToDate)
                     .HasColumnName("to_date")
@@ -627,7 +659,9 @@ namespace EMP.DataAccess.Context
 
                 entity.ToView("vw_titles_current");
 
-                entity.Property(e => e.EmpNo).HasColumnName("emp_no");
+                entity.Property(e => e.EmpNo)
+                    .HasColumnName("emp_no")
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.FromDate)
                     .HasColumnName("from_date")

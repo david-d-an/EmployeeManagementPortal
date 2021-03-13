@@ -5,6 +5,7 @@ namespace EMP.Data.Models.Employees
 {
     public partial class DeptManager
     {
+        public long Id { get; set; }
         public int EmpNo { get; set; }
         public string DeptNo { get; set; }
         public DateTime FromDate { get; set; }

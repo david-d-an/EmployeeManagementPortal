@@ -11,20 +11,22 @@ CREATE PROCEDURE employees.sp_insert_title(
 	in title_new varchar(50)
 )
 BEGIN
--- 	10001	d005
 	
 	SELECT
+		@id := id,
 		@title := title, 
 		@from_Date := from_date, 
 		@to_Date := to_date 
-	FROM vw_titles_current vtc
+	FROM titles t
 	WHERE
-		vtc.emp_no = empNo;
+		t.emp_no = empNo
+		AND t.to_date = '9999-01-01'
+	ORDER BY 
+		id desc 
+	LIMIT 1;
 
 
-	IF @title IS NULL THEN
-		-- DELETE FROM title 
-        -- WHERE emp_no = empNo;
+	IF @id IS NULL THEN
 
 		DELETE FROM titles_current 
         WHERE emp_no = empNo;
