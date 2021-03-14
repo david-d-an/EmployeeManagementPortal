@@ -1,6 +1,6 @@
 import { AuthService } from 'src/app/user/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 @Component({
@@ -23,6 +23,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     private location: Location,
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService) {
     this.isLoggedIn = false;
   }
@@ -53,6 +54,10 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(`location: ${JSON.stringify(this.location)}`);
+    console.log(`route: ${(this.route)}`);
+    console.log(`router: ${(this.router)}`);
+
     this.refreshCookie();
 
     window.addEventListener('storage', (event) => {

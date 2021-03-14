@@ -11,9 +11,10 @@ export class MessageModalComponent implements OnInit {
   // @Output() applyFilterEvent = new EventEmitter();
 
   private modalRef;
-  pageTitle = 'Message Modal';
+  // pageTitle = 'Message Modal';
   messageText: string;
   messageTitle: string;
+  private _callBack: any;
 
   constructor(private modalService: ModalManager) { }
 
@@ -21,9 +22,10 @@ export class MessageModalComponent implements OnInit {
     // this.initializeDeptNameFilter('customer service');
   }
 
-  openModal(messageTitle, messageText): void {
+  openModal(messageTitle: string, messageText: string, callBack?: any): void {
     this.messageTitle = messageTitle;
     this.messageText = messageText;
+    this._callBack = callBack;
 
     this.modalRef = this.modalService.open(this.messageModal, {
         size: 'md',
@@ -39,5 +41,8 @@ export class MessageModalComponent implements OnInit {
 
   closeModal() {
     this.modalService.close(this.modalRef);
+    if (!!this._callBack) {
+      this._callBack();
+    }
   }
 }

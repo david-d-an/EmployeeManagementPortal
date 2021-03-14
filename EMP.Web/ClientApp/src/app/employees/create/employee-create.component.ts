@@ -1,5 +1,5 @@
 import { DepartmentService } from './../../departments/service/department.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GenderService } from 'src/app/genders/service/gender.service';
@@ -9,6 +9,7 @@ import { SpinnerService } from 'src/app/shared/spinner.service';
 import { TitleService } from 'src/app/titles/service/title.service';
 import { positiveNumber } from 'src/app/Validators/Validators';
 import { EmployeeService } from '../service/employee.service';
+import { MessageModalComponent } from 'src/app/message-modal/message-modal.component';
 
 @Component({
   selector: 'app-employee-create',
@@ -16,6 +17,8 @@ import { EmployeeService } from '../service/employee.service';
   styleUrls: ['./employee-create.component.css']
 })
 export class EmployeeCreateComponent implements OnInit {
+  @ViewChild(MessageModalComponent) messageModalComponent: MessageModalComponent;
+
   pageTitle = 'Employee Creation';
   genders: any;
   titles: string[];
@@ -117,14 +120,18 @@ export class EmployeeCreateComponent implements OnInit {
       .postOneEmployeeDetails(this.empNo, this.updatedEmployeeData)
       .subscribe({
         next: res => {
-          alert('Success');
           this.spinnerService.stopLoading();
           console.log(JSON.stringify(res));
+          this.messageModalComponent.openModal(
+            'Complete',
+            'User created successfully.',
+            () => this.router.navigate(['/employees'])
+          );
         },
         error: err => {
-          alert('Error');
           this.spinnerService.stopLoading();
           console.log(err);
+          this.messageModalComponent.openModal('Error', 'Error occurred while creating user.');
         },
       });
   }
