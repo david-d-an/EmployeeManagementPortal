@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using EMP.Common.Security;
 
 namespace EMP.DbScaffold.Models.Sts
 {
@@ -23,6 +22,7 @@ namespace EMP.DbScaffold.Models.Sts
         public virtual DbSet<Aspnetuserroles> Aspnetuserroles { get; set; }
         public virtual DbSet<Aspnetusers> Aspnetusers { get; set; }
         public virtual DbSet<Aspnetusertokens> Aspnetusertokens { get; set; }
+        public virtual DbSet<AspnetDeptManager> AspnetDeptManager { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -165,6 +165,32 @@ namespace EMP.DbScaffold.Models.Sts
                     .WithMany(p => p.Aspnetusertokens)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_AspNetUserTokens_AspNetUsers_UserId");
+            });
+
+            modelBuilder.Entity<AspnetDeptManager>(entity =>
+            {
+                entity.ToTable("aspnet_dept_manager");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("dept_manager_ibfk_1");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.DeptNo)
+                    .HasColumnName("dept_no")
+                    .HasMaxLength(4)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspnetDeptManager)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("dept_manager_ibfk_1");
             });
 
             modelBuilder.Entity<Efmigrationshistory>(entity =>

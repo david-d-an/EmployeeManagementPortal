@@ -24,7 +24,6 @@ namespace EMP.DbScaffold.Models.Employees
         public virtual DbSet<DeptManager> DeptManager { get; set; }
         public virtual DbSet<DeptManagerCurrent> DeptManagerCurrent { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
-        public virtual DbSet<EmpDetailsCache> EmpDetailsCache { get; set; }
         public virtual DbSet<Employees> Employees { get; set; }
         public virtual DbSet<Salaries> Salaries { get; set; }
         public virtual DbSet<SalariesCurrent> SalariesCurrent { get; set; }
@@ -100,7 +99,7 @@ namespace EMP.DbScaffold.Models.Employees
 
             modelBuilder.Entity<DeptEmp>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_emp");
@@ -111,11 +110,16 @@ namespace EMP.DbScaffold.Models.Employees
                 entity.HasIndex(e => new { e.EmpNo, e.ToDate })
                     .HasName("dept_emp_emp_no_IDX");
 
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
                 entity.Property(e => e.EmpNo)
                     .HasColumnName("emp_no")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.DeptNo)
+                    .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
@@ -193,19 +197,27 @@ namespace EMP.DbScaffold.Models.Employees
 
             modelBuilder.Entity<DeptManager>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.DeptNo, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("dept_manager");
 
+                entity.HasIndex(e => e.EmpNo)
+                    .HasName("emp_no");
+
                 entity.HasIndex(e => new { e.DeptNo, e.ToDate })
                     .HasName("dept_manager_dept_no_IDX");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
 
                 entity.Property(e => e.EmpNo)
                     .HasColumnName("emp_no")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.DeptNo)
+                    .IsRequired()
                     .HasColumnName("dept_no")
                     .HasMaxLength(4)
                     .IsFixedLength();
@@ -272,73 +284,6 @@ namespace EMP.DbScaffold.Models.Employees
                     .HasMaxLength(32);
             });
 
-            modelBuilder.Entity<EmpDetailsCache>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("emp_details_cache");
-
-                entity.Property(e => e.BirthDate)
-                    .HasColumnName("birth_date")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.DeptName)
-                    .IsRequired()
-                    .HasColumnName("dept_name")
-                    .HasMaxLength(40);
-
-                entity.Property(e => e.DeptNo)
-                    .IsRequired()
-                    .HasColumnName("dept_no")
-                    .HasMaxLength(4)
-                    .IsFixedLength();
-
-                entity.Property(e => e.EmpNo)
-                    .HasColumnName("emp_no")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasColumnName("first_name")
-                    .HasMaxLength(14);
-
-                entity.Property(e => e.Gender)
-                    .IsRequired()
-                    .HasColumnName("gender")
-                    .HasColumnType("enum('M','F')");
-
-                entity.Property(e => e.HireDate)
-                    .HasColumnName("hire_date")
-                    .HasColumnType("date");
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasColumnName("last_name")
-                    .HasMaxLength(16);
-
-                entity.Property(e => e.ManagerEmpNo)
-                    .HasColumnName("manager_emp_no")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.ManagerFirstName)
-                    .IsRequired()
-                    .HasColumnName("manager_first_name")
-                    .HasMaxLength(14);
-
-                entity.Property(e => e.ManagerLastName)
-                    .IsRequired()
-                    .HasColumnName("manager_last_name")
-                    .HasMaxLength(16);
-
-                entity.Property(e => e.Salary)
-                    .HasColumnName("salary")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Title)
-                    .HasColumnName("title")
-                    .HasMaxLength(50);
-            });
-
             modelBuilder.Entity<Employees>(entity =>
             {
                 entity.HasKey(e => e.EmpNo)
@@ -376,13 +321,17 @@ namespace EMP.DbScaffold.Models.Employees
 
             modelBuilder.Entity<Salaries>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.Salary, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("salaries");
 
                 entity.HasIndex(e => new { e.EmpNo, e.ToDate })
                     .HasName("salaries_emp_no_IDX");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
 
                 entity.Property(e => e.EmpNo)
                     .HasColumnName("emp_no")
@@ -439,7 +388,7 @@ namespace EMP.DbScaffold.Models.Employees
 
             modelBuilder.Entity<Titles>(entity =>
             {
-                entity.HasKey(e => new { e.EmpNo, e.Title, e.FromDate, e.ToDate })
+                entity.HasKey(e => new { e.Id })
                     .HasName("PRIMARY");
 
                 entity.ToTable("titles");
@@ -447,11 +396,16 @@ namespace EMP.DbScaffold.Models.Employees
                 entity.HasIndex(e => new { e.EmpNo, e.ToDate })
                     .HasName("titles_emp_no_IDX");
 
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("bigint(20)");
+
                 entity.Property(e => e.EmpNo)
                     .HasColumnName("emp_no")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Title)
+                    .IsRequired()
                     .HasColumnName("title")
                     .HasMaxLength(50);
 
