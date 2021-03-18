@@ -17,6 +17,7 @@ namespace EMP.Api.Controllers
         private Mock<IRepository<Departments>> mockDepartmentsRepository;
         private string deptNo;
         private string invalidDeptNo;
+        private Mock<IUnitOfWorkEmployees> mockUnitOfWoirk;
         private DepartmentsController _controller;
         private string newDeptNo;
         public DepartmentsControllerTest()
@@ -35,10 +36,12 @@ namespace EMP.Api.Controllers
             mockDepartmentsRepository = new Mock<IRepository<Departments>>();
             mockDepartmentsRepository.Setup(x => x.GetAsync(deptNo)).ReturnsAsync(department);
             mockDepartmentsRepository.Setup(x => x.GetAsync(invalidDeptNo)).ReturnsAsync((Departments)null);
+            mockUnitOfWoirk = new Mock<IUnitOfWorkEmployees>();
 
             _controller = new DepartmentsController(
                 mockLogger.Object, 
-                mockDepartmentsRepository.Object);
+                mockDepartmentsRepository.Object,
+                mockUnitOfWoirk.Object);
         }
 
         [Fact]

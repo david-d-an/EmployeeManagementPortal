@@ -81,10 +81,10 @@ namespace EMP.Api
 
             var encConnStrMySqlSts = Configuration.GetConnectionString("MySqlSts(Azure)");
             var connStrMySqlSts = AesCryptoUtil.Decrypt(encConnStrMySqlSts);
-            services.AddDbContext<stsContext>(builder =>                   
+            services.AddDbContext<StsContext>(builder =>                   
                 builder.UseMySQL(connStrMySqlSts)
             );
-            EnsureDatabaseExists<stsContext>(connStrMySqlSts);
+            EnsureDatabaseExists<StsContext>(connStrMySqlSts);
 
             services.AddScoped<IRepository<DeptManager>, DeptManagerRepository>();
             services.AddScoped<IRepository<VwDeptManagerDetail>, DeptManagerDetailRepository>();
@@ -99,6 +99,7 @@ namespace EMP.Api
             services.AddScoped<IRepository<DistinctGenders>, DistinctGenderRepository>();
             services.AddScoped<IRepository<VwSalariesCurrent>, SalaryRepository>();
             services.AddScoped<IRepository<Aspnetusers>, AspNetUsersRepository>();
+            services.AddScoped<IUnitOfWorkEmployees, UnitOfWorkEmployees>();
         }
 
         private static void EnsureDatabaseExists<T>(string connectionString) 
@@ -108,7 +109,7 @@ namespace EMP.Api
             if (typeof(T) == typeof(EmployeesContext)) {
                 builder.UseMySQL(connectionString);
             }
-            else if (typeof(T) == typeof(stsContext)) {
+            else if (typeof(T) == typeof(StsContext)) {
                 builder.UseMySQL(connectionString);
             }
             // else if (typeof(T) == typeof(SQLiteContext)) {
