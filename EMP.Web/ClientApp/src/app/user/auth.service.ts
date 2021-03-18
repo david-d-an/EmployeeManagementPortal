@@ -49,7 +49,12 @@ export class AuthService {
   }
 
   preCheckAuthSession(originalUri: string): void {
-    this.userManager.signinRedirect();
+    this.userManager.signinRedirect({
+      extraQueryParams: {
+        actionType: 'precheck',
+        originalUri: originalUri
+      }
+    });
   }
 
   loadConfig(): void {

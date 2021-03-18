@@ -1,9 +1,9 @@
 # Employees Database
 > dotnet ef dbcontext scaffold \
-"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=employees;" \
+"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password={password};port=3306;database=employees;" \
 MySql.Data.EntityFrameworkCore -o Models/Employees -f
 
 # STS Database
 > dotnet ef dbcontext scaffold \
-"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;" \
+"server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password={password};port=3306;database=sts;" \
 MySql.Data.EntityFrameworkCore -o Models/Sts -f

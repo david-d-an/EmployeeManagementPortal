@@ -1,6 +1,19 @@
 <div class="card">
   <div class="card-header">
-    {{ this.pageTitle }}
+    <div class="row">
+      <div class="col-md-2">
+        {{ this.pageTitle }}
+      </div>
+      <div class="col-md-8">
+      </div>
+      <div class="col-md-2" style="margin-top:-5px; margin-bottom:-6px">
+        <button
+          class="btn btn-outline-primary float-right"
+          style="font-size: smaller;"
+          [routerLink]="['./create']"
+          >Create Employee</button>
+      </div>
+    </div>
   </div>
 
   <div class="card-body">
@@ -9,14 +22,14 @@
         <button
           (click)="openModal()"
           class="btn btn-outline-primary"
-          style="width:80px">
+          style="width:60px; font-size: smaller;">
           Filter
         </button>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-6">
         <span *ngFor="let filter of filterItems; let i = index">
           <button class="btn btn-outline-secondary"
-                  style="font-size:smaller;margin-bottom:12px;margin-right:2px"
+                  style="font-size:smaller;margin-bottom:2px;margin-right:2px"
                   title="Click to remove this filter"
                   (click)="removeFilter(i)">
             {{filter.value}}
@@ -109,5 +122,5 @@
 
 <!-- <app-employee-filter-modal (applyFilterEvent)="applyFilterhandler()"></app-employee-filter-modal> -->
 <app-employee-filter-modal></app-employee-filter-modal>
-<app-employee-edit-modal></app-employee-edit-modal>
+<app-employee-edit-modal (saveEditEvent)="this.refreshTable()"></app-employee-edit-modal>
 <app-message-modal></app-message-modal>

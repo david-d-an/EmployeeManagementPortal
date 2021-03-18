@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -54,10 +55,11 @@ namespace EMP.DataAccess.Repos
             string storedProcName = "sp_insert_salary";
             // DbParameter outputParam;
             VwSalariesCurrent spResults = null;
+try{
             await _context
                 .LoadStoredProc(storedProcName)
                 .WithSqlParam("empNo", createRequest.EmpNo)
-                .WithSqlParam("salary", createRequest.Salary)
+                .WithSqlParam("salary_new", createRequest.Salary)
                 // .WithSqlParam("result", (dbParam) =>
                 // {
                 //     dbParam.Direction = System.Data.ParameterDirection.Output;
@@ -68,7 +70,9 @@ namespace EMP.DataAccess.Repos
                     bool nr = handler.NextResult();
                     spResults = handler.ReadToList<VwSalariesCurrent>().FirstOrDefault();
                 });
-
+} catch(Exception ex) {
+    throw ex;
+}
             return spResults;
         }
 

@@ -22,6 +22,7 @@ namespace EMP.Api.Controllers
         private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
         private IRepository<VwSalariesCurrent> _salaryRepository;
         private IRepository<VwTitlesCurrent> _titleRepository;
+        private IUnitOfWorkEmployees _unitOfWork;
 
         public EmployeeDetailController(
             ILogger<EmployeeDetailController> logger,
@@ -30,7 +31,8 @@ namespace EMP.Api.Controllers
             IRepository<VwEmpDetailsShort> employeeDetailShortRepository,
             IRepository<VwDeptEmpCurrent> deptEmpRepository,
             IRepository<VwSalariesCurrent> salaryRepository,
-            IRepository<VwTitlesCurrent> titleRepository)
+            IRepository<VwTitlesCurrent> titleRepository,
+            IUnitOfWorkEmployees unitOfWork)
         {
             this._logger = logger;
             this._employeeRepository = employeeRepository;
@@ -39,11 +41,15 @@ namespace EMP.Api.Controllers
             this._deptEmpRepository = deptEmpRepository;
             this._salaryRepository = salaryRepository;
             this._titleRepository = titleRepository;
+            this._unitOfWork = unitOfWork;
         }
 
         [HttpGet]
-        [Authorize(Roles="System Admin")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [Authorize(Roles="Department Manager")]
+        [ResponseCache(
+            Duration = 60,
+            Location = ResponseCacheLocation.Client,
+            NoStore = false)]
         public async Task<ActionResult<IEnumerable<VwEmpDetailsShort>>> Get(
             [FromQuery] int? pageNum,
             [FromQuery] int? pageSize,
@@ -66,15 +72,22 @@ namespace EMP.Api.Controllers
             };
 
             await Task.Delay(0);
-            return Ok(_employeeDetailShortRepository.GetAsync(parameters, pageNum, pageSize));
+            var emps = _unitOfWork.EmployeeDetailShortRepository.GetAsync(parameters, pageNum, pageSize);
+            return Ok(emps);
+            // return Ok(_employeeDetailShortRepository.GetAsync(parameters, pageNum, pageSize));
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles="System Admin")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any)]
+        [Authorize(Roles="Department Manager")]
+        [ResponseCache(
+            Duration = 60,
+            Location = ResponseCacheLocation.Client,
+            NoStore = false)]
         public async Task<ActionResult<VwEmpDetails>> Get(int id)
         {
-            return await _employeeDetailRepository.GetAsync(id.ToString());
+            var emp = await _unitOfWork.EmployeeDetailRepository.GetAsync(id.ToString());
+            return emp;
+            // return await _employeeDetailRepository.GetAsync(id.ToString());
         }
 
         [HttpPut("{id}")]
@@ -141,10 +154,11 @@ namespace EMP.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles="Department Manager")]
         public async Task<ActionResult<VwEmpDetails>> Post(VwEmpDetails employeeDetailCreateRequest) 
         {
             Employees employeeCreateRequest = new Employees {
-                EmpNo = -1,
+                // EmpNo = -1,
                 BirthDate = employeeDetailCreateRequest.BirthDate,
                 FirstName = employeeDetailCreateRequest.FirstName,
                 LastName = employeeDetailCreateRequest .LastName,
@@ -162,30 +176,36 @@ namespace EMP.Api.Controllers
                 EmpNo = empNo.Value,
                 DeptNo = employeeDetailCreateRequest.DeptNo
             };
-            VwDeptEmpCurrent deptEmpCreateResult = await _deptEmpRepository.PostAsync(deptEmpCreateRequest);
+            VwDeptEmpCurrent deptEmpCreateResult = await 
+                _deptEmpRepository
+                .PostAsync(deptEmpCreateRequest);
 
             VwSalariesCurrent salaryCreateRequest = new VwSalariesCurrent {
                 EmpNo = empNo.Value,
                 Salary = employeeDetailCreateRequest.Salary
             };
-            VwSalariesCurrent salaryCreateResult = await _salaryRepository.PostAsync(salaryCreateRequest);
+            VwSalariesCurrent salaryCreateResult = await 
+                _salaryRepository
+                .PostAsync(salaryCreateRequest);
 
             VwTitlesCurrent titleCreateRequest = new VwTitlesCurrent {
                 EmpNo = empNo.Value,
                 Title = employeeDetailCreateRequest.Title
             };
-            VwTitlesCurrent titleCreateResult = await _titleRepository.PostAsync(titleCreateRequest);
+            VwTitlesCurrent titleCreateResult = await 
+                _titleRepository
+                .PostAsync(titleCreateRequest);
 
             VwEmpDetails result = await _employeeDetailRepository.GetAsync(empNo.Value.ToString());
 
             return CreatedAtAction(
-                nameof(Post), 
-                nameof(EmployeeDetailController), 
+                nameof(this.Post),
                 new { id = result.EmpNo }, 
                 result);
         }
         
         [HttpDelete("{id}")]
+        [Authorize(Roles="Department Manager")]
         public async Task<ActionResult<VwEmpDetails>> Delete(long id) 
         {
             return await TaskConstants<ActionResult<VwEmpDetails>>.NotImplemented;

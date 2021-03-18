@@ -124,7 +124,7 @@ export class DepartmentListComponent implements
   }
 
   ngOnDestroy(): void {
-    alert('OnDestroy');
+    // alert('OnDestroy');
     console.log('OnDestroy');
   }
 

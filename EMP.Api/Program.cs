@@ -1,24 +1,50 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EMP.DataAccess.Context;
+using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Core;
+using EMP.DataAccess.Context;
 
 namespace EMP.Api
 {
     public class Program
     {
-        public static void Main(string[] args)
+        private static bool IsDevelopment =>
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+            .AddJsonFile($"appsettings.Development.json", true)
+            .AddEnvironmentVariables()
+            .Build();
+
+        public static Logger Logger { get; } = new LoggerConfiguration()
+            .ReadFrom.Configuration(Configuration)
+            .Enrich.FromLogContext()
+            .CreateLogger();
+
+        public static int Main(string[] args)
         {
-            IHost host = CreateHostBuilder(args).Build();
-            // SeedEmployeeDatabase(host);
-            host.Run();
+            Log.Logger = Logger;
+
+            try {
+                Log.Information("Starting up");
+                IHost host = CreateHostBuilder(args).Build();
+                // SeedEmployeeDatabase(host);
+                host.Run();
+                return 0;
+            } catch (Exception ex) {
+                Log.Fatal(ex, "Application start-up failed");
+                return 1;
+            } finally {
+                Log.CloseAndFlush();
+            }
         }
 
         private static void SeedEmployeeDatabase(IHost host)
@@ -34,16 +60,15 @@ namespace EMP.Api
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                // .ConfigureServices((context, services) => {
-                //     services.Configure<KestrelServerOptions>(
-                //         context.Configuration.GetSection("Kestrel"));
-                // })
                 .ConfigureAppConfiguration(SetupConfiguration)
                 .ConfigureLogging(logging => {
                     logging.ClearProviders();
                     logging.AddConsole();
                     logging.AddDebug();
                 })
+                .UseSerilog((hostingContext, loggerConfig) =>
+                    loggerConfig.ReadFrom.Configuration(hostingContext.Configuration)
+                )
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
                     // webBuilder.UseKestrel(options => {

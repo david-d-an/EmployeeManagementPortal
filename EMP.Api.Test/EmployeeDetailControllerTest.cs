@@ -34,6 +34,7 @@ namespace EMP.Api.Controllers
         private Mock<IRepository<VwDeptEmpCurrent>> mockDeptEmpCurrentRepository;
         private Mock<IRepository<VwSalariesCurrent>> mockSalaryRepository;
         private Mock<IRepository<VwTitlesCurrent>> mockTitleRepository;
+        private Mock<IUnitOfWorkEmployees> mockUnitOfWoirk;
         private EmployeeDetailController _controller;
         private int newEmpNo;
 
@@ -87,6 +88,7 @@ namespace EMP.Api.Controllers
             mockDeptEmpCurrentRepository = new Mock<IRepository<VwDeptEmpCurrent>>();
             mockSalaryRepository = new Mock<IRepository<VwSalariesCurrent>>();
             mockTitleRepository = new Mock<IRepository<VwTitlesCurrent>>();
+            mockUnitOfWoirk = new Mock<IUnitOfWorkEmployees>();
 
             mockEmployeeDetailRepository
                 .Setup(x => x.GetAsync(It.Is<string>(x => x == empNo.ToString())))
@@ -99,7 +101,8 @@ namespace EMP.Api.Controllers
                 mockEmployeeDetailShortRepository.Object,
                 mockDeptEmpCurrentRepository.Object,
                 mockSalaryRepository.Object,
-                mockTitleRepository.Object);
+                mockTitleRepository.Object,
+                mockUnitOfWoirk.Object);
         }
         
         [Fact]

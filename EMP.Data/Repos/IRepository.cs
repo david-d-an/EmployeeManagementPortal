@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 namespace EMP.Data.Repos
 {
+    // TO DO: need to make it enclosed inside Unit of Work
     public interface IRepository<T> where T : class
     {
         IEnumerable<T> GetAsync(

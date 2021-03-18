@@ -175,25 +175,22 @@ export class EmployeeEditModalComponent implements OnInit {
       .putOneEmployeeDetails(this.empNo, this.updatedEmployeeData)
       .subscribe({
         next: res => {
-          alert('Success');
           this.spinnerService.stopLoading();
           console.log(JSON.stringify(res));
+          this.saveEditEvent.next();
+          // TO DO: Show message box for success
         },
         error: err => {
           alert('Error');
           this.spinnerService.stopLoading();
           console.log(err);
+          // TO DO: Show message box for failure
         },
       });
   }
 
   getFulllGenderName(g: string): string {
-    if (g && g.toLowerCase() === 'f') {
-      return 'Female';
-    } else if (g && g.toLowerCase() === 'm') {
-      return 'Male';
-    } else {
-      return g;
-    }
+    return this.genderService.getFulllGenderName(g);
   }
+
 }

@@ -25,7 +25,8 @@
     <array>
         <string>/usr/local/share/dotnet/dotnet</string>
         <string>EMP.Web.dll</string>
-        <string>--urls=http://localhost:21001</string>
+        <string>--environment=Staging</string>
+        <string>--urls=https://localhost:21001</string>
     </array>
 
   </dict>

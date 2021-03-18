@@ -1,4 +1,5 @@
 using System.Linq;
+using EMP.Common.Security;
 using EMP.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
@@ -13,8 +14,9 @@ namespace EMP.DataAccess.Context
 
         public EmployeesContextShould()
         {
-            connStrMySql = "Server=mycompany6921.mysql.database.azure.com; Port=3306; Database=employees; Uid=appuser@mycompany6921; Pwd=Soil9303; SslMode=Preferred;";
-
+            string mySqlEmployeesConnStr = 
+                "0nmBbjjPY3PGbA6j+7Ul0Od1V+u8TMv8E1oQrIvrJTqG8JHkQaQ40CGThX5pKBsAVir1FefOpPPZpgsFZLA6eO8fRum5wnZkcxGWw9aq0ovHRM0OhKYf1GS0YK2slp1jMaKpA0HDylDsswiZ3CByr0cUGPwqSEn04hJAd3FXfbWPpGlUZ4zQz0MO4avuEA1Z";
+            connStrMySql = AesCryptoUtil.Decrypt(mySqlEmployeesConnStr);
             dbOptionsbuilder = new DbContextOptionsBuilder<EmployeesContext>().UseMySQL(connStrMySql);
             context = new EmployeesContext(dbOptionsbuilder.Options);
         }

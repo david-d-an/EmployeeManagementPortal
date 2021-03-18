@@ -53,6 +53,10 @@ a.nav-link {
   cursor: pointer;
 }
 
+a.navbar-brand {
+  margin-right: 0px;
+}
+
 .navbar-nav a.dropdown-item {
   cursor: pointer
 }
@@ -61,7 +65,32 @@ div.company-logo {
   padding-top: 80px;
 }
 
+a.company-logo {
+  padding-top: 0px;
+}
+
 img.company-logo {
   max-height:300px;
-  padding-bottom:10px
+  padding-bottom:10px;
+  margin-right: 0.25px;
+}
+
+img.company-title {
+  margin-right: 6px;
+}
+
+span.company-title {
+  margin-right: 20px;
+  font-family: "Helvetica Neue", sans-serif;
+  position: relative;
+  top: 1px;
+}
+
+
+li.app-title {
+  margin-right: 2em;
+}
+
+div.card-container {
+  margin-bottom: 80px;
 }

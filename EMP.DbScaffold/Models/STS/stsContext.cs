@@ -22,14 +22,17 @@ namespace EMP.DbScaffold.Models.Sts
         public virtual DbSet<Aspnetuserroles> Aspnetuserroles { get; set; }
         public virtual DbSet<Aspnetusers> Aspnetusers { get; set; }
         public virtual DbSet<Aspnetusertokens> Aspnetusertokens { get; set; }
+        public virtual DbSet<AspnetDeptManager> AspnetDeptManager { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseMySQL("server=mycompany6921.mysql.database.azure.com;uid=appuser@mycompany6921;password=Soil9303;port=3306;database=sts;");
+                string mySqlEmployeesConnStr = 
+                    "0nmBbjjPY3PGbA6j+7Ul0Od1V+u8TMv8E1oQrIvrJTqG8JHkQaQ40CGThX5pKBsAVir1FefOpPPZpgsFZLA6eO8fRum5wnZkcxGWw9aq0ovHRM0OhKYf1GS0YK2slp1jMaKpA0HDylDsswiZ3CByr0cUGPwqSEn04hJAd3FXfbWPpGlUZ4zQz0MO4avuEA1Z";
+                string connStrMySql = AesCryptoUtil.Decrypt(mySqlEmployeesConnStr);
+                optionsBuilder.UseMySQL(connStrMySql);
             }
         }
 
@@ -162,6 +165,32 @@ namespace EMP.DbScaffold.Models.Sts
                     .WithMany(p => p.Aspnetusertokens)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_AspNetUserTokens_AspNetUsers_UserId");
+            });
+
+            modelBuilder.Entity<AspnetDeptManager>(entity =>
+            {
+                entity.ToTable("aspnet_dept_manager");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("dept_manager_ibfk_1");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.DeptNo)
+                    .HasColumnName("dept_no")
+                    .HasMaxLength(4)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspnetDeptManager)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("dept_manager_ibfk_1");
             });
 
             modelBuilder.Entity<Efmigrationshistory>(entity =>

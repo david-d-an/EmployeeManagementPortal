@@ -8,23 +8,24 @@ DELIMITER $$
 
 CREATE PROCEDURE employees.sp_insert_salary(
 	in empNo int, 
-	in salary int
+	in salary_new int
 )
 BEGIN
--- 	10001	d005
 	
 	SELECT
+		@id := id,
 		@salary := salary, 
 		@from_Date := from_date, 
 		@to_Date := to_date 
-	FROM vw_salaries_current vsc
+	FROM salaries s
 	WHERE
-		vsc.emp_no = empNo;
+		s.emp_no = empNo	
+		AND s.to_date = '9999-01-01'
+	ORDER BY 
+		id desc 
+	LIMIT 1;
 
-
-	IF @salary IS NULL THEN
-		-- DELETE FROM salaries 
-        -- WHERE emp_no = empNo;
+	IF @id IS NULL THEN
 
 		DELETE FROM salaries_current 
         WHERE emp_no = empNo;
@@ -37,7 +38,7 @@ BEGIN
 		)
 		VALUES(
 			empNo, 
-			salary, 
+			salary_new, 
 			CURDATE(), 
 			'9999-01-01'
 		);
@@ -50,7 +51,7 @@ BEGIN
 		)
 		VALUES(
 			empNo,
-			salary,
+			salary_new,
 			CURDATE(),
 			'9999-01-01'
 		);
@@ -64,7 +65,7 @@ BEGIN
         WHERE
 			s.emp_no = empNo;
 
-	ELSEIF salary != @salary THEN
+	ELSEIF salary_new != @salary THEN
 		UPDATE salaries s
 		SET
 			s.to_Date = CURDATE() 
@@ -82,14 +83,14 @@ BEGIN
 		)
 		VALUES(
 			empNo, 
-			salary, 
+			salary_new, 
 			CURDATE(), 
 			'9999-01-01'
 		);
 	
 		UPDATE salaries_current s
 		SET
-			s.salary = salary,
+			s.salary = salary_new,
 			s.from_date = CURDATE(),
 			s.to_date = '9999-01-01'
 		WHERE

@@ -1,5 +1,7 @@
 import { AuthService } from 'src/app/user/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +21,9 @@ export class HeaderComponent implements OnInit {
   }
 
   constructor(
+    private location: Location,
+    private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService) {
     this.isLoggedIn = false;
   }
@@ -49,19 +54,35 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(`location: ${JSON.stringify(this.location)}`);
+    console.log(`route: ${(this.route)}`);
+    console.log(`router: ${(this.router)}`);
+
     this.refreshCookie();
 
     window.addEventListener('storage', (event) => {
       if (event.key === 'forceLogout_EMP.Web_Shared' && !!event.newValue) {
         sessionStorage['forceLogout_EMP.Web'] = true;
+        sessionStorage.removeItem('forceLogin_EMP.Web');
       } else if (event.key === 'forceLogin_EMP.Web_Shared' && !!event.newValue) {
         sessionStorage['forceLogin_EMP.Web'] = true;
+        sessionStorage.removeItem('forceLogout_EMP.Web');
       }
     });
 
     this.authService.loginChanged.subscribe(loggedIn => {
       console.log(`loggedIn set by obs: ${loggedIn}`);
       this.setLoggedIn(loggedIn);
+      if (!loggedIn) {
+        for (const key in sessionStorage) {
+          // 'oidc.user:https://localhost:5500/:emp-web-client'
+          if (key.indexOf('oidc.user:') !== -1
+          && key.indexOf(':emp-web-client') !== -1) {
+            sessionStorage.removeItem(key);
+          }
+        }
+        this.router.navigate(['/home']);
+      }
     });
 
     if (!this.isLoggedIn) {
@@ -95,8 +116,11 @@ export class HeaderComponent implements OnInit {
 
   logOutThisTabOnly(): void {
     console.log('logOutThisTabOnly');
-    this.authService.logout();
-    // sessionStorage.removeItem('authPreChecked');
     sessionStorage.removeItem('forceLogout_EMP.Web');
+    // sessionStorage.removeItem('authPreChecked');
+    this.authService.logout();
+    if (this.location.path() !== '/home') {
+      this.router.navigate(['/home']);
+    }
   }
 }

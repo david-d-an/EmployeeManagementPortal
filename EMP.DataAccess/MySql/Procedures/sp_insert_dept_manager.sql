@@ -11,20 +11,22 @@ CREATE PROCEDURE employees.sp_insert_dept_manager(
 	in deptNo char(4)
 )
 BEGIN
--- 	110420	d004
 	
-	SELECT
+	select
+		@id := id,
 		@emp_no := emp_no , 
 		@from_Date := from_date, 
 		@to_Date := to_date 
-	FROM vw_dept_manager_current vdmc
+	FROM dept_manager dm	
 	WHERE
-		vdmc.dept_no = deptNo;
+		dm.dept_no = deptNo	
+		AND dm.to_date = '9999-01-01'
+	ORDER BY 
+		id DESC 
+	LIMIT 1;
 
 
-	IF @emp_no IS NULL THEN
-		-- DELETE FROM dept_manager 
-        -- WHERE dept_no = deptNo;
+	IF @id IS NULL THEN
 
 		DELETE FROM dept_manager_current 
         WHERE dept_no = deptNo;

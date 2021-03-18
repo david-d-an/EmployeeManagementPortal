@@ -8,23 +8,25 @@ DELIMITER $$
 
 CREATE PROCEDURE employees.sp_insert_title(
 	in empNo int, 
-	in title varchar(50)
+	in title_new varchar(50)
 )
 BEGIN
--- 	10001	d005
 	
 	SELECT
+		@id := id,
 		@title := title, 
 		@from_Date := from_date, 
 		@to_Date := to_date 
-	FROM vw_titles_current vtc
+	FROM titles t
 	WHERE
-		vtc.emp_no = empNo;
+		t.emp_no = empNo
+		AND t.to_date = '9999-01-01'
+	ORDER BY 
+		id desc 
+	LIMIT 1;
 
 
-	IF @title IS NULL THEN
-		-- DELETE FROM title 
-        -- WHERE emp_no = empNo;
+	IF @id IS NULL THEN
 
 		DELETE FROM titles_current 
         WHERE emp_no = empNo;
@@ -37,7 +39,7 @@ BEGIN
 		)
 		VALUES(
 			empNo, 
-			title, 
+			title_new, 
 			CURDATE(), 
 			'9999-01-01'
 		);
@@ -50,7 +52,7 @@ BEGIN
 		)
 		VALUES(
 			empNo,
-			title,
+			title_new,
 			CURDATE(),
 			'9999-01-01'
 		);
@@ -64,7 +66,7 @@ BEGIN
         WHERE
 			s.emp_no = empNo;
 
-	ELSEIF title != @title THEN
+	ELSEIF title_new != @title THEN
 		UPDATE titles t
 		SET
 			t.to_Date = CURDATE() 
@@ -82,14 +84,14 @@ BEGIN
 		)
 		VALUES(
 			empNo, 
-			title, 
+			title_new, 
 			CURDATE(), 
 			'9999-01-01'
 		);
 	
 		UPDATE titles_current t
 		SET
-			t.title = title,
+			t.title = title_new,
 			t.from_date = CURDATE(),
 			t.to_date = '9999-01-01'
 		WHERE

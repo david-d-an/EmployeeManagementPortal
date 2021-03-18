@@ -66,7 +66,7 @@ namespace EMP.DataAccess.Repos
             await _context
                 .LoadStoredProc(storedProcName)
                 .WithSqlParam("empNo", createRequest.EmpNo)
-                .WithSqlParam("title", createRequest.Title)
+                .WithSqlParam("title_new", createRequest.Title)
                 // .WithSqlParam("result", (dbParam) =>
                 // {
                 //     dbParam.Direction = System.Data.ParameterDirection.Output;

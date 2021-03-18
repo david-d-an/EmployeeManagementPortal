@@ -39,6 +39,8 @@
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build-prod" Condition="'$(Configuration)' == 'Release'" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build-staging" Condition="'$(Configuration)' == 'Staging'" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
