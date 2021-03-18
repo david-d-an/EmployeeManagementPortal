@@ -13,9 +13,9 @@ namespace EMP.DataAccess.Repos
 {
     public class AspNetUsersRepository : IRepository<Aspnetusers>
     {
-        private stsContext _context;
+        private StsContext _context;
 
-        public AspNetUsersRepository(stsContext context)
+        public AspNetUsersRepository(StsContext context)
         {
             this._context = context;
         }

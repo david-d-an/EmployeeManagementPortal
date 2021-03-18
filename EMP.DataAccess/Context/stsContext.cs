@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace EMP.DataAccess.Context
 {
-    public partial class stsContext : DbContext
+    public partial class StsContext : DbContext
     {
-        public stsContext()
+        public StsContext()
         {
         }
 
-        public stsContext(DbContextOptions<stsContext> options)
+        public StsContext(DbContextOptions<StsContext> options)
             : base(options)
         {
         }
@@ -24,6 +24,7 @@ namespace EMP.DataAccess.Context
         public virtual DbSet<Aspnetusers> Aspnetusers { get; set; }
         public virtual DbSet<Aspnetusertokens> Aspnetusertokens { get; set; }
         public virtual DbSet<Efmigrationshistory> Efmigrationshistory { get; set; }
+        public virtual DbSet<AspnetDeptManager> AspnetDeptManager { get; set; }
 
         // Context is built while in startup.cs. No need to run OnCofiguring
         // protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -164,6 +165,32 @@ namespace EMP.DataAccess.Context
                     .WithMany(p => p.Aspnetusertokens)
                     .HasForeignKey(d => d.UserId)
                     .HasConstraintName("FK_AspNetUserTokens_AspNetUsers_UserId");
+            });
+
+            modelBuilder.Entity<AspnetDeptManager>(entity =>
+            {
+                entity.ToTable("dept_manager");
+
+                entity.HasIndex(e => e.UserId)
+                    .HasName("dept_manager_ibfk_1");
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int(11)");
+
+                entity.Property(e => e.DeptNo)
+                    .HasColumnName("dept_no")
+                    .HasMaxLength(4)
+                    .IsFixedLength();
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasColumnName("user_id");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AspnetDeptManager)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("dept_manager_ibfk_1");
             });
 
             modelBuilder.Entity<Efmigrationshistory>(entity =>
