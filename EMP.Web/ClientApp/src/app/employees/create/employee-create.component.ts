@@ -131,8 +131,15 @@ export class EmployeeCreateComponent implements OnInit {
         error: err => {
           this.spinnerService.stopLoading();
           console.log(err);
-          this.messageModalComponent.openModal('Error', 'Error occurred while creating user.');
-        },
+          if (err['status'] === 403) {
+            this.messageModalComponent.openModal(
+              'Not Authorizied',
+              'You don\'t have enough privilege to access the resource. Please contact the administrator.');
+          } else {
+            this.messageModalComponent.openModal('Error', 'Error occurred while creating user.');
+          }
+          console.log(`Error inside save(): ${err}`);
+      },
       });
   }
 

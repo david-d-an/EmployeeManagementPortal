@@ -83,9 +83,14 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, AfterViewCh
             this.rows = data;
             this.spinnerService.stopLoading();
           },
-          error: error => {
+          error: err => {
             this.spinnerService.stopLoading();
-            console.log(error);
+            if (err['status'] === 403) {
+              this.messageModalComponent.openModal(
+                'Not Authorizied',
+                'You don\'t have enough privilege to access the resource. Please contact the administrator.');
+            }
+            console.log(`Error inside loadData(): ${err}`);
           }
         });
     }

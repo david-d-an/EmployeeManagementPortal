@@ -115,8 +115,8 @@ export class EmployeeService {
       // errorMessage = `Backend returned code ${err.status}: ${err.body.error}`;
       errorMessage = `Backend returned Error ${err.status}: ${err}`;
     }
-    console.log('error detected');
-    console.error(err);
-    return throwError(errorMessage);
+    console.log('error detected in EmployeeService');
+    // console.error(err);
+    return throwError(err);
   }
 }
