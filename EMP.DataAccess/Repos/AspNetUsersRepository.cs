@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EMP.DataAccess.Repos
 {
-    public class AspNetUsersRepository : IRepository<Aspnetusers>
+    public class AspnetUsersRepository : IRepository<Aspnetusers>
     {
         private StsContext _context;
 
-        public AspNetUsersRepository(StsContext context)
+        public AspnetUsersRepository(StsContext context)
         {
             this._context = context;
         }
@@ -25,7 +25,8 @@ namespace EMP.DataAccess.Repos
             int? pageNum = null, 
             int? pageSize = null)
         {
-            IQueryable<Aspnetusers> query = _context.Aspnetusers
+            DbSet<Aspnetusers> dbSet =  _context.Aspnetusers;
+            IQueryable<Aspnetusers> query = dbSet.AsNoTracking()
                 .Select(r => new Aspnetusers {
                     Id = r.Id,
                     Email = r.Email,
@@ -44,7 +45,7 @@ namespace EMP.DataAccess.Repos
 
         public async Task<Aspnetusers> GetAsync(string id)
         {
-            IQueryable<Aspnetusers> query = _context.Aspnetusers
+            IQueryable<Aspnetusers> result = _context.Aspnetusers
                 .Where(r => r.UserName == id)
                 .Select(r => new Aspnetusers {
                     Id = r.Id,
@@ -53,7 +54,7 @@ namespace EMP.DataAccess.Repos
                     UserName = r.UserName
                 });
 
-            return await query.FirstOrDefaultAsync();
+            return await result.FirstOrDefaultAsync();
         }
 
         public async Task<Aspnetusers> PutAsync(string id, Aspnetusers updateRequest)
