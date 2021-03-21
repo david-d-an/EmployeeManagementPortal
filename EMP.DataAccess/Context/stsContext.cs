@@ -169,7 +169,7 @@ namespace EMP.DataAccess.Context
 
             modelBuilder.Entity<AspnetDeptManager>(entity =>
             {
-                entity.ToTable("dept_manager");
+                entity.ToTable("aspnet_dept_manager");
 
                 entity.HasIndex(e => e.UserId)
                     .HasName("dept_manager_ibfk_1");
