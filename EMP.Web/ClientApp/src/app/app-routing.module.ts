@@ -8,12 +8,12 @@ import { SignoutRedirectCallbackComponent } from './home/signout-redirect-callba
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
+import { UnauthorizedComponent } from './home/unauthorized.component';
 
 // import { DepartmentListComponent } from './departments/list/department-list.component';
 // import { EmployeeListComponent } from './employees/list/employee-list.component';
 // import { CommonModule } from '@angular/common';
 // import { CounterComponent } from './counter/counter.component';
-// import { FetchDataComponent } from './fetch-data/fetch-data.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -41,7 +41,7 @@ const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'about', component: AboutComponent },
   // { path: 'counter', component: CounterComponent },
-  // { path: 'fetch-data', component: FetchDataComponent },
+  { path: 'unauthorized', component: UnauthorizedComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 
