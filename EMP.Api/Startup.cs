@@ -98,8 +98,9 @@ namespace EMP.Api
             services.AddScoped<IRepository<DistinctTitles>, DistinctTitleRepository>();
             services.AddScoped<IRepository<DistinctGenders>, DistinctGenderRepository>();
             services.AddScoped<IRepository<VwSalariesCurrent>, SalaryRepository>();
-            services.AddScoped<IRepository<Aspnetusers>, AspNetUsersRepository>();
+            services.AddScoped<IRepository<Aspnetusers>, AspnetUsersRepository>();
             services.AddScoped<IUnitOfWorkEmployees, UnitOfWorkEmployees>();
+            services.AddScoped<IUnitOfWorkSts, UnitOfWorkSts>();
         }
 
         private static void EnsureDatabaseExists<T>(string connectionString) 
