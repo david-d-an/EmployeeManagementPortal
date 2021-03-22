@@ -3,18 +3,18 @@ using EMP.Data.Models.Sts;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 
-namespace EMP.DataAccess.Repos
+namespace EMP.DataAccess.Repos.Sts
 {
     public class UnitOfWorkSts : IUnitOfWorkSts, IDisposable {
         private readonly StsContext _stsContext;
         private IRepository<Aspnetusers> _aspNetUsersRepository;
         private IRepository<AspnetDeptManager> _aspnetDeptManagerRepository;
-        private IRepository<Aspnetroleclaims> _aspnetroleclaimsRepository;
-        private IRepository<Aspnetroles> _aspnetrolesRepository;
-        private IRepository<Aspnetuserclaims> _aspnetuserclaimsRepository;
-        private IRepository<Aspnetuserlogins> _aspnetuserloginsRepository;
-        private IRepository<Aspnetuserroles> _aspnetuserrolesRepository;
-        private IRepository<Aspnetusertokens> _aspnetusertokensRepository;
+        // private IRepository<Aspnetroleclaims> _aspnetroleclaimsRepository;
+        // private IRepository<Aspnetroles> _aspnetrolesRepository;
+        // private IRepository<Aspnetuserclaims> _aspnetuserclaimsRepository;
+        // private IRepository<Aspnetuserlogins> _aspnetuserloginsRepository;
+        // private IRepository<Aspnetuserroles> _aspnetuserrolesRepository;
+        // private IRepository<Aspnetusertokens> _aspnetusertokensRepository;
 
         public UnitOfWorkSts(StsContext stsContext) { 
             _stsContext = stsContext; 

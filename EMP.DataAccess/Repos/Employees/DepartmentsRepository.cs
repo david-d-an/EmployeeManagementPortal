@@ -1,15 +1,15 @@
+using System.Data;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using EMP.Data.Models.Employees;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using EMP.Common.Tasks;
-using System.Data;
 using EMP.DataAccess.Repos.Extension;
 
-namespace EMP.DataAccess.Repos
+namespace EMP.DataAccess.Repos.Employees
 {
     public class DepartmentsRepository : IRepository<Departments>
     {

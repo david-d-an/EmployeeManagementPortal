@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using EMP.Common.Tasks;
 using EMP.Data.Models.Employees;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 using EMP.DataAccess.EFCore;
 using EMP.DataAccess.Repos.Extension;
-using Microsoft.EntityFrameworkCore;
 
-namespace EMP.DataAccess.Repos
+namespace EMP.DataAccess.Repos.Employees
 {
     public class SalaryRepository : IRepository<VwSalariesCurrent>
     {

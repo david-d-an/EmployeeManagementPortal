@@ -1,22 +1,22 @@
 using System;
 using System.Linq;
-using EMP.Data.Repos;
-using EMP.Common.Security;
-using EMP.DataAccess.Repos;
-using EMP.DataAccess.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using EMP.Data.Models.Employees;
-using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using EMP.Api.Config;
+using IdentityServer4.AccessTokenValidation;
+using EMP.Common.Security;
+using EMP.Data.Repos;
+using EMP.Data.Models.Employees;
 using EMP.Data.Models.Sts;
+using EMP.DataAccess.Repos.Employees;
+using EMP.DataAccess.Repos.Sts;
+using EMP.DataAccess.Context;
+using EMP.Api.Config;
 
 namespace EMP.Api
 {

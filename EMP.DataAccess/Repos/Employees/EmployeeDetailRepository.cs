@@ -1,17 +1,17 @@
-using EMP.Data.Repos;
-using EMP.Data.Models.Employees;
-using EMP.DataAccess.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using EMP.Data.Repos;
+using EMP.DataAccess.Context;
 using EMP.Common.Tasks;
 using EMP.DataAccess.Repos.Extension;
+using Em = EMP.Data.Models.Employees;
 
-namespace EMP.DataAccess.Repos
+namespace EMP.DataAccess.Repos.Employees
 {
-    public class EmployeeDetailRepository : IRepository<VwEmpDetails>
+    public class EmployeeDetailRepository : IRepository<Em.VwEmpDetails>
     {
         private EmployeesContext _context;
 
@@ -20,14 +20,14 @@ namespace EMP.DataAccess.Repos
             this._context = context;
         }
 
-        public IEnumerable<VwEmpDetails> GetAsync(
+        public IEnumerable<Em.VwEmpDetails> GetAsync(
             object parameters = null, 
             int? pageNum = null, 
             int? pageSize = null)
         {
-            DbSet<VwEmpDetails> dbSet =  _context.VwEmpDetails;
+            DbSet<Em.VwEmpDetails> dbSet =  _context.VwEmpDetails;
 
-            IQueryable<VwEmpDetails> query = dbSet.AsNoTracking();
+            IQueryable<Em.VwEmpDetails> query = dbSet.AsNoTracking();
             if ((pageNum??0) >  0 && (pageSize??0) > 0) {
                 query = query
                     .Skip((pageNum.Value - 1) * pageSize.Value)
@@ -61,33 +61,41 @@ namespace EMP.DataAccess.Repos
             // return await query.ToListAsync();
         }
 
-        public async Task<VwEmpDetails> GetAsync(string id)
+        public async Task<Em.VwEmpDetails> GetAsync(string id)
         {
             int empNo;
             if (!int.TryParse(id, out empNo))
-                return await Task.FromResult<VwEmpDetails>(null);
+                return await Task.FromResult<Em.VwEmpDetails>(null);
 
-            IQueryable<VwEmpDetails> pquery = _context.VwEmpDetails
+            IQueryable<Em.VwEmpDetails> pquery = _context.VwEmpDetails
                 .Where(i => i.EmpNo == empNo);
             var r = pquery.FirstOrDefault();
 
 
-            IQueryable<VwEmpDetails> query = _context.VwEmpDetails
+            IQueryable<Em.VwEmpDetails> query = _context.VwEmpDetails
                 .Where(i => i.EmpNo == empNo);
 
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<VwEmpDetails> PutAsync(string id, VwEmpDetails updateRequest)
+        public async Task<Em.VwEmpDetails> PutAsync(string id, Em.VwEmpDetails updateRequest)
         {
             int empNo;
             if (!int.TryParse(id, out empNo))
-                return await Task.FromResult<VwEmpDetails>(null);
+                return await Task.FromResult<Em.VwEmpDetails>(null);
 
-            Employees employee = await _context.Employees.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            VwSalariesCurrent salary = await _context.VwSalariesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            VwTitlesCurrent title = await _context.VwTitlesCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
-            VwDeptEmpCurrent deptEmp = await _context.VwDeptEmpCurrent.Where(i => i.EmpNo == empNo).FirstOrDefaultAsync();
+            Em.Employees employee = await _context.Employees
+                .Where(i => i.EmpNo == empNo)
+                .FirstOrDefaultAsync();
+            Em.VwSalariesCurrent salary = await _context.VwSalariesCurrent
+                .Where(i => i.EmpNo == empNo)
+                .FirstOrDefaultAsync();
+            Em.VwTitlesCurrent title = await _context.VwTitlesCurrent
+                .Where(i => i.EmpNo == empNo)
+                .FirstOrDefaultAsync();
+            Em.VwDeptEmpCurrent deptEmp = await _context.VwDeptEmpCurrent
+                .Where(i => i.EmpNo == empNo)
+                .FirstOrDefaultAsync();
 
             if (title.Title != updateRequest.Title) {
                 throw new NotImplementedException();
@@ -115,17 +123,19 @@ namespace EMP.DataAccess.Repos
             return updateRequest;
         }
 
-        public async Task<VwEmpDetails> PostAsync(VwEmpDetails createRequest)
+        public async Task<Em.VwEmpDetails> PostAsync(Em.VwEmpDetails createRequest)
         {
-            return await TaskConstants<VwEmpDetails>.NotImplemented;
+            return await TaskConstants<Em.VwEmpDetails>.NotImplemented;
         }
 
-        public async Task<VwEmpDetails> DeleteAsync(string id)
+        public async Task<Em.VwEmpDetails> DeleteAsync(string id)
         {
-            return await TaskConstants<VwEmpDetails>.NotImplemented;
+            return await TaskConstants<Em.VwEmpDetails>.NotImplemented;
         }
 
-        private bool employeeBasicInfoChanged(Employees employee, VwEmpDetails employeeDetailUpdateRequest)
+        private bool employeeBasicInfoChanged(
+            Em.Employees employee, 
+            Em.VwEmpDetails employeeDetailUpdateRequest)
         {
             bool result =
                 employee.BirthDate != employeeDetailUpdateRequest.BirthDate ||

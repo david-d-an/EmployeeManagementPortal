@@ -1,14 +1,14 @@
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using EMP.Data.Repos;
 using EMP.Data.Models.Employees;
 using EMP.DataAccess.Context;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using EMP.DataAccess.Repos.Extension;
 using EMP.Common.Tasks;
 
-namespace EMP.DataAccess.Repos
+namespace EMP.DataAccess.Repos.Employees
 {
     public class EmployeeDetailShortRepository : IRepository<VwEmpDetailsShort>
     {

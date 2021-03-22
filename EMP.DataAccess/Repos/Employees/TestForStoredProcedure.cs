@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Microsoft.EntityFrameworkCore;
 using EMP.Data.Models.Employees;
-// using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 using EMP.DataAccess.EFCore;
-using Microsoft.EntityFrameworkCore;
 
-namespace EMP.DataAccess.Repos 
+namespace EMP.DataAccess.Repos.Employees
 {
     public class TestForStoredProcedure {
         private EmployeesContext _context;
@@ -17,7 +16,7 @@ namespace EMP.DataAccess.Repos
         }
 
         public TestForStoredProcedure() {
-                        string storedProcName = "test_proc";
+            string storedProcName = "test_proc";
             var database = _context.Database.GetDbConnection().Database;
             if (database != null)
                 storedProcName = $"{database}.{storedProcName}";
@@ -29,8 +28,7 @@ namespace EMP.DataAccess.Repos
             IList<Departments> barResults;
             _context.LoadStoredProc(storedProcName)
             .WithSqlParam("empNo", 11)
-            .WithSqlParam("salary", (dbParam) =>
-            {
+            .WithSqlParam("salary", (dbParam) => {
                 dbParam.Direction = System.Data.ParameterDirection.Output;
                 dbParam.DbType = System.Data.DbType.Int32;
                 outputParam = dbParam;

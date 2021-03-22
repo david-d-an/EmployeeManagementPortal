@@ -1,35 +1,33 @@
 using System.Collections.Generic;
-using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using EMP.Common.Tasks;
 using EMP.Data.Models.Employees;
-using EMP.Data.Models.Employees.Mapped;
 using EMP.Data.Repos;
 using EMP.DataAccess.Context;
 using EMP.DataAccess.EFCore;
 using EMP.DataAccess.Repos.Extension;
-using Microsoft.EntityFrameworkCore;
 
-namespace EMP.DataAccess.Repos
+namespace EMP.DataAccess.Repos.Employees
 {
-    public class DeptManagerCurrentRepository : IRepository<VwDeptManagerCurrent>
+    public class DeptEmpRepository : IRepository<VwDeptEmpCurrent>
     {
         private EmployeesContext _context;
 
-        public DeptManagerCurrentRepository(EmployeesContext context)
+        public DeptEmpRepository(EmployeesContext context)
         {
             this._context = context;
         }
 
-        public IEnumerable<VwDeptManagerCurrent> GetAsync(
+        public IEnumerable<VwDeptEmpCurrent> GetAsync(
             object parameters = null, 
             int? pageNum = null, 
             int? pageSize = null)
         {
-            DbSet<VwDeptManagerCurrent> dbSet =  _context.VwDeptManagerCurrent;
+            DbSet<VwDeptEmpCurrent> dbSet =  _context.VwDeptEmpCurrent;
 
-            IQueryable<VwDeptManagerCurrent> query = dbSet.AsNoTracking();
+            IQueryable<VwDeptEmpCurrent> query = dbSet.AsNoTracking();
             if ((pageNum??0) >  0 && (pageSize??0) > 0) {
                 query = query
                     .Skip((pageNum.Value - 1) * pageSize.Value)
@@ -39,18 +37,27 @@ namespace EMP.DataAccess.Repos
             return query.ToEnumerable();
         }
 
-        public async Task<VwDeptManagerCurrent> GetAsync(string id)
-        {            
-            return await _context.VwDeptManagerCurrent
-                        .Where(i => i.DeptNo == id)
-                        .FirstOrDefaultAsync();
+        public async Task<VwDeptEmpCurrent> GetAsync(string id)
+        {
+            int empNo;
+            if (!int.TryParse(id, out empNo))
+                return await Task.FromResult<VwDeptEmpCurrent>(null);
+
+            IQueryable<VwDeptEmpCurrent> query = _context.VwDeptEmpCurrent
+                .Where(i => i.EmpNo == empNo);
+
+            return await query.FirstOrDefaultAsync();
+        }
+        public async Task<VwDeptEmpCurrent> PutAsync(string id, VwDeptEmpCurrent updateRequest)
+        {
+            return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }
 
-        public async Task<VwDeptManagerCurrent> PostAsync(VwDeptManagerCurrent createRequest)
+        public async Task<VwDeptEmpCurrent> PostAsync(VwDeptEmpCurrent createRequest)
         {
-            string storedProcName = "sp_insert_dept_manager";
+            string storedProcName = "sp_insert_dept_emp";
             // DbParameter outputParam;
-            VwDeptManagerCurrent spResults = null;
+            VwDeptEmpCurrent spResults = null;
             await _context
                 .LoadStoredProc(storedProcName)
                 .WithSqlParam("empNo", createRequest.EmpNo)
@@ -63,20 +70,15 @@ namespace EMP.DataAccess.Repos
                 // })
                 .ExecuteStoredProcAsync(_context, (handler) => {
                     bool nr = handler.NextResult();
-                    spResults = handler.ReadToList<VwDeptManagerCurrent>().FirstOrDefault();
+                    spResults = handler.ReadToList<VwDeptEmpCurrent>().FirstOrDefault();
                 });
 
             return spResults;
         }
 
-        public async Task<VwDeptManagerCurrent> PutAsync(string id, VwDeptManagerCurrent updateRequest)
+        public async Task<VwDeptEmpCurrent> DeleteAsync(string id)
         {
-            return await TaskConstants<VwDeptManagerCurrent>.NotImplemented;
-        }
-
-        public async Task<VwDeptManagerCurrent> DeleteAsync(string id)
-        {
-            return await TaskConstants<VwDeptManagerCurrent>.NotImplemented;
+            return await TaskConstants<VwDeptEmpCurrent>.NotImplemented;
         }
     }
 }
