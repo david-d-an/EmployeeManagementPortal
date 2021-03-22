@@ -18,6 +18,7 @@ using EMP.Sts.Quickstart.Account;
 using EMP.Sts.Security;
 using EMP.Common.Security;
 using IdentityServer4.Models;
+using Joonasw.AspNetCore.SecurityHeaders;
 
 namespace EMP.Sts
 {
@@ -156,6 +157,18 @@ namespace EMP.Sts
             } else {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseCsp(csp => {
+                // csp.AllowScripts
+                //     .FromSelf()
+                //     .From("ajax.aspnetcdn.com");
+                csp.AllowStyles
+                    .FromSelf()
+                    .From("fonts.googleapis.com");
+                csp.AllowFonts
+                    .FromSelf()
+                    .From("fonts.gstatic.com");
+            });
 
             app.UseStaticFiles();
 
