@@ -1,8 +1,11 @@
 # Build
-> docker build -t emp.web .
+> docker build -f ./DockerSettings/Dockerfile -t emp.web .
 
 # Test
-> docker run -d -p 8090:80 --name sts emp.web
+> docker run -d -p 8090:80 --name emp.web.container emp.web
+
+# Log in as root user. -u 0 is not necessary as Dockerfile sets the default user as root
+> docker exec -it emp.api.container /bin/bash
 
 # Get Image ID
 > docker images

@@ -1,0 +1,19 @@
+# Build
+> dotnet publish -c Release
+> docker build -f ./DockerSettings/Dockerfile -t emp.api .
+
+# Test
+> docker run -d -p 8070:80 --name emp.api.container emp.api
+
+# Log in as root user. -u 0 is not necessary as Dockerfile sets the default user as root
+> docker exec -it emp.api.container bash
+> docker exec -u 0 -it emp.api.container /bin/bash
+
+# Get Image ID
+> docker images
+
+# Tag Iamge
+> docker tag 326b1496d478 dong82/emp.api
+
+# Push to Repository
+> docker push dong82/emp.api:x.x.x.x

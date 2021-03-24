@@ -1,4 +1,11 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends openssh-server
+RUN mkdir -p /run/sshd && echo "root:Docker!" | chpasswd
+COPY ./DockerSettings/sshd_config /etc/ssh/
+EXPOSE 2222
+
 RUN apt-get update -yq \
     && apt-get install curl gnupg -yq \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash \
@@ -25,4 +32,9 @@ RUN dotnet publish "EMP.Web.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "EMP.Web.dll"]
+ENTRYPOINT [ \
+    "/bin/bash", \
+    "-c", \
+    "/usr/sbin/sshd && dotnet EMP.Web.dll" \
+]
+

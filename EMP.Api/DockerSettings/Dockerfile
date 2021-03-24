@@ -9,10 +9,12 @@ EXPOSE 2222
 
 COPY bin/Release/netcoreapp3.1/publish/ App/
 WORKDIR /App
+# ENTRYPOINT ["dotnet", "EMP.Sts.copy.dll"]
+# CMD ["/etc/sshd", "-D"]
 ENTRYPOINT [ \
     "/bin/bash", \
     "-c", \
-    "/usr/sbin/sshd && dotnet EMP.Sts.copy.dll" \
+    "/usr/sbin/sshd && dotnet EMP.Api.dll" \
 ]
 
 
