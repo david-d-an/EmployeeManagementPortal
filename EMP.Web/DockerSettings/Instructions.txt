@@ -1,0 +1,14 @@
+# Build
+> docker build -t emp.web .
+
+# Test
+> docker run -d -p 8090:80 --name sts emp.web
+
+# Get Image ID
+> docker images
+
+# Tag Iamge
+> docker tag b75be6ce33a0 dong82/emp.web
+
+# Push to Repository
+> docker push dong82/emp.web

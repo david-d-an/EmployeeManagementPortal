@@ -1,0 +1,15 @@
+# Build
+> dotnet publish -c Release
+> docker build -t emp.sts.copy .
+
+# Test
+> docker run -d -p 8080:80 --name sts emp.sts.copy
+
+# Get Image ID
+> docker images
+
+# Tag Iamge
+> docker tag d22807a3ed45 dong82/emp.sts
+
+# Push to Repository
+> docker push dong82/emp.sts
