@@ -1,6 +1,9 @@
 # FROM mcr.microsoft.com/dotnet/aspnet:3.1
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 
+ENV DOTNET_ENVIRONMENT=Docker
+ENV ASPNETCORE_ENVIRONMENT=Docker
+
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssh-server
 RUN mkdir -p /run/sshd && echo "root:Docker!" | chpasswd
@@ -12,7 +15,7 @@ WORKDIR /App
 ENTRYPOINT [ \
     "/bin/bash", \
     "-c", \
-    "/usr/sbin/sshd && dotnet EMP.Sts.copy.dll" \
+    "/usr/sbin/sshd && dotnet EMP.Sts.dll" \
 ]
 
 

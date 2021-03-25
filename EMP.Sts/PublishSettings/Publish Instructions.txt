@@ -3,7 +3,7 @@
 > dotnet publish -c Release
 
 # Test publish version
-> cd bin/Release/netcoreapp2.2/publish/
+> cd bin/Release/netcoreapp3.1/publish/
 > dotnet EMP.Sts.dll --urls=https://localhost:22001
 
 # Copy to Nginx target folder

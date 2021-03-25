@@ -1,5 +1,8 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 
+ENV DOTNET_ENVIRONMENT=Docker
+ENV ASPNETCORE_ENVIRONMENT=Docker
+
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssh-server
 RUN mkdir -p /run/sshd && echo "root:Docker!" | chpasswd
@@ -24,10 +27,10 @@ COPY ["./EMP.Web.csproj", "netcore-angular-docker/"]
 RUN dotnet restore "netcore-angular-docker/EMP.Web.csproj"
 COPY . ./netcore-angular-docker
 WORKDIR "/src/netcore-angular-docker"
-RUN dotnet build "EMP.Web.csproj" -c Release -o /app/build
+RUN dotnet build "EMP.Web.csproj" -c Docker -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "EMP.Web.csproj" -c Release -o /app/publish
+RUN dotnet publish "EMP.Web.csproj" -c Docker -o /app/publish
 
 FROM base AS final
 WORKDIR /app

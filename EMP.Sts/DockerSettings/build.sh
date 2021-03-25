@@ -12,12 +12,12 @@ echo "### Publishing Release code"
 dotnet publish -c Release
 echo
 echo "### Building image"
-docker build -f ./DockerSettings/Dockerfile -t emp.sts.copy .
+docker build -f ./DockerSettings/Dockerfile -t emp.sts .
 
-imageid=$(docker images -q emp.sts.copy:latest)
+imageid=$(docker images -q emp.sts:latest)
 echo
 echo "### Tagging image (${imageid}) to: ${tag_num}"
-docker tag $(docker images -q emp.sts.copy:latest) dong82/emp.sts:$tag_num
+docker tag $(docker images -q emp.sts:latest) dong82/emp.sts:$tag_num
 echo
 echo "### Tagging image (${imageid}) to: latest"
 docker tag dong82/emp.sts:$tag_num dong82/emp.sts:latest

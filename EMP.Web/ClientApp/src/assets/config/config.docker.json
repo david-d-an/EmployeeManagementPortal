@@ -1,0 +1,19 @@
+{
+  "env": {
+    "name": "Docker"
+  },
+  "logging": {
+    "console": true,
+    "appInsights": true
+  },
+  "apiServer": {
+    "employees": "https://empapidocker6921.azurewebsites.net"
+  },
+  "oid": {
+    "clientRoot": "https://empwebdocker6921.azurewebsites.net/",
+    "apiRoot": "https://empapidocker6921.azurewebsites.net/api/",
+    "stsAuthority": "https://empstsdocker6921.azurewebsites.net/",
+    "clientId": "emp-web-client",
+    "apiId": "projects-api"
+  }
+}

@@ -6,7 +6,7 @@ resourceGroup="EMP"
 # Create publish version
 echo Building release version..........
 echo
-cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Sts.Copy
+cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Sts
 dotnet publish -c Release
 
 # Copy to Azure App Service

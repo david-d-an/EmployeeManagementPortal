@@ -11,7 +11,7 @@ using System.Linq;
 namespace EMP.Api.Controllers
 {
     [ApiController]
-    [Authorize(Roles="System Admin")]
+    [Authorize(Roles="System Admin,Department Manager")]
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
