@@ -70,6 +70,7 @@ namespace EMP.Api
             services.AddControllers();
 
             // Make MySql Connection Service
+            // TO DO: Create factory to return DB connection by ASYNC
             var encConnStrMySqlEmployees = Configuration.GetConnectionString("MySqlEmployees(Azure)");
             var connStrMySqlEmployees = AesCryptoUtil.Decrypt(encConnStrMySqlEmployees);
             services.AddDbContext<EmployeesContext>(builder =>                   

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace EMP.Api.Controllers
 {
+    // TO DO: Use Cancellation Token
+
     [ApiController]
     [Route("api/[controller]")]
     public class EmployeeDetailController : ControllerBase
@@ -46,6 +48,7 @@ namespace EMP.Api.Controllers
 
         [HttpGet]
         [Authorize(Roles="Department Manager")]
+        // [AllowAnonymous]
         [ResponseCache(
             Duration = 60,
             Location = ResponseCacheLocation.Client,
