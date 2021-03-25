@@ -6,7 +6,7 @@
 > docker run -d -p 8080:80 --name emp.sts.container emp.sts.copy
 
 # Log in as root user. -u 0 is not necessary as Dockerfile sets the default user as root
-> docker exec -it emp.api.container /bin/bash
+> docker exec -it emp.sts.container /bin/bash
 
 # Get Image ID
 > docker images

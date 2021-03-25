@@ -5,7 +5,7 @@
 > docker run -d -p 8090:80 --name emp.web.container emp.web
 
 # Log in as root user. -u 0 is not necessary as Dockerfile sets the default user as root
-> docker exec -it emp.api.container /bin/bash
+> docker exec -it emp.web.container /bin/bash
 
 # Get Image ID
 > docker images
