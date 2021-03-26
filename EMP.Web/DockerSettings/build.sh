@@ -8,8 +8,8 @@ fi
 tag_num=$1
 
 echo
-echo "### Publishing Release code"
-dotnet publish -c Release
+echo "### Publishing Relase code for Docker"
+dotnet publish -c Docker
 echo
 echo "### Building image"
 docker build -f ./DockerSettings/Dockerfile -t emp.web .
