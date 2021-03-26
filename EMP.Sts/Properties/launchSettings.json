@@ -20,7 +20,7 @@
     "EMP.Sts": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5500",
+      "applicationUrl": "https://localhost:5500",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

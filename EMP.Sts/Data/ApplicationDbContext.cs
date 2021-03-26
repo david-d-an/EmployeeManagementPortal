@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Identity.EntityFrameworkCore; <- this no longer works either
 using Microsoft.EntityFrameworkCore;
 using EMP.Sts.Models;
 using System.Reflection;
@@ -49,7 +51,8 @@ namespace EMP.Sts.Data
                         modelBuilder.Entity(entityType.ClrType)
                                     .Property(property.Name)
                                     .ValueGeneratedOnAdd()
-                                    .Metadata.BeforeSaveBehavior = PropertySaveBehavior.Ignore;
+                                    .Metadata
+                                    .SetBeforeSaveBehavior(PropertySaveBehavior.Ignore);
                     }
                     else if (property.PropertyInfo.PropertyType.IsBoolean())
                     {

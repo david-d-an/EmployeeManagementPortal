@@ -6,17 +6,32 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
 
 namespace EMP.Api.Controllers
 {
     [ApiController]
-    [Authorize(Roles="System Admin")]
+    [Authorize(Roles="System Admin,Department Manager")]
     [Route("api/[controller]")]
     public class DepartmentsController : ControllerBase
     {
         private readonly ILogger<DepartmentsController> _logger;
         private readonly IRepository<Departments> _departmentsRepository;
         private readonly IUnitOfWorkEmployees _unitOfWork;
+
+
+        // public async ValueTask<int> foo(int param) {
+        //     return await
+        //         new ValueTask<int>(param * 2);
+        //         Func<int, bool> action;
+        //         Dictionary<int, string> d = new Dictionary<int, string> {
+        //             {1, "One"},
+        //             {2, "Two"},
+        //             {3, "Three"},
+        //         };
+        //         IEnumerable<int> keys = d.Keys;
+        //         IEnumerable<string> values = d.Values;
+        // }
 
         public DepartmentsController(
             ILogger<DepartmentsController> logger,

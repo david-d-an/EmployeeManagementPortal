@@ -1,20 +1,16 @@
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 /* 
     RSACryptoServiceProvider couldn't be used to make X.509 cert works on OSX.
     For deails,
     https://stackoverflow.com/questions/54180171/cspkeycontainerinfo-requires-windows-cryptographic-api-capi-which-is-not-av
 */
-
 
 namespace EMP.Sts.Security
 {
@@ -38,11 +34,11 @@ namespace EMP.Sts.Security
                 return Path.Combine(_environment.ContentRootPath, Config.GetRsaKeyLocation(_cfg));
             }
         }
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly TimeSpan _timeSpan;
         private readonly IConfiguration _cfg;
 
-        public RsaKeyService(IHostingEnvironment environment, TimeSpan timeSpan, IConfiguration cfg) {
+        public RsaKeyService(IWebHostEnvironment environment, TimeSpan timeSpan, IConfiguration cfg) {
             _environment = environment;
             _timeSpan = timeSpan;
             _cfg = cfg;

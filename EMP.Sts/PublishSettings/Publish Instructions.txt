@@ -3,15 +3,15 @@
 > dotnet publish -c Release
 
 # Test publish version
-> cd bin/Release/netcoreapp2.2/publish/
-> dotnet EMP.Sts.dll --urls=http://localhost:22001
+> cd bin/Release/netcoreapp3.1/publish/
+> dotnet EMP.Sts.dll --urls=https://localhost:22001
 
 # Copy to Nginx target folder
 > cp -r /Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Sts/bin/Release/netcoreapp2.2/publish/* /usr/local/var/www/EMP.Sts
 
 # Start Dotnet service
 > cd /usr/local/var/www/EMP.Sts
-> dotnet /usr/local/var/www/EMP.Sts/EMP.Sts.dll --urls=http://localhost:22001
+> dotnet /usr/local/var/www/EMP.Sts/EMP.Sts.dll --urls=https://localhost:22001
 # Better way to start Dotnet service
 > cd /Users/david.d.an/Library/LaunchAgents
 > launchctl unload /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist

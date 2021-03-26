@@ -17,6 +17,23 @@ using EMP.Sts.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
+
+
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
+
+using System.Security.Claims;
+
+
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -72,18 +89,6 @@ namespace IdentityServer4.Quickstart.UI
             return View(vm);
         }
 
-        private string GetReturnUri(string url) {
-            if (string.IsNullOrWhiteSpace(url))
-                return null;
-
-            var uri = new Uri(url);
-            return
-                uri.Scheme + 
-                Uri.SchemeDelimiter + 
-                uri.Host + ":" + uri.Port;
-            // string[] pathsegments = uri.Segments;
-        }
-
         /// <summary>
         /// Handle postback from username/password login
         /// </summary>
@@ -129,6 +134,21 @@ namespace IdentityServer4.Quickstart.UI
                     ApplicationUser user = await _userManager.FindByNameAsync(model.Username);
                     await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.ClientId));
                     var roles = await _userManager.GetRolesAsync(user);
+
+
+
+                    // var claims = new List<Claim> {
+                    //     new Claim(ClaimTypes.Name, model.Username),
+                    //     new Claim(ClaimTypes.NameIdentifier, model.Username)
+                    // };
+                    // var claimsIdentity = new ClaimsIdentity(
+                    //     claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    // var authProperties = new AuthenticationProperties();
+                    // await HttpContext.SignInAsync(
+                    //     CookieAuthenticationDefaults.AuthenticationScheme,
+                    //     new ClaimsPrincipal(claimsIdentity),
+                    //     authProperties);
+                    // await _userManager.ResetAccessFailedCountAsync(user);
 
                     if (context != null)
                     {

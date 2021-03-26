@@ -1,4 +1,87 @@
-﻿using System.Collections.Generic;
+﻿#region
+// using System.Collections.Generic;
+// using IdentityServer4;
+// using IdentityServer4.Models;
+
+// namespace EMP.Sts
+// {
+//     public class Config1
+//     {
+//         public static IEnumerable<ApiResource> GetApiResources()
+//         {
+//             return new List<ApiResource>
+//             {
+//                 new ApiResource("projects-api", "Projects API")
+//             };
+//         }
+
+//         public static IEnumerable<Client> GetClients()
+//         {
+//             return new List<Client>
+//             {
+//                 new Client
+//                 {
+//                     ClientId = "spa-client",
+//                     ClientName = "Projects SPA",
+//                     RequireClientSecret = false,
+//                     AllowedGrantTypes = GrantTypes.Code,
+//                     RequirePkce = true,
+//                     AllowAccessTokensViaBrowser = true,
+//                     RequireConsent = false,
+
+
+//                     RedirectUris =           { "http://localhost:4200/signin-callback", "http://localhost:4200/assets/silent-callback.html" },
+//                     PostLogoutRedirectUris = { "http://localhost:4200/signout-callback" },
+//                     AllowedCorsOrigins =     { "http://localhost:4200" },
+
+//                     AllowedScopes =
+//                     {
+//                         IdentityServerConstants.StandardScopes.OpenId,
+//                         IdentityServerConstants.StandardScopes.Profile,
+//                         "projects-api"
+//                     },
+//                     AccessTokenLifetime = 600
+//                 },
+//                 new Client
+//                 {
+//                     ClientId = "mvc",
+//                     ClientName = "MVC Client",
+//                     AllowedGrantTypes = GrantTypes.Hybrid,
+
+//                     ClientSecrets =
+//                     {
+//                         new Secret("secret".Sha256())
+//                     },
+
+//                     RedirectUris           = { "http://localhost:4201/signin-oidc" },
+//                     PostLogoutRedirectUris = { "http://localhost:4201/signout-callback-oidc" },
+
+//                     AllowedScopes =
+//                     {
+//                         IdentityServerConstants.StandardScopes.OpenId,
+//                         IdentityServerConstants.StandardScopes.Profile
+//                     },
+//                     AllowOfflineAccess = true
+
+//                 }
+//             };
+
+//         }
+
+//         public static IEnumerable<IdentityResource> GetIdentityResources()
+//         {
+//             return new List<IdentityResource>
+//             {
+//                 new IdentityResources.OpenId(),
+//                 new IdentityResources.Profile(),
+//             };
+//         }
+//     }
+// }
+#endregion
+
+
+using System.Collections.Generic;
 using System.Configuration;
 using IdentityServer4;
 using IdentityServer4.Models;
@@ -13,13 +96,11 @@ namespace EMP.Sts
             return cfg["RsaKeyLocation"];
         }
 
-        public static IEnumerable<ApiResource> GetApiResources(IConfiguration cfg, ILogger<Startup> logger)
+        public static IEnumerable<ApiResource> GetApiResources(IConfiguration cfg)
         {
             var apiResource = new ApiResource(cfg["ApiId"], cfg["ApiName"]);
-            logger.LogInformation(string.Format("{0}: {1}", "API Name", apiResource.Name));
-            logger.LogInformation(string.Format("{0}: {1}", "API DisplayName", apiResource.DisplayName));
-
-            // new ApiResource("projects-api", "Projects API")
+            // logger.LogInformation(string.Format("{0}: {1}", "API Name", apiResource.Name));
+            // logger.LogInformation(string.Format("{0}: {1}", "API DisplayName", apiResource.DisplayName));
             return new List<ApiResource> { apiResource };
         }
 
@@ -37,42 +118,13 @@ namespace EMP.Sts
             return cookieExpiration;
         }
 
-        public static IEnumerable<Client> GetClients(IConfiguration cfg, ILogger<Startup> logger) {
+        public static IEnumerable<Client> GetClients(IConfiguration cfg) {
             var RedirectUris = GetConfigSection(cfg, "RedirectUris");
             var PostLogoutRedirectUris = GetConfigSection(cfg, "PostLogoutRedirectUris");
             var AllowedCorsOrigins = GetConfigSection(cfg, "AllowedCorsOrigins");
             var cookieExpiration = GetCookieExpirationByMinute(cfg);
 
             var client = new Client {
-                #region
-                // ClientId = "emp-web-client",
-                // ClientName = "emp-web-client",
-                // RequireClientSecret = false,
-                // AllowedGrantTypes = GrantTypes.Code,
-                // RequirePkce = true,
-                // AllowAccessTokensViaBrowser = true,
-                // RequireConsent = false,
-
-                // RedirectUris = { 
-                //     "http://localhost:5000/signin-callback", 
-                //     "http://localhost:5000/assets/silent-callback.html" 
-                // },
-                // PostLogoutRedirectUris = { 
-                //     "http://localhost:5000/signout-callback" 
-                // },
-                // AllowedCorsOrigins = { 
-                //     "http://localhost:5000",
-                //     "https://localhost:5001",
-                //     "http://ipv4.fiddler:5000",
-                //     "https://ipv4.fiddler:5001"
-                // },
-                // AllowedScopes =
-                // {
-                //     IdentityServerConstants.StandardScopes.OpenId,
-                //     IdentityServerConstants.StandardScopes.Profile,
-                //     "projects-api"
-                // },
-                #endregion
                 ClientId = cfg["ClientId"],
                 ClientName = cfg["ClientId"],
                 RequireClientSecret = false,
@@ -83,8 +135,7 @@ namespace EMP.Sts
                 RedirectUris = GetConfigSection(cfg, "RedirectUris"),
                 PostLogoutRedirectUris = GetConfigSection(cfg, "PostLogoutRedirectUris"),
                 AllowedCorsOrigins = GetConfigSection(cfg, "AllowedCorsOrigins"),
-                AllowedScopes =
-                {
+                AllowedScopes = {
                     IdentityServerConstants.StandardScopes.OpenId,
                     IdentityServerConstants.StandardScopes.Profile,
                     cfg["ApiId"]
@@ -101,32 +152,31 @@ namespace EMP.Sts
                 AccessTokenLifetime = 60 * cookieExpiration + 10,
             };
 
-            logger.LogInformation(string.Format("{0}: {1}", "ClientId", client.ClientId));
-            logger.LogInformation(string.Format("{0}: {1}", "ClientName", client.ClientName));
-            logger.LogInformation(string.Format("{0}: {1}", "RequirePkce", client.RequirePkce));
+            // logger.LogInformation(string.Format("{0}: {1}", "ClientId", client.ClientId));
+            // logger.LogInformation(string.Format("{0}: {1}", "ClientName", client.ClientName));
+            // logger.LogInformation(string.Format("{0}: {1}", "RequirePkce", client.RequirePkce));
 
-            foreach(var s in client.RedirectUris) {
-                logger.LogInformation(string.Format("{0}: {1}", "RedirectUris", s));
-            }
-            foreach(var s in client.PostLogoutRedirectUris) {
-                logger.LogInformation(string.Format("{0}: {1}", "PostLogoutRedirectUris", s));                
-            }
-            foreach(var s in client.AllowedCorsOrigins) {
-                logger.LogInformation(string.Format("{0}: {1}", "AllowedCorsOrigins", s));                    
-            }
+            // foreach(var s in client.RedirectUris) {
+            //     logger.LogInformation(string.Format("{0}: {1}", "RedirectUris", s));
+            // }
+            // foreach(var s in client.PostLogoutRedirectUris) {
+            //     logger.LogInformation(string.Format("{0}: {1}", "PostLogoutRedirectUris", s));                
+            // }
+            // foreach(var s in client.AllowedCorsOrigins) {
+            //     logger.LogInformation(string.Format("{0}: {1}", "AllowedCorsOrigins", s));                    
+            // }
 
             return new List<Client> { client };
         }
 
-        public static string GetPublicOrigin(IConfiguration cfg, ILogger<Startup> logger) {
+        public static string GetPublicOrigin(IConfiguration cfg) {
             var publicOrigin = cfg["PublicOrigin"];
-            logger.LogInformation(string.Format("{0}: {1}", "PublicOrigin", publicOrigin));                    
+            // logger.LogInformation(string.Format("{0}: {1}", "PublicOrigin", publicOrigin));                    
             return publicOrigin;
         }
 
         public static IEnumerable<IdentityResource> GetIdentityResources() {
-            return new List<IdentityResource>
-            {
+            return new List<IdentityResource> {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
             };

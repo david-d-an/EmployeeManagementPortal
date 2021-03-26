@@ -1,9 +1,11 @@
-import { HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { from, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { AppConfig } from 'src/app/app.config';
+import { tap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -11,7 +13,9 @@ import { AppConfig } from 'src/app/app.config';
 })
 export class AuthInterceptorsService implements HttpInterceptor {
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router) { }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.startsWith('assets/config')) {
@@ -27,7 +31,17 @@ export class AuthInterceptorsService implements HttpInterceptor {
 
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         const authReq = req.clone({ headers });
-        return next.handle(authReq).toPromise();
+        return next.handle(authReq)
+          .pipe(tap(
+            _ => {},
+            err => {
+              const respError = err as HttpErrorResponse;
+              if (respError && (respError.status === 401 || respError.status === 403)) {
+                this.router.navigate(['/unauthorized']);
+              }
+            }
+          ))
+          .toPromise();
       }));
     } else {
       return next.handle(req);

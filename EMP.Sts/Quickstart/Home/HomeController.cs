@@ -7,7 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using EMP.Sts.Models;
+using System.Security.Claims;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -16,18 +20,45 @@ namespace IdentityServer4.Quickstart.UI
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IHostingEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         private readonly ILogger _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public HomeController(IIdentityServerInteractionService interaction, IHostingEnvironment environment, ILogger<HomeController> logger)
+        public HomeController(
+            IIdentityServerInteractionService interaction,
+            IWebHostEnvironment environment,
+            ILogger<HomeController> logger,
+            UserManager<ApplicationUser> userManager)
         {
+            // IWebHostEnvironment env;
+            // env.IsDevelopment();
+
             _interaction = interaction;
             _environment = environment;
             _logger = logger;
+            _userManager = userManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            // var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier) // will give the user's userId
+            // var userName =  User.FindFirstValue(ClaimTypes.Name) // will give the user's userName
+            // var userId =  User.FindFirst(ClaimTypes.NameIdentifier);
+            // var userName =  User.FindFirstValue(ClaimTypes.Name);
+
+            var userId = User.FindFirst(c =>
+            {
+                return c.Type == ClaimTypes.NameIdentifier;
+            });
+            var userName = User.FindFirst(c =>
+            {
+                return c.Type == ClaimTypes.Name;
+            });
+
+
+            ApplicationUser applicationUser = await _userManager.GetUserAsync(User);
+            string userEmail = applicationUser?.Email; // will give the user's Email
+
             return View();
             // if (_environment.IsDevelopment())
             // {

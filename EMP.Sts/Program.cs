@@ -1,59 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
 using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
-using Serilog.Formatting.Compact;
+using Serilog.Core;
 
 namespace EMP.Sts
 {
     public class Program
     {
-        public static void Main(string[] args)
+        private static bool IsDevelopment =>
+            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
+
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+            .AddJsonFile($"appsettings.Development.json", true)
+            .AddEnvironmentVariables()
+            .Build();
+
+        public static Logger Logger { get; } = new LoggerConfiguration()
+            .ReadFrom.Configuration(Configuration)
+            .Enrich.FromLogContext()
+            .CreateLogger();
+            
+        public static int Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-                .MinimumLevel.Override("System", LogEventLevel.Warning)
-                .MinimumLevel.Override(
-                    "Microsoft.AspNetCore.Authentication", 
-                    LogEventLevel.Information)
-                .Enrich.FromLogContext()
-                .WriteTo.Console()
-                // .WriteTo.Console(
-                //     outputTemplate: "[{Timestamp:HH:mm:ss} {Level}] {SourceContext}{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}", 
-                //     theme: AnsiConsoleTheme.Literate)
-                .WriteTo.File(
-                    new RenderedCompactJsonFormatter(), 
-                    "logs/log-.ndjson", 
-                    rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+            Log.Logger = Logger;
 
             try {
                 Log.Information("Starting up");
-                BuildWebHost(args).Run();
+                IHost host = CreateHostBuilder(args).Build();
+                host.Run();
+                return 0;
             } catch (Exception ex) {
                 Log.Fatal(ex, "Application start-up failed");
+                return 1;
             } finally {
                 Log.CloseAndFlush();
             }
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                // .UseUrls("http://localhost:14242/")
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseSerilog((hostingContext, loggerConfig) =>
+                    loggerConfig.ReadFrom.Configuration(hostingContext.Configuration)
+                )
                 .ConfigureLogging(builder => {
                     builder.ClearProviders();
-                    // builder.AddSerilog();
+                    // builder.AddConsole();
                 })
-                .UseStartup<Startup>()
-                .Build();
+                .ConfigureWebHostDefaults(webBuilder => {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

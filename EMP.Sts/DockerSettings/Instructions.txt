@@ -1,0 +1,18 @@
+# Build
+> dotnet publish -c Release
+> docker build -f ./DockerSettings/Dockerfile -t emp.sts .
+
+# Test
+> docker run -d -p 8080:80 --name emp.sts.container emp.sts
+
+# Log in as root user. -u 0 is not necessary as Dockerfile sets the default user as root
+> docker exec -it emp.sts.container /bin/bash
+
+# Get Image ID
+> docker images
+
+# Tag Iamge
+> docker tag d22807a3ed45 dong82/emp.sts
+
+# Push to Repository
+> docker push dong82/emp.sts
