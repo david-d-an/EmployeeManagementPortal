@@ -10,10 +10,14 @@
 > docker exec -u 0 -it emp.api.container /bin/bash
 
 # Get Image ID
-> docker images
+> docker images -f=reference='*dong82/emp.api*:*' -f=reference='emp.api*:*'
 
 # Tag Iamge
-> docker tag 326b1496d478 dong82/emp.api
+> docker tag $(docker images -q emp.api:latest) dong82/emp.api
+
+# Get latest tag name
+tagname=$(./TagName.sh emp.api)
 
 # Push to Repository
-> docker push dong82/emp.api:x.x.x.x
+> docker push dong82/emp.api:$tagname
+> docker push dong82/emp.api:latest
