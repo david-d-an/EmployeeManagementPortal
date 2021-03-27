@@ -10,8 +10,11 @@ RUN mkdir -p /run/sshd && echo "root:Docker!" | chpasswd
 COPY ./EMP.Api/DockerSettings/sshd_config /etc/ssh/
 EXPOSE 2222
 
-COPY ./EMP.Api/bin/Release/netcoreapp3.1/publish/ App/
-WORKDIR /App
+# COPY ./EMP.Api/bin/Release/netcoreapp3.1/publish/ App/
+COPY ./EMP.Api/bin/Release/netcoreapp3.1/ /var/lib/docker/tmp/buildkit-mount445786745/EMP.Api/bin/Release/netcoreapp3.1/
+
+# WORKDIR /App
+WORKDIR /var/lib/docker/tmp/buildkit-mount445786745/EMP.Api/bin/Release/netcoreapp3.1/
 # ENTRYPOINT ["dotnet", "EMP.Sts.copy.dll"]
 # CMD ["/etc/sshd", "-D"]
 ENTRYPOINT [ \
