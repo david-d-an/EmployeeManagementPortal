@@ -19,6 +19,7 @@ RUN dotnet restore ./EMP.Api/EMP.Api.csproj
 RUN dotnet publish ./EMP.Api/EMP.Api.csproj -c Release -o ./out
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS publish-env
+
 WORKDIR /App
 COPY --from=build-env /App/out .
 
