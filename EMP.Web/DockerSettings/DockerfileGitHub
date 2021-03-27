@@ -25,9 +25,9 @@ RUN apt-get update -yq \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash \
     && apt-get install nodejs -yq
 WORKDIR /src
-COPY ["./EMP.Web.csproj", "netcore-angular-docker/"]
+COPY ["./EMP.Web/EMP.Web.csproj", "netcore-angular-docker/"]
 RUN dotnet restore "netcore-angular-docker/EMP.Web.csproj"
-COPY . ./netcore-angular-docker
+COPY ./EMP.Web ./netcore-angular-docker
 WORKDIR "/src/netcore-angular-docker"
 RUN dotnet build "EMP.Web.csproj" -c Docker -o /app/build
 
