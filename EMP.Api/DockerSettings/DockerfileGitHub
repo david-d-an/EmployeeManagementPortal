@@ -10,31 +10,19 @@ RUN mkdir -p /run/sshd && echo "root:Docker!" | chpasswd
 COPY ./EMP.Api/DockerSettings/sshd_config /etc/ssh/
 EXPOSE 2222
 
-# COPY ./EMP.Api/bin/Release/netcoreapp3.1/publish/ App/
-COPY ./EMP.Api/bin/Release/netcoreapp3.1/ /var/lib/docker/tmp/buildkit-mount445786745/EMP.Api/bin/Release/netcoreapp3.1/
+WORKDIR /App
 
-# WORKDIR /App
-WORKDIR /var/lib/docker/tmp/buildkit-mount445786745/EMP.Api/bin/Release/netcoreapp3.1/
-# ENTRYPOINT ["dotnet", "EMP.Sts.copy.dll"]
-# CMD ["/etc/sshd", "-D"]
+COPY ./EMP.Api/*.csproj ./
+RUN dotnet restore
+
+COPY ./EMP.Api ./
+RUN dotnet publish -c Release -o out
+
+FROM mcr.microsoft.com/dotnet/aspnet:3.1
+COPY --from=build-env /App/out .
+
 ENTRYPOINT [ \
     "/bin/bash", \
     "-c", \
     "/usr/sbin/sshd && dotnet EMP.Api.dll" \
 ]
-
-
-# FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build-env
-
-# WORKDIR /app
-
-# COPY *.csproj ./
-# RUN dotnet restore
-
-# COPY . ./
-# RUN dotnet publish -c Release -o out
-
-# FROM mcr.microsoft.com/dotnet/aspnet:3.1
-# WORKDIR /app
-# COPY --from=build-env /app/out .
-# ENTRYPOINT ["dotnet", "EMP.Sts.copy.dll"]
