@@ -7,7 +7,7 @@ ENV ASPNETCORE_ENVIRONMENT=Docker
 RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssh-server
 RUN mkdir -p /run/sshd && echo "root:Docker!" | chpasswd
-COPY ./DockerSettings/sshd_config /etc/ssh/
+COPY ./EMP.Sts/DockerSettings/sshd_config /etc/ssh/
 EXPOSE 2222
 
 # Build Environment
