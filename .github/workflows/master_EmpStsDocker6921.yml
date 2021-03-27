@@ -22,15 +22,15 @@ jobs:
     - uses: azure/docker-login@v1
       with:
         login-server: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_69419b66ce50495a97013b464dc2426c }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_b5fe1c404f2c4be3bb85d8140718e6ea }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_376b01a563554d4e93650ce3ad752bbe }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_2652a028ad1141a0a1c10b17e0a5cd76 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v2.2.1
       with:
         push: true
-        tags: dong82/emp.sts:${{ github.sha }}
-        file: ./EMP.Sts/DockerSettings/DockerfileGitHub
+        tags: emp.sts:${{ github.sha }}
+        file: ./Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
@@ -46,5 +46,5 @@ jobs:
       with:
         app-name: 'EmpStsDocker6921'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_1e71181f1b4d4166b458bc8e887c1a9c }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_69419b66ce50495a97013b464dc2426c }}/emp.sts:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_f3e51aa6580442689fabaaec3294783b }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_376b01a563554d4e93650ce3ad752bbe }}/emp.sts:${{ github.sha }}'
