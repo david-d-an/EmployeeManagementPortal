@@ -4,7 +4,7 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
-### This instructions explains publish activities broken down in steps to allow manually control actions tuding publishing. A bash script **`Staging.Publish.EMP.Web.sh`** can be activated to execute the entire publish. Another bash script **`Production.Publish.EMP.Web.sh`** is a production version of script which has the same build actions but the deploy location is Azure Web App **`EmpWeb6921.AzureWebsites.net`**'.
+### This instructions explains publish activities broken down in steps to allow manually control actions during publishing. A bash script **`Staging.Publish.EMP.Web.sh`** can be activated to execute the entire publish. Another bash script **`Production.Publish.EMP.Web.sh`** is a production version of script which has the same build actions but the deploy location is Azure Web App **`EmpWeb6921.AzureWebsites.net`**'.
 ### If you are interested in Dockerized deployment, take a look at the instructions in **`DockerSettings`** folder.
 <hr>
 

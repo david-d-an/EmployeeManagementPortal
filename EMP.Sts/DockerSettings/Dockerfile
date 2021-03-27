@@ -1,5 +1,10 @@
-# FROM mcr.microsoft.com/dotnet/aspnet:3.1
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+# 3.1-buster is a Debian
+# 3.1-buster-slim image has dotnet 3.1 runtime
+# 3.1-buster image has dotnet 3.1 SDK
+# mcr.microsoft.com/dotnet/aspnet:3.1 is 3.1-buster-slim
+
+# Build a container image with dotnet runtime to be deployed on Azure
+FROM mcr.microsoft.com/dotnet/aspnet:3.1
 
 ENV DOTNET_ENVIRONMENT=Docker
 ENV ASPNETCORE_ENVIRONMENT=Docker
