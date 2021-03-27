@@ -1,3 +1,5 @@
+# This document may contain outdated information. Please use Publish Instructions.md instead.
+
 # Create publish version
 > cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Sts
 > dotnet publish -c Release

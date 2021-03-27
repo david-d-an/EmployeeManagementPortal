@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# This script must be called from EMP.Api folder because of relative paths in the script
+
 # Stop server
 echo Stopping server..........
 echo
-launchctl unload /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
+launchctl unload ~/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
 
 # Create publish version
 echo Building release version..........
@@ -20,4 +22,4 @@ cp -r ~/Development/Dotnet/EmployeeManagementPortal/EMP.Sts/bin/Release/netcorea
 # Start server
 echo Starting server..........
 echo
-launchctl load /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
+launchctl load ~/Library/LaunchAgents/dotnet.run.EMP.Sts.plist

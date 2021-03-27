@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# This script must be called from EMP.Api folder because of relative paths in the script
+
 appName="EmpApi6921"
 resourceGroup="EMP"
 
@@ -9,7 +11,7 @@ echo
 cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Api
 dotnet publish -c Release
 
-# Copy to Azure App Service
+# Create deploy package in Zip format
 echo Creating deploy.zip..........
 echo
 cd ./bin/release/netcoreapp3.1/publish

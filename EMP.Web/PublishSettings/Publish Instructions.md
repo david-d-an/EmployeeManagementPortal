@@ -4,6 +4,10 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
+### This instructions explains publish activities broken down in steps to allow manually control actions tuding publishing. A bash script **`Staging.Publish.EMP.Web.sh`** can be activated to execute the entire publish. Another bash script **`Production.Publish.EMP.Web.sh`** is a production version of script which has the same build actions but the deploy location is Azure Web App **`EmpWeb6921.AzureWebsites.net`**'.
+### If you are interested in Dockerized deployment, take a look at the instructions in **`DockerSettings`** folder.
+<hr>
+
 #### Create publish version
 ```sh
 > cd ~/Development/DotNet/EmployeeManagementPortal/EMP.Web
@@ -27,12 +31,13 @@
 > dotnet /usr/local/var/www/EMP.Web/EMP.Web.dll --urls=https://localhost:21001
 ```
 
-#### Better way to start Dotnet service
+#### Better way to start Dotnet service behind Nginx
 ```sh
 > cd /Users/david.d.an/Library/LaunchAgents
 > launchctl load /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Web.plist
 ```
 See [dotnet.run.EMP.Web.plist] for the details of execution plan.
+Also, see [nginx.conf] for the details of Nginx configuration.
 
 #### Restart Nginx as necessary.
 ```sh

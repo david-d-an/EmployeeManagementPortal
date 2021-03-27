@@ -30,7 +30,7 @@ jobs:
       with:
         push: true
         tags: dong82/emp.sts:${{ github.sha }}
-        file: ./EMP.Sts/DockerSettings/DockerfileGitHub
+        file: ./EMP.Sts/DockerSettings/GitHub.Dockerfile
 
   deploy:
     runs-on: ubuntu-latest
