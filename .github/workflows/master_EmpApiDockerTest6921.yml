@@ -30,7 +30,7 @@ jobs:
       with:
         push: true
         tags: dong82/emp.api:${{ github.sha }}
-        file: ./Dockerfile
+        file: ./EMP.Api/DockerSettings/DockerfileGitHub
 
   deploy:
     runs-on: ubuntu-latest

@@ -8,10 +8,14 @@
 > docker exec -it emp.web.container /bin/bash
 
 # Get Image ID
-> docker images
+> docker images -f=reference='*dong82/emp.web*:*' -f=reference='emp.web*:*'
 
 # Tag Iamge
-> docker tag b75be6ce33a0 dong82/emp.web
+> docker tag $(docker images -q emp.web:latest) dong82/emp.web
+
+# Get latest tag name
+tagname=$(./TagName.sh emp.web)
 
 # Push to Repository
-> docker push dong82/emp.web
+> docker push dong82/emp.web:$tagname
+> docker push dong82/emp.web:latest

@@ -9,10 +9,14 @@
 > docker exec -it emp.sts.container /bin/bash
 
 # Get Image ID
-> docker images
+> docker images -f=reference='*dong82/emp.sts*:*' -f=reference='emp.sts*:*'
 
 # Tag Iamge
-> docker tag d22807a3ed45 dong82/emp.sts
+> docker tag $(docker images -q emp.sts:latest) dong82/emp.sts
+
+# Get latest tag name
+tagname=$(./TagName.sh emp.sts)
 
 # Push to Repository
-> docker push dong82/emp.sts
+> docker push dong82/emp.sts:$tagname
+> docker push dong82/emp.sts:latest
