@@ -7,11 +7,17 @@ WORKDIR /App
 # COPY ./EMP.Data/*.csproj ./EMP.Data
 # COPY ./EMP.DataAccess/*.csproj ./EMP.DataAccess
 
-COPY ./EMP.Api ./EMP.Api
+COPY ./EmployeeManagementPortal.sln .
 COPY ./EMP.Common ./EMP.Common
 COPY ./EMP.Data ./EMP.Data
 COPY ./EMP.DataAccess ./EMP.DataAccess
+COPY ./EMP.Api ./EMP.Api
 RUN dotnet restore
+# RUN dotnet restore ./EMP.Common/EMP.Common.csproj 
+# RUN dotnet restore ./EMP.Data/EMP.Data.csproj 
+# RUN dotnet restore ./EMP.DataAccess/EMP.DataAccess.csproj 
+# RUN dotnet restore ./EMP.Api/EMP.Api.csproj
+
 RUN dotnet publish ./EMP.Api/*.csproj -c Release -o ./out
 
 FROM mcr.microsoft.com/dotnet/aspnet:3.1 
