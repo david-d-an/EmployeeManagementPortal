@@ -15,15 +15,11 @@ FROM mcr.microsoft.com/dotnet/sdk:3.1-buster AS build-env
 WORKDIR /App
 
 COPY ./EMP.Common ./EMP.Common
-COPY ./EMP.Data ./EMP.Data
-COPY ./EMP.DataAccess ./EMP.DataAccess
-COPY ./EMP.Api ./EMP.Api
+COPY ./EMP.Sts ./EMP.Sts
 RUN dotnet restore ./EMP.Common/EMP.Common.csproj 
-RUN dotnet restore ./EMP.Data/EMP.Data.csproj 
-RUN dotnet restore ./EMP.DataAccess/EMP.DataAccess.csproj 
-RUN dotnet restore ./EMP.Api/EMP.Api.csproj
+RUN dotnet restore ./EMP.Sts/EMP.Sts.csproj
 
-RUN dotnet publish ./EMP.Api/EMP.Api.csproj -c Release -o ./out
+RUN dotnet publish ./EMP.Sts/EMP.Sts.csproj -c Release -o ./out
 
 # Publish Environment
 FROM base AS publish-env
@@ -32,5 +28,5 @@ COPY --from=build-env /App/out .
 ENTRYPOINT [ \
     "/bin/bash", \
     "-c", \
-    "/usr/sbin/sshd && dotnet EMP.Api.dll" \
+    "/usr/sbin/sshd && dotnet EMP.Sts.dll" \
 ]

@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy container app to Azure Web App - EmpApiDockerTest6921
+name: Build and deploy container app to Azure Web App - EmpStsDocker6921
 
 on:
   push:
@@ -29,8 +29,8 @@ jobs:
       uses: docker/build-push-action@v2.2.1
       with:
         push: true
-        tags: dong82/emp.api:${{ github.sha }}
-        file: ./EMP.Api/DockerSettings/DockerfileGitHub
+        tags: dong82/emp.sts:${{ github.sha }}
+        file: ./EMP.Sts/DockerSettings/DockerfileGitHub
 
   deploy:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
       id: deploy-to-webapp
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'EmpApiDockerTest6921'
+        app-name: 'EmpStsDocker6921'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1e71181f1b4d4166b458bc8e887c1a9c }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_69419b66ce50495a97013b464dc2426c }}/emp.api:${{ github.sha }}'
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_69419b66ce50495a97013b464dc2426c }}/emp.sts:${{ github.sha }}'
