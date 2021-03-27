@@ -29,8 +29,8 @@ jobs:
       uses: docker/build-push-action@v2.2.1
       with:
         push: true
-        tags: emp.api:${{ github.sha }}
-        file: ./Dockerfile
+        tags: dong82/emp.api:${{ github.sha }}
+        file: ./EMP.Api/DockerSettings/DockerfileGitHub
 
   deploy:
     runs-on: ubuntu-latest
