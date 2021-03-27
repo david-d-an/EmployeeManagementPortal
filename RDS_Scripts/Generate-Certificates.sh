@@ -1,4 +1,12 @@
 ######################
+# This script does two things:
+#   1. Make your workstation its for Certificate Authority
+#   2. Generate a self signed certificate signed by this work station
+# The purpose of the script is to let the browsers trust the generated certificate 
+# to allow debugging on HTTPS urls. 
+######################
+
+######################
 # Generate Self Signed Cert
 # Details: https://stackoverflow.com/questions/7580508/getting-chrome-to-accept-self-signed-localhost-certificate
 ######################

@@ -1,3 +1,8 @@
+# 3.1-buster is a Debian
+# 3.1-buster-slim image has dotnet 3.1 runtime
+# 3.1-buster image has dotnet 3.1 SDK
+# mcr.microsoft.com/dotnet/aspnet:3.1 is 3.1-buster-slim
+
 # Base Environment
 FROM mcr.microsoft.com/dotnet/aspnet:3.1-buster-slim AS base
 
