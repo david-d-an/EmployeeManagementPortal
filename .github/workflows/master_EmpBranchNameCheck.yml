@@ -4,15 +4,35 @@
 name: Branch Name Check
 
 on:
+  # pull_request:
+  #   types: [assigned, opened, synchronize, reopened]
+  # push:
+  #   branches:
+  #     - master
+  # workflow_dispatch:
+
   push:
-    branches:
+    branches: 
       - master
-  workflow_dispatch:
+  pull_request:
+    types: [closed]
+    branches: 
+      - master
 
 jobs:
   which_branch:
     runs-on: ubuntu-latest
     steps:
+      - name: Step 1
+        shell: bash
+        if: |
+          (github.event_name == 'push' && !contains(github.event.head_commit.message, 'Merge pull request')) ||
+          (github.event_name == 'pull_request' && github.event.pull_request.merged == true &&
+          github.head_ref != 'create-pull-request-by-robot' &&
+          github.head_ref != 'create-pull-request-by-robot-01' &&
+          github.head_ref != 'create-pull-request-by-robot-02')
+        run: echo $github.base_ref $ $github.head_ref
+
       - name: Extract branch name 1
         shell: bash
         # run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
