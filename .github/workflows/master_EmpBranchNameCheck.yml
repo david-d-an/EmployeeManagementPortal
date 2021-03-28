@@ -11,6 +11,7 @@ on:
 
 jobs:
   which_branch:
+  
     runs-on: ubuntu-latest
     steps:
       - name: Extract branch name 1
