@@ -11,7 +11,7 @@ on:
 
 jobs:
   which_branch:
-  
+
     runs-on: ubuntu-latest
     steps:
       - name: Extract branch name 1
@@ -32,9 +32,22 @@ jobs:
         run: echo "$(echo ${GITHUB_REF##*/})"
         # id: extract_branch3
 
-      - name: Extract branch name 4
+      # - name: Extract branch name 4
+      #   shell: bash
+      #   run: echo "$(echo ${github.event_name})"
+
+      # extract branch name 4-1
+      - name: Extract branch name 4-1
+        if: github.event_name == 'pull_request'
         shell: bash
-        run: echo "$(echo ${github.event_name})"
+        run: echo "pull_request"
+
+      # extract branch name 4-2
+      - name: Extract branch name 4-2
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "No pull_request"
+
 
       # - name: Extract branch name 5
       #   shell: bash
