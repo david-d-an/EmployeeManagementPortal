@@ -47,7 +47,6 @@ jobs:
         shell: bash
         run: echo "No pull_request"
 
-
       # - name: Extract branch name 5
       #   shell: bash
       #   run: echo $extract_branch1
@@ -59,7 +58,6 @@ jobs:
       # - name: Extract branch name 7
       #   shell: bash
       #   run: echo $extract_branch3
-
 
       # # extract branch name
       # - name: Extract branch name
