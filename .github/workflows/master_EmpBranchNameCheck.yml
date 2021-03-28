@@ -31,7 +31,7 @@ jobs:
           github.head_ref != 'create-pull-request-by-robot' &&
           github.head_ref != 'create-pull-request-by-robot-01' &&
           github.head_ref != 'create-pull-request-by-robot-02')
-        run: echo $github.base_ref $ $github.head_ref
+        run: echo "${github.base_ref} ${github.head_ref} ${BASE_BRANCH}"
 
       - name: Extract branch name 1
         shell: bash
