@@ -19,6 +19,12 @@ export class HeaderComponent implements OnInit {
   get userRole() {
     return this.authService.userRole;
   }
+  get showEmployeesMenu() {
+    return this.userRole === 'Department Manager';
+  }
+  get showDepartmentMenu() {
+    return this.userRole === 'System Admin';
+  }
 
   constructor(
     private location: Location,

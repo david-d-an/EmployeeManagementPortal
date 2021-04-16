@@ -141,11 +141,11 @@ namespace EMP.Api
             //     app.UseDeveloperExceptionPage();
             // }
 
-            app.UseCors(EmpWebOrigins);
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(EmpWebOrigins);
 
             app.UseAuthentication();
 
@@ -153,8 +153,7 @@ namespace EMP.Api
 
             app.UseResponseCaching();
             
-            app.UseEndpoints(endpoints =>
-            {
+            app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
         }
