@@ -20,10 +20,10 @@ export class HeaderComponent implements OnInit {
     return this.authService.userRole;
   }
   get showEmployeesMenu() {
-    return this.userRole == 'Department Manager';
+    return this.userRole === 'Department Manager';
   }
   get showDepartmentMenu() {
-    return this.userRole == 'System Admin';
+    return this.userRole === 'System Admin';
   }
 
   constructor(
