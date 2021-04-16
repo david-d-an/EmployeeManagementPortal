@@ -49,36 +49,14 @@
             }
         },
         {
-            "name": ".NET Core Launch (STS)",
+            "name": ".NET Core Launch (Sts)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build.EMP.Sts",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/EMP.Sts/bin/Debug/netcoreapp2.2/EMP.Sts.dll",
+            "program": "${workspaceFolder}/EMP.Sts/bin/Debug/netcoreapp3.1/EMP.Sts.dll",
             "args": [],
             "cwd": "${workspaceFolder}/EMP.Sts",
-            "stopAtEntry": false,
-            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
-            "serverReadyAction": {
-                "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
-            },
-            "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
-            },
-            "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Views"
-            }
-        },
-        {
-            "name": ".NET Core Launch (Sts.Copy)",
-            "type": "coreclr",
-            "request": "launch",
-            "preLaunchTask": "build.EMP.Sts.Copy",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/EMP.Sts.Copy/bin/Debug/netcoreapp3.1/EMP.Sts.Copy.dll",
-            "args": [],
-            "cwd": "${workspaceFolder}/EMP.Sts.Copy",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {
