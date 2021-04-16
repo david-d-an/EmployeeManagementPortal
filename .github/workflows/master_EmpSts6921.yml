@@ -6,7 +6,7 @@ name: Staging | EMP.Sts | .Net Core app deploy to EmpSts6921
 on:
   push:
     branches:
-      - feature-1.2.0
+      - staging
   workflow_dispatch:
 
 jobs:

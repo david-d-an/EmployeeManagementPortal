@@ -158,6 +158,7 @@ namespace EMP.Sts
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            // Contents Security Policy to enable resource download
             app.UseCsp(csp => {
                 // csp.AllowScripts
                 //     .FromSelf()

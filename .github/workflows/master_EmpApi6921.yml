@@ -6,7 +6,7 @@ name: Staging | EMP.Api | .Net Core app deploy to EmpApi6921
 on:
   push:
     branches:
-      - feature-1.2.0
+      - staging
   workflow_dispatch:
 
 jobs:

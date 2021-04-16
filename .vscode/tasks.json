@@ -38,18 +38,6 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build.EMP.Sts.Copy",
-            "command": "dotnet",
-            "type": "process",
-            "args": [
-                "build",
-                "${workspaceFolder}/EMP.Sts.Copy/EMP.Sts.Copy.csproj",
-                "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary"
-            ],
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "publish.EMP.Api",
             "command": "dotnet",
             "type": "process",

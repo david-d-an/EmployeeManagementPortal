@@ -19,24 +19,18 @@
         </a>
       </li>
 
-      <li ngbDropdown class="nav-item dropdown">
+      <li ngbDropdown class="nav-item dropdown" *ngIf="isLoggedIn">
         <a ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenu"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Pages
         </a>
         <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
-          <a class="dropdown-item" href="employees">Employees List</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="departments">Department List</a>
+          <a *ngIf="this.showEmployeesMenu"
+            class="dropdown-item" href="employees">Employees List</a>
+          <!-- <div class="dropdown-divider"></div> -->
+          <a *ngIf="this.showDepartmentMenu"
+            class="dropdown-item" href="departments">Department List</a>
         </div>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="about">About</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="contact">Contact</a>
       </li>
     </ul>
 
