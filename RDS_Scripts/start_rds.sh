@@ -1,3 +1,6 @@
+# DB was migrated from AWS to Azure and the script is no longer in use.
+# Turn on AWS RDS
+
 #!/bin/bash
 PATH=/usr/local/bin:/usr/local/sbin:~/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
