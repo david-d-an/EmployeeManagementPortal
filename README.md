@@ -1,5 +1,28 @@
 # EmployeeManagementPortal
 
+> # Purpose
+This set of code is to provide a template for a web application development for .Net developers who are inclied to the popular technologies including but not limited to:
+
+1. .Net Core
+1. Angular
+1. Web API
+1. OpenID / OAuth2 with JWT
+1. Dependency Injection pattern
+1. Repository / Unit of Work pattern
+1. Azure App Service
+1. Docker and Docker Hub
+<br><br>
+
+> # Fun Fact
+The most important part of the peject is that the solution is 100% developed on Apple's OSX and tested aginst Debian and Ubuntu. The whole project started to prove the stability of .Net Core 3.1 on Linux based systems and it has worked out seamlessly so far. 
+
+## Development Settings
+1. Visual Studio Code for code development
+1. DbVisualizer for Database development
+1. AWS Portal for initla database provision
+1. Azure Portal for later database provision
+<br><br>
+
 > # Overview
 The protal provides Employee management features of a company.
 The app is based 3 technologies bewlow.
@@ -41,7 +64,7 @@ To be able to built and run, the following SDK must be installed
 1. Angular CLI 11
 <br><br>
 
-> # Execution Instrustions
+> # Stsrt Local Debugging
 Download or clone the master branch to your local and run the follwoing commands in separate command line consoles
 
 1. Start API app (https://localhost:15000 by default)
@@ -81,7 +104,14 @@ You can change the port numbers as you wish but have to make sure that the ports
 1. Web Application: https://localhost:5000
 2. Sts Application: https://localhost:5500
 3. API Application: https://localhost:15000
+<br><br>
 
+> # Live Example
+The apps are currently deployed on Azure App Service. Since the app is running on a low tier service, the stat up may ake a 1 - 2 minutes.
+
+1. Web Application: https://empwebdocker6921.azurewebsites.net/
+2. Sts Application: https://empstsdocker6921.azurewebsites.net/
+3. API Application: https://empapidocker6921.azurewebsites.net/
 <br><br>
 
 > # User Credentials
@@ -114,8 +144,9 @@ As you noticed, it's a MySql database to try things outisde SQL Server. The dump
 If you wish to restore database in you local environment or your own cloud, the script will provide a complete set to finish the task.
 <br><br>
 
-> #Deployment
+> # Deployment
 The three main projects have their own deployment scripts inside the folders:
+<br>
 
 1. EMP.API
     * PuishSettings <br>
@@ -126,7 +157,7 @@ The three main projects have their own deployment scripts inside the folders:
         ContainerInstructions.md: Explanations of activities in build.sh <br>
         build.sh: Bash script to build docker image of EMP.Api app and push to Docker repo <br>
 
-2. EMP.Sts
+2. EMP.Sts.
     * PuishSettings <br>
         PublishInstructions.md: explains deployment procedure for Nginx server <br>
         Staging.Publish.EMP.Sts.sh: Bash script to deploy to local Nginx <br>
@@ -144,7 +175,12 @@ The three main projects have their own deployment scripts inside the folders:
         ContainerInstructions.md: Explanations of activities in build.sh <br>
         build.sh: Bash script to build docker image of EMP.Web app and push to Docker repo <br>
 <br>
+
 * Note: build.sh is written to pull and push from my own Docker Hub repository. I will have to update the script to parametirize the targe reposotry in the future.
+<br>
+### Notes for Windows/IIS Users
+The instrucitons for **PublishSettings** are for Linux and OSX. If you are looking for Windows/IIS instructions, you can follow the typical deployment actions provided in Visual Studio.
+<br>
 
 
 
