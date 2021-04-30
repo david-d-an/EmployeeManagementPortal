@@ -1,0 +1,7 @@
+Due to the size limit in Github, the database dumpfiles are pushed to Azure Blob Storage. 
+See below for the URLs.
+
+* Employees database:
+    https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-employees-202103161224.sql
+* STS database: <br>
+    https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-sts-202103161102.sql 

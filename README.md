@@ -107,7 +107,7 @@ You can change the port numbers as you wish but have to make sure that the ports
 <br><br>
 
 > # Live Example
-The apps are currently deployed on Azure App Service. Since the app is running on a low tier service, the stat up may ake a 1 - 2 minutes.
+The apps are currently deployed on Azure App Service. Since the app is deployed on low tier servers, the stat-up may ake 1 - 2 minutes.
 
 1. Web Application: https://empwebdocker6921.azurewebsites.net/
 2. Sts Application: https://empstsdocker6921.azurewebsites.net/
@@ -139,9 +139,17 @@ The database is located in Azure with the following specs:
 }
 ```
 
-As you noticed, it's a MySql database to try things outisde SQL Server. The dumps for data, views and stored procedures are located in EMP.DataAccess/MySql folder.
 
-If you wish to restore database in you local environment or your own cloud, the script will provide a complete set to finish the task.
+As you noticed, two MySql databases are used by the apps. The dumps for data, tables, views and stored procedures are located in Azure Blob Storage. See below for the URLs.
+
+* Employees database: <br>
+    This is dusiness database <br>
+    https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-employees-202103161224.sql
+* STS database: <br>
+    This is authentication database <br>
+    https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-sts-202103161102.sql 
+
+The script files contain all necessary data and statements to restore databases should you wish to restore database in your local environment. 
 <br><br>
 
 > # Deployment
