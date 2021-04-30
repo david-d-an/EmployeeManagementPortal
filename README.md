@@ -1,7 +1,7 @@
-# EmployeeManagementPortal
+# Employee Management Portal
 
 > # Purpose
-This set of code is to provide a template for a web application development for .Net developers who are inclied to the popular technologies including but not limited to:
+This set of code is to provide a web application development template for .Net developers who are inclied to popular technologies including but not limited to:
 
 1. .Net Core
 1. Angular
@@ -15,8 +15,10 @@ This set of code is to provide a template for a web application development for 
 
 > # Fun Fact
 The most important part of the peject is that the solution is 100% developed on Apple's OSX and tested aginst Debian and Ubuntu. The whole project started to prove the stability of .Net Core 3.1 on Linux based systems and it has worked out seamlessly so far. 
+<br><br>
 
 ## Development Settings
+I used the following settings during my development
 1. Visual Studio Code for code development
 1. DbVisualizer for Database development
 1. AWS Portal for initla database provision
@@ -24,12 +26,13 @@ The most important part of the peject is that the solution is 100% developed on 
 <br><br>
 
 > # Overview
-The protal provides Employee management features of a company.
-The app is based 3 technologies bewlow.
+The application suite is callsed **Employeee Management Portal** (EMP in short) and runs a web protal that provides employee management features of a company.
+The app is based on 4 technologies bewlow.
 
+1. .Net Core 3.1
 1. Angular 11 to provide user interface on web browser. (tested on Chrome)
-1. Web API to provide API service for data provision
-1. Open ID / OAuth2 to provide decoupled authentication service for
+1. Web API to provide API services for data provision
+1. Open ID / OAuth2 to provide decoupled authentication services
 <br><br>
 
 > # Solution Structure
@@ -58,39 +61,39 @@ The entire solution is bound under EmployeeManagementPortal.sln and there are 9 
 <br><br>
 
 > # Execution Environment
-To be able to built and run, the following SDK must be installed
+To build and run, the following SDK must be installed
 
 1. Dotnet Core 3.1
 1. Angular CLI 11
 <br><br>
 
 > # Stsrt Local Debugging
-Download or clone the master branch to your local and run the follwoing commands in separate command line consoles
+Download or clone the master branch to your local and run the follwoing commands in separate command line consoles. If you are using Visual Studio, Run a separate debug instance for each app. 
 
-1. Start API app (https://localhost:15000 by default)
+1. Start EMP.API app (https://localhost:15000 by default)
 ```sh
   > cd EMP.Api
   > dotnet restore
   > dotnet run
 ```
 
-2. Start Sts app (https://localhost:5500 by default)
+2. Start EMP.Sts app (https://localhost:5500 by default)
 ```sh
-  > cd EMP.Api
+  > cd EMP.Sts
   > dotnet restore
   > dotnet run
 ```
 
-3. Start Web app (https://localhost:5000 by default)
+3. Start EMP.Web app (https://localhost:5000 by default)
 ```sh
-  > cd EMP.Api
+  > cd EMP.Web
   > dotnet restore
   > dotnet run
 ```
 <br><br>
 
 > # General Workflow
-The app follows a typical web application workf flow:
+The Employee Management Portal follows a typical web application workf flow:
 
 1. User access web app
 2. User logs in by ID/Pwd
@@ -107,7 +110,7 @@ You can change the port numbers as you wish but have to make sure that the ports
 <br><br>
 
 > # Live Example
-The apps are currently deployed on Azure App Service. Since the app is running on a low tier service, the stat up may ake a 1 - 2 minutes.
+The apps are currently deployed on Azure App Service. Since the app is deployed on low tier servers, the stat-up may ake 1 - 2 minutes.
 
 1. Web Application: https://empwebdocker6921.azurewebsites.net/
 2. Sts Application: https://empstsdocker6921.azurewebsites.net/
@@ -139,9 +142,17 @@ The database is located in Azure with the following specs:
 }
 ```
 
-As you noticed, it's a MySql database to try things outisde SQL Server. The dumps for data, views and stored procedures are located in EMP.DataAccess/MySql folder.
 
-If you wish to restore database in you local environment or your own cloud, the script will provide a complete set to finish the task.
+As you noticed, two MySql databases are used by the apps. The dumps for data, tables, views and stored procedures are located in Azure Blob Storage. See below for the URLs.
+
+* Employees database: <br>
+    This is dusiness database <br>
+    https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-employees-202103161224.sql
+* STS database: <br>
+    This is authentication database <br>
+    https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-sts-202103161102.sql 
+
+The script files contain all necessary data and statements to restore databases should you wish to restore database in your local environment. 
 <br><br>
 
 > # Deployment
@@ -176,11 +187,8 @@ The three main projects have their own deployment scripts inside the folders:
         build.sh: Bash script to build docker image of EMP.Web app and push to Docker repo <br>
 <br>
 
-* Note: build.sh is written to pull and push from my own Docker Hub repository. I will have to update the script to parametirize the targe reposotry in the future.
-<br>
-### Notes for Windows/IIS Users
+* Note: <br>
+build.sh is hard-coded to pull and push from my own Docker Hub repository (https://hub.docker.com/u/dong82). I will have to update the scripts to parametirize the target reposotry in the future.
+* Note: <br>
 The instrucitons for **PublishSettings** are for Linux and OSX. If you are looking for Windows/IIS instructions, you can follow the typical deployment actions provided in Visual Studio.
-<br>
-
-
-
+<br><br>
