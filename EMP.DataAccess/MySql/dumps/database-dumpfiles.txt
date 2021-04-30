@@ -5,4 +5,3 @@ See below for the URLs.
     https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-employees-202103161224.sql
 * STS database: <br>
     https://empdatadumps.blob.core.windows.net/dbdumpfiles/dump-sts-202103161102.sql 
- 
