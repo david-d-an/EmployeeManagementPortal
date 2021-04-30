@@ -192,7 +192,3 @@ build.sh is hard-coded to pull and push from my own Docker Hub repository (https
 * Note: <br>
 The instrucitons for **PublishSettings** are for Linux and OSX. If you are looking for Windows/IIS instructions, you can follow the typical deployment actions provided in Visual Studio.
 <br><br>
-
-
-
-
