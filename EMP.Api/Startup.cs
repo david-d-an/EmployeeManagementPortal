@@ -17,6 +17,7 @@ using EMP.DataAccess.Repos.Employees;
 using EMP.DataAccess.Repos.Sts;
 using EMP.DataAccess.Context;
 using EMP.Api.Config;
+using Serilog;
 
 namespace EMP.Api
 {
@@ -73,6 +74,9 @@ namespace EMP.Api
             // TO DO: Create factory to return DB connection by ASYNC
             var encConnStrMySqlEmployees = Configuration.GetConnectionString("MySqlEmployees(Azure)");
             var connStrMySqlEmployees = AesCryptoUtil.Decrypt(encConnStrMySqlEmployees);
+
+            Log.Information($"Connection String: {connStrMySqlEmployees}");
+
             services.AddDbContext<EmployeesContext>(builder =>                   
                 builder.UseMySQL(connStrMySqlEmployees)
             );
