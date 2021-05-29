@@ -11,9 +11,6 @@ namespace EMP.Sts
 {
     public class Program
     {
-        private static bool IsDevelopment =>
-            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false, true)
@@ -51,7 +48,6 @@ namespace EMP.Sts
                 )
                 .ConfigureLogging(builder => {
                     builder.ClearProviders();
-                    // builder.AddConsole();
                 })
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();

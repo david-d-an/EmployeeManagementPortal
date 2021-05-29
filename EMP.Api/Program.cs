@@ -13,9 +13,6 @@ namespace EMP.Api
 {
     public class Program
     {
-        private static bool IsDevelopment =>
-            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development";
-
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
             .AddJsonFile("appsettings.json", false, true)
@@ -47,44 +44,36 @@ namespace EMP.Api
             }
         }
 
-        private static void SeedEmployeeDatabase(IHost host)
-        {
-            // Trying to keep seeder withing a scope
-            var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
-            using (var scope = scopeFactory.CreateScope()) {
-                // var seeder = host.Services.GetService<EmployeesDataSeeder>();
-                var seeder = scope.ServiceProvider.GetService<EmployeesDataSeeder>();
-                seeder.Seed();
-            }
-        }
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(SetupConfiguration)
-                .ConfigureLogging(logging => {
-                    logging.ClearProviders();
-                    logging.AddConsole();
-                    logging.AddDebug();
-                })
                 .UseSerilog((hostingContext, loggerConfig) =>
                     loggerConfig.ReadFrom.Configuration(hostingContext.Configuration)
                 )
+                .ConfigureLogging(logging => {
+                    logging.ClearProviders();
+                })
+                // .ConfigureAppConfiguration(SetupConfiguration)
                 .ConfigureWebHostDefaults(webBuilder => {
                     webBuilder.UseStartup<Startup>();
-                    // webBuilder.UseKestrel(options => {
-                    //     options.Limits.MaxRequestBodySize = null;
-                    // });
-                    // webBuilder.ConfigureKestrel(options => {
-                    //     // Set properties and call methods on options
-                    // });
                 });
 
-        private static void SetupConfiguration(HostBuilderContext ctx, IConfigurationBuilder builder)
-        {
-            // builder.Sources.Clear();
-            builder
-                .AddJsonFile("Config/config.json", false, true)
-                .AddEnvironmentVariables();
-        }
+        // private static void SetupConfiguration(HostBuilderContext ctx, IConfigurationBuilder builder)
+        // {
+        //     // builder.Sources.Clear();
+        //     builder
+        //         .AddJsonFile("Config/config.json", false, true)
+        //         .AddEnvironmentVariables();
+        // }
+
+        // private static void SeedEmployeeDatabase(IHost host)
+        // {
+        //     // Trying to keep seeder withing a scope
+        //     var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
+        //     using (var scope = scopeFactory.CreateScope()) {
+        //         // var seeder = host.Services.GetService<EmployeesDataSeeder>();
+        //         var seeder = scope.ServiceProvider.GetService<EmployeesDataSeeder>();
+        //         seeder.Seed();
+        //     }
+        // }
     }
 }
