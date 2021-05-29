@@ -37,9 +37,6 @@ namespace EMP.Sts
         {
             _env = env;
             Configuration = configuration;
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -53,6 +50,8 @@ namespace EMP.Sts
 
             var encConnStrMySql = Configuration.GetConnectionString("MySqlConnection(Azure)");
             var connStrMySql = AesCryptoUtil.Decrypt(encConnStrMySql);
+
+            Log.Information($"Connection String: {connStrMySql}");
 
             services.AddDbContext<ApplicationDbContext>(option =>
                 option.UseMySQL(connStrMySql));
