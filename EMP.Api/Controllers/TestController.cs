@@ -44,18 +44,6 @@ namespace EMP.Api.Controllers
             this._unitOfWork = unitOfWork;
         }
 
-        // [Flags]
-        public enum Features {
-            None = 0,
-            Brakes = 1,
-            Radio = 2,
-            AirConditioning = 4
-        }
-
-        
-        // air | Brake == Air
-        // 101 | 001
-
         private void Write(int val) {
             Console.WriteLine(
                 $"Convert.ToSingle(val,2).PadLeft(8,'0')"
@@ -66,13 +54,6 @@ namespace EMP.Api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Departments>>> Get()
         {
-
-            var f = Features.AirConditioning | Features.Brakes;
-            
-
-             
-
-
             // List<Task> taskList = new List<Task>();
             // for (int i = 0; i <= 5; i++)
             // {
