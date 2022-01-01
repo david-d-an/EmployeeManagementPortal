@@ -16,25 +16,25 @@
 
 #### Test publish version
 ```sh
-> cd bin/Release/netcoreapp3.1/publish/
-> dotnet EMP.Web.dll
+> bin/Release/netcoreapp3.1/publish/EMP.Web
 ```
 
 #### Copy to Nginx target folder
 ```sh
-> cp -r /Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Web/bin/Release/netcoreapp3.1/publish/* /usr/local/var/www/EMP.Web
+> sudo mkdir -p /usr/local/var/www/EMP.Web
+> sudo cp -r /Users/david.an/Development/Dotnet/EmployeeManagementPortal/EMP.Web/bin/Release/netcoreapp3.1/publish/* /usr/local/var/www/EMP.Web
 ```
 
 #### Start Dotnet service
 ```sh
 > cd /usr/local/var/www/EMP.Web
-> dotnet /usr/local/var/www/EMP.Web/EMP.Web.dll --urls=https://localhost:21001
+> /usr/local/share/dotnet[/x64]/dotnet /usr/local/var/www/EMP.Web/EMP.Web.dll --urls=https://localhost:21001
 ```
 
 #### Better way to start Dotnet service behind Nginx
 ```sh
-> cd /Users/david.d.an/Library/LaunchAgents
-> launchctl load /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Web.plist
+> cd /Users/david.an/Library/LaunchAgents
+> launchctl load /Users/david.an/Library/LaunchAgents/dotnet.run.EMP.Web.plist
 ```
 See [dotnet.run.EMP.Web.plist] for the details of execution plan.
 Also, see [nginx.conf] for the details of Nginx configuration.

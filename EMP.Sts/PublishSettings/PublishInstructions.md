@@ -16,26 +16,26 @@
 
 #### Test publish version
 ```sh
-> cd bin/Release/netcoreapp2.2/publish/
-> dotnet EMP.Sts.dll
+> bin/Release/netcoreapp3.1/publish/EMP.Sts
 ```
 
 #### Copy to Nginx target folder
 ```sh
-> cp -r /Users/david.d.an/Development/Dotnet/EmployeeManagementPortal/EMP.Sts/bin/Release/netcoreapp2.2/publish/* /usr/local/var/www/EMP.Sts
+> sudo mkdir -p /usr/local/var/www/EMP.Sts
+> sudo cp -r /Users/david.an/Development/Dotnet/EmployeeManagementPortal/EMP.Sts/bin/Release/netcoreapp3.1/publish/* /usr/local/var/www/EMP.Sts
 ```
 
 #### Start Dotnet service
 ```sh
 > cd /usr/local/var/www/EMP.Sts
-> dotnet /usr/local/var/www/EMP.Sts/EMP.Sts.dll --urls=https://localhost:22001
+> /usr/local/share/dotnet[/x64]/dotnet /usr/local/var/www/EMP.Sts/EMP.Sts.dll --urls=https://localhost:22001
 ```
 
 #### Better way to start Dotnet service behind Nginx
 ```sh
-> cd /Users/david.d.an/Library/LaunchAgents
-> launchctl unload /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
-> launchctl load /Users/david.d.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
+> cd /Users/david.an/Library/LaunchAgents
+> launchctl unload /Users/david.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
+> launchctl load /Users/david.an/Library/LaunchAgents/dotnet.run.EMP.Sts.plist
 ```
 See [dotnet.run.EMP.Sts.plist] for the details of execution plan.
 Also, see [nginx.conf] for the details of Nginx configuration.
