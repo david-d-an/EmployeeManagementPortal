@@ -23,7 +23,8 @@
 
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/share/dotnet/dotnet</string>
+        # For M1 Mac, add x64 folder name to the path
+        <string>/usr/local/share/dotnet[/x64]/dotnet</string>
         <string>EMP.Sts.dll</string>
         <string>--environment=Staging</string>
         <string>--urls=https://localhost:22001</string>
