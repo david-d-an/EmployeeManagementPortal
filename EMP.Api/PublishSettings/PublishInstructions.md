@@ -33,7 +33,7 @@
 
 #### Better way to start Dotnet service behind Nginx
 ```sh
-> cd /Users/david.d.an/Library/LaunchAgents
+> cd /Users/david.an/Library/LaunchAgents
 > launchctl unload /Users/david.an/Library/LaunchAgents/dotnet.run.EMP.Api.plist
 > launchctl load /Users/david.an/Library/LaunchAgents/dotnet.run.EMP.Api.plist
 ```
@@ -47,6 +47,6 @@ Also, see [nginx.conf] for the details of Nginx configuration.
 For Nginx config, see [ngingx.conf].
 Nginx configuration directory is normally located at [/usr/local/etc/nginx] directory.
 
-[dotnet.run.EMP.Api.plist]: <file:///Users/david.d.an/Library/LaunchAgents/dotnet.run.Api.plist>
+[dotnet.run.EMP.Api.plist]: <file:///Users/david.an/Library/LaunchAgents/dotnet.run.Api.plist>
 [ngingx.conf]: <file:///usr/local/etc/nginx/ngingx.conf>
 [/usr/local/etc/nginx]: <file:///usr/local/etc/nginx>
