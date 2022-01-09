@@ -1,5 +1,5 @@
 [![](https://vistr.dev/badge?repo=dong82.EmployeeManagementPortal)](https://github.com/Elfocrash/vistr.dev)
-[![](https://img.shields.io/badge/-@dong82-blue?style=flat-square&logo=docker&logoColor=white)](https://hub.docker.com/repositories/dong82)
+[![](https://img.shields.io/badge/-@dong82-%2496ed?style=flat-square&logo=docker&logoColor=white)](https://hub.docker.com/repositories/dong82)
 [![](https://img.shields.io/badge/-@dong82-%23181717?style=flat-square&logo=github)](https://github.com/dong82)
 [![](https://img.shields.io/badge/-David%20An-blue?style=flat-square&logo=Linkedin&logoColor=white)](https://www.linkedin.com/in/david-an-88417619/)
 
