@@ -1,4 +1,4 @@
-https://vistr.dev/badge?repo=dong82.EmployeeManagementPortal
+![](https://vistr.dev/badge?repo=dong82.EmployeeManagementPortal)
 
 # Employee Management Portal
 
