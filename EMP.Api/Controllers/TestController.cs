@@ -3,10 +3,9 @@ using EMP.Data.Repos;
 using EMP.Data.Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
+using System;
 using System.Threading;
 
 namespace EMP.Api.Controllers
@@ -16,7 +15,7 @@ namespace EMP.Api.Controllers
     [Route("api/[controller]")]
     public class TestController : ControllerBase
     {
-        private readonly ILogger<DepartmentsController> _logger;
+        private readonly ILogger<TestController> _logger;
         private readonly IRepository<Departments> _departmentsRepository;
         private readonly IUnitOfWorkEmployees _unitOfWork;
 
@@ -35,7 +34,7 @@ namespace EMP.Api.Controllers
         // }
 
         public TestController(
-            ILogger<DepartmentsController> logger,
+            ILogger<TestController> logger,
             IRepository<Departments> departmentsRepository,
             IUnitOfWorkEmployees unitOfWork)
         {
@@ -44,69 +43,23 @@ namespace EMP.Api.Controllers
             this._unitOfWork = unitOfWork;
         }
 
-        // [Flags]
-        public enum Features {
-            None = 0,
-            Brakes = 1,
-            Radio = 2,
-            AirConditioning = 4
-        }
-
         
         // air | Brake == Air
         // 101 | 001
 
-        private void Write(int val) {
-            Console.WriteLine(
-                $"Convert.ToSingle(val,2).PadLeft(8,'0')"
-            );
-        }
+        // private void Write(int val) {
+        //     Console.WriteLine(
+        //         $"Convert.ToSingle(val,2).PadLeft(8,'0')"
+        //     );
+        // }
 
         [HttpGet]
         [AllowAnonymous]
-        public async Task<ActionResult<IEnumerable<Departments>>> Get()
-        {
-
-            var f = Features.AirConditioning | Features.Brakes;
-            
-
-             
-
-
-            // List<Task> taskList = new List<Task>();
-            // for (int i = 0; i <= 5; i++)
-            // {
-            //     var i1 = i;
-            //     // taskList.Add(Task.Run(async () => await this.foo(i1)));
-            //     // taskList.Add(this.foo(i));
-            //     // taskList.Add(Task.Run(() => this.bar(i1)));
-            //     taskList.Add(this.bar(i));
-            // }
-            // // Task.WaitAll(taskList.ToArray());
-            // await Task.WhenAll(taskList);
-
+        public async Task<ActionResult<IEnumerable<Departments>>> Get() {
+            await Task.Delay(0);
+            _logger.LogInformation("Invoking Get");
             return Ok();
         }
-
-        private async Task<int> foo(int i) {
-            await Task.Delay(4000);
-            return i;
-        }
-        // private int bar(int i) {
-        //     Thread.Sleep(4000);
-        //     return i;
-        // }
-        private Task<int> bar(int i) {
-            // return Task.Factory.StartNew(() => {
-            //     Thread.Sleep(4000);
-            //     return i;
-            // });
-            return Task.Run(() => {
-                Thread.Sleep(4000);
-                return i;
-            });
-        }
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Departments>> Get(string id)
@@ -135,12 +88,14 @@ namespace EMP.Api.Controllers
         public async Task<ActionResult<Departments>> Post(Departments departmentCreateRequest) 
         {
             Departments result = await _departmentsRepository.PostAsync(departmentCreateRequest);
-             return CreatedAtAction(
-                nameof(Post), 
-                nameof(DepartmentsController), 
+            var actionName = nameof(Post);
+            var controllerName = nameof(DepartmentsController);
+            return CreatedAtAction(
+                actionName, 
+                controllerName,
                 new { id = result.DeptNo }, 
                 result);
-       }
+        }
         
         // [HttpDelete("{id}")]
         // public async Task<ActionResult<Departments>> Delete(string id) 

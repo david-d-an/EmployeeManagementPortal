@@ -18,6 +18,7 @@ using EMP.DataAccess.Repos.Sts;
 using EMP.DataAccess.Context;
 using EMP.Api.Config;
 using Serilog;
+using Serilog.Events;
 
 namespace EMP.Api
 {
@@ -36,6 +37,19 @@ namespace EMP.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Enum.GetValues(typeof(LogEventLevel))
+            .Cast<LogEventLevel>()
+            .ToDictionary(x => x, x => x.ToString());
+
+            services.AddMemoryCache();
+
+            services.AddOptions();
+            // services.AddOptions<ClientRateLimitOptions>().Bind(Configuration.GetSection("ClientRateLimiting"));
+            // services.Configure<ClientRateLimitOptions>(Configuration.GetSection("ClientRateLimiting"));
+            // services.Configure<ClientRateLimitPolicies>(Configuration.GetSection("ClientRateLimitPolicies"));
+            // services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            // services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+
             this.securitySettings = ApiConfig.GetSecuritySettings(Configuration);
 
             services.AddCors(options => {
@@ -154,6 +168,9 @@ namespace EMP.Api
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            // app.UseClientRateLimiting();
+            // app.UseIpRateLimiting();
 
             app.UseResponseCaching();
             

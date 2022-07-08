@@ -2,6 +2,7 @@
 using EMP.Data.Models.Sts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using EMP.Common.Security;
 
 namespace EMP.DataAccess.Context
 {

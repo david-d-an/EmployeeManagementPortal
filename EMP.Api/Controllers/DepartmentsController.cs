@@ -3,10 +3,8 @@ using EMP.Data.Repos;
 using EMP.Data.Models.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
 
 namespace EMP.Api.Controllers
 {
@@ -46,6 +44,7 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Departments>>> Get()
         {
+            _logger.LogInformation("Getting all departments");
             await Task.Delay(0);
             return Ok(_departmentsRepository.GetAsync());
         }
@@ -77,9 +76,11 @@ namespace EMP.Api.Controllers
         public async Task<ActionResult<Departments>> Post(Departments departmentCreateRequest) 
         {
             Departments result = await _departmentsRepository.PostAsync(departmentCreateRequest);
-             return CreatedAtAction(
-                nameof(Post), 
-                nameof(DepartmentsController), 
+            var actionName = nameof(Post);
+            var controllerName = nameof(DepartmentsController);
+            return CreatedAtAction(
+                actionName,
+                controllerName, 
                 new { id = result.DeptNo }, 
                 result);
        }

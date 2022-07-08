@@ -54,9 +54,13 @@ namespace EMP.Api.Controllers
         public async Task<ActionResult<Employees>> Post(Employees employeeCreateRequest) 
         {
             Employees result = await _employeeRepository.PostAsync(employeeCreateRequest);
+
+
+            var actionName = nameof(Post);
+            var controllerName = nameof(EmployeeController);
             return CreatedAtAction(
-                nameof(Post), 
-                nameof(EmployeeController), 
+                actionName, 
+                controllerName, 
                 new { id = result.EmpNo }, 
                 result);
         }

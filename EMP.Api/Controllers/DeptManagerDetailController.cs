@@ -4,10 +4,7 @@ using EMP.Data.Models.Employees;
 using EMP.Data.Models.Employees.Mapped;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
-using EMP.Common.Tasks;
-using System.Linq;
 
 namespace EMP.Api.Controllers
 {
@@ -15,13 +12,13 @@ namespace EMP.Api.Controllers
     [Route("api/[controller]")]
     public class DeptManagerDetailController : ControllerBase
     {
-        private ILogger<DeptManagerDetailController> _logger;
-        private IRepository<VwDeptManagerCurrent> _deptManagerCurrentRepository;
-        private IRepository<VwDeptManagerDetail> _deptManagerDetailRepository;
-        private IRepository<Employees> _employeeRepository;
-        // private IRepository<VwDeptEmpCurrent> _deptEmpRepository;
-        // private IRepository<VwTitlesCurrent> _titleRepository;
-        private IRepository<Departments> _departmentsRepository;
+        private readonly ILogger<DeptManagerDetailController> _logger;
+        private readonly IRepository<VwDeptManagerCurrent> _deptManagerCurrentRepository;
+        private readonly IRepository<VwDeptManagerDetail> _deptManagerDetailRepository;
+        private readonly IRepository<Employees> _employeeRepository;
+        // private readonly IRepository<VwDeptEmpCurrent> _deptEmpRepository;
+        // private readonly IRepository<VwTitlesCurrent> _titleRepository;
+        private readonly IRepository<Departments> _departmentsRepository;
 
         public DeptManagerDetailController(
             ILogger<DeptManagerDetailController> logger,
@@ -44,6 +41,7 @@ namespace EMP.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<VwDeptManagerDetail>>> Get()
         {
+            _logger.LogInformation("Invoking Get()");
             await Task.Delay(0);
             return Ok(_deptManagerDetailRepository.GetAsync());
         }
@@ -91,35 +89,40 @@ namespace EMP.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<DepartmentManagerDetail>> Post(DepartmentManagerDetail deptManagerCreateRequest) 
+        public async Task<ActionResult<DepartmentManagerDetail>> Post(DepartmentManagerDetail deptManagerCreateRequest)
         {
 
-            VwDeptManagerCurrent vwDeptManagerCurrent = 
-                new VwDeptManagerCurrent {
+            VwDeptManagerCurrent vwDeptManagerCurrent = null;
+            if (deptManagerCreateRequest != null) {
+                vwDeptManagerCurrent = new VwDeptManagerCurrent {
                     EmpNo = deptManagerCreateRequest.EmpNo.Value,
                     DeptNo = deptManagerCreateRequest.DeptNo,
                     FromDate = deptManagerCreateRequest.FromDate.Value,
                     ToDate = deptManagerCreateRequest.ToDate.Value,
                 };
+            }
+
             ActionResult<VwDeptManagerCurrent> postResult = await _deptManagerCurrentRepository.PostAsync(vwDeptManagerCurrent);
             VwDeptManagerCurrent value = postResult.Value;
-            Employees employee = await _employeeRepository.GetAsync(value.EmpNo.ToString());
-            Departments department = await _departmentsRepository.GetAsync(value.DeptNo);
+            Employees employee = await _employeeRepository.GetAsync(value?.EmpNo.ToString());
+            Departments department = await _departmentsRepository.GetAsync(value?.DeptNo);
 
             var result = new DepartmentManagerDetail {
-                DeptNo = value.DeptNo,
+                DeptNo = value?.DeptNo,
                 DeptName = department.DeptName,
-                FromDate = value.FromDate,
-                ToDate = value.ToDate,
-                EmpNo = value.EmpNo,
+                FromDate = value?.FromDate,
+                ToDate = value?.ToDate,
+                EmpNo = value?.EmpNo,
                 FirstName = employee.FirstName,
                 LastName = employee.LastName,
             };
 
+            var actionName = nameof(Post);
+            var controllerName = nameof(DeptManagerDetailController);
             return CreatedAtAction(
-                nameof(Post), 
-                nameof(DeptManagerDetailController), 
-                new { EmpNo = result.EmpNo, DeptNo = result.DeptNo }, 
+                actionName, 
+                controllerName, 
+                new { result.EmpNo, result.DeptNo }, 
                 result);
         }
         
